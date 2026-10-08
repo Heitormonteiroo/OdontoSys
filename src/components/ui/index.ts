@@ -8,3 +8,4 @@ export { Field } from './Field';
 export { Tabs } from './Tabs';
 export { Modal, ConfirmDialog } from './Modal';
 export { Avatar } from './Avatar';
+export { Select } from './Select';

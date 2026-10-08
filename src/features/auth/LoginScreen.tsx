@@ -6,7 +6,7 @@ import { useStore } from '@/mock/store';
 import type { Role } from '@/mock/types';
 import { Button, Field, Icon } from '@/components/ui';
 
-export default function LoginPage() {
+export function LoginScreen() {
   const router = useRouter();
   const login = useStore((s) => s.login);
   const clinic = useStore((s) => s.clinic);

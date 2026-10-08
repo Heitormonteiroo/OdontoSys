@@ -13,9 +13,21 @@ const tones: Record<Tone, { box: string; dot: string }> = {
 };
 
 /** Chip de status (pílula de 28 px, com ponto opcional). */
-export function Chip({ tone = 'neutral', dot = false, children }: { tone?: Tone; dot?: boolean; children: ReactNode }) {
+export function Chip({
+  tone = 'neutral',
+  dot = false,
+  size = 'md',
+  children,
+}: {
+  tone?: Tone;
+  dot?: boolean;
+  size?: 'sm' | 'md';
+  children: ReactNode;
+}) {
   return (
-    <span className={`inline-flex h-7 items-center gap-1.5 rounded-full px-[11px] text-[13px] font-semibold ${tones[tone].box}`}>
+    <span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full font-semibold ${
+        size === 'sm' ? 'h-[26px] px-2.5 text-xs' : 'h-7 px-[11px] text-[13px]'
+      } ${tones[tone].box}`}>
       {dot && <span className={`h-[7px] w-[7px] rounded-full ${tones[tone].dot}`} />}
       {children}
     </span>
