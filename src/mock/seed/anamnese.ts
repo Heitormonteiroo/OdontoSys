@@ -7,7 +7,7 @@ import type {
 } from '../types';
 
 // Modelo PROVISÓRIO, copiado do design (design/AnamneseTablet.dc.html).
-// O conteúdo definitivo será fornecido pelo dentista da clínica piloto (CLAUDE.md, decisão pendente nº 7).
+// O conteúdo definitivo será fornecido pelo dentista da clínica piloto (especificação, decisão pendente nº 7).
 
 const SN = ['Sim', 'Não'];
 const SNS = ['Sim', 'Não', 'Não sei'];

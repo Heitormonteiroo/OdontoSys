@@ -1,7 +1,7 @@
 import type { Role } from '@/mock/types';
 
 /**
- * Matriz de permissões do protótipo (proposta do CLAUDE.md: recepção sem
+ * Matriz de permissões do protótipo (proposta da especificação: recepção sem
  * acesso ao registro clínico). No sistema real isto vira RLS + checagem no servidor.
  */
 export type Permissao =

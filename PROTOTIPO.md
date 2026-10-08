@@ -15,7 +15,7 @@ Abra http://localhost:3000. Qualquer e-mail e senha entram; depois escolha o per
 
 ## Estrutura de pastas
 
-Segue a estrutura do `CLAUDE.md` (seção 9). No protótipo só existe o front; o `backend/` será criado na Fase 1.
+Segue a estrutura definida na especificação do projeto (seção 9). No protótipo só existe o front; o `backend/` será criado na Fase 1.
 
 ```
 src/
@@ -47,7 +47,7 @@ src/
 - CPFs de exemplo têm dígito verificador inválido de propósito. O cadastro só confere se o CPF está completo (11 dígitos), sem validar o dígito.
 - Medicamentos citados nos alertas são genéricos ("Medicamento Exemplo B/C"); nenhuma dose real.
 - Recepção: vê lista, cadastra paciente e acessa Plano, Documentos e Anamnese; Linha do tempo e Odontograma mostram "sem permissão". Faixa de alertas críticos continua visível para segurança.
-- O design da aba Plano mostra "Pago/Saldo a pagar/Registrar pagamento". Isso é controle financeiro, fora do escopo (CLAUDE.md), e foi omitido. No lugar: total do plano, aprovado e proposto.
+- O design da aba Plano mostra "Pago/Saldo a pagar/Registrar pagamento". Isso é controle financeiro, fora do escopo da especificação, e foi omitido. No lugar: total do plano, aprovado e proposto.
 - Ficha do paciente (todas as abas):
   - Linha do tempo: entradas append-only (o store não tem ação de editar/apagar e congela cada entrada com `Object.freeze`). Correção = adendo ligado à entrada. Hash encadeado por paciente (`hash = hash(conteúdo + hash anterior)`, simulado), conferido na tela ("Cadeia íntegra").
   - Gravam entrada na linha do tempo: evolução, adendo, cada evento do odontograma, anamnese do tablet, conclusão/cancelamento de item do plano, nova versão do plano e decisão do orçamento.
@@ -63,7 +63,7 @@ src/
 - Anamnese / totem:
   - Não há tablet de verdade: "Enviar ao tablet" gera o link e o botão "Abrir modo totem aqui" abre o totem no mesmo navegador. Recarregar a página (F5) no totem apaga a memória e o link passa a aparecer como expirado.
   - PIN de teste para sair do totem: Dra. Helena 2580 · Dr. Marcos 1470 · Camila (recepção) 3690. Qualquer um dos três libera.
-  - PIN de 4 dígitos, 3 tentativas, bloqueio de 5 min e link válido por 2 h seguem o design. A proposta do CLAUDE.md é PIN de 6 dígitos, 5 tentativas e link de ~12 h (decisão pendente nº 6); os valores ficam em `modules/pacientes/utils/anamnese/regras.ts`.
+  - PIN de 4 dígitos, 3 tentativas, bloqueio de 5 min e link válido por 2 h seguem o design. A proposta da especificação é PIN de 6 dígitos, 5 tentativas e link de ~12 h (decisão pendente nº 6); os valores ficam em `modules/pacientes/utils/anamnese/regras.ts`.
   - O store guarda só o "hash" do token e do PIN, com um hash simulado e não criptográfico (`utils/hash.ts`). No sistema real: sha256 do token e argon2/bcrypt do PIN, no servidor.
   - O link é de uso único: enviar as respostas marca o link como usado. Gerar um link novo revoga os anteriores não usados do mesmo paciente.
   - Se a equipe sai do totem no meio, as respostas ficam guardadas como rascunho do paciente e voltam no próximo envio.

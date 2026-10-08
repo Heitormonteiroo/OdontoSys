@@ -1,7 +1,7 @@
 # modules/
 
 Um módulo por área de negócio. As rotas em `src/app/` são finas: só importam uma página daqui.
-A estrutura completa (front e back) está no `CLAUDE.md`, seção 9.
+A estrutura completa (front e back) está na especificação do projeto, seção 9.
 
 Cada módulo segue o mesmo molde (crie só o que precisar):
 
