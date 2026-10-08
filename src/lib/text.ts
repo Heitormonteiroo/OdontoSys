@@ -28,6 +28,14 @@ export function mascaraCpf(s: string): string {
   return out;
 }
 
+/** Máscara progressiva dd/mm/aaaa */
+export function mascaraData(s: string): string {
+  const d = soDigitos(s).slice(0, 8);
+  if (d.length <= 2) return d;
+  if (d.length <= 4) return `${d.slice(0, 2)}/${d.slice(2)}`;
+  return `${d.slice(0, 2)}/${d.slice(2, 4)}/${d.slice(4)}`;
+}
+
 /** Máscara progressiva (00) 00000-0000 */
 export function mascaraTelefone(s: string): string {
   const d = soDigitos(s).slice(0, 11);

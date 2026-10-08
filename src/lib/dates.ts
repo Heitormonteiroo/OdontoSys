@@ -37,4 +37,22 @@ export function mesesDesde(iso: string, refIso: string = HOJE): number {
   return meses;
 }
 
+/** "Agora" da demonstração: data fixa (HOJE) com a hora real do relógio, ex.: "2026-10-08T09:14". */
+export function agora(): string {
+  const d = new Date();
+  return `${HOJE}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/** "2026-10-07T08:58" -> "07/10/2026 às 08:58" */
+export function dataHora(iso: string): string {
+  const [data, hora] = iso.split('T');
+  return hora ? `${formatarData(data)} às ${hora.slice(0, 5)}` : formatarData(data);
+}
+
+/** Hora local (HH:MM) de um instante em milissegundos. */
+export function horaDe(ms: number): string {
+  const d = new Date(ms);
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 export { pad };

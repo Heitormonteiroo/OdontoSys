@@ -17,9 +17,9 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   if (!session) return null;
 
   return (
-    <div className="flex h-[calc(100vh-28px)]">
+    <div className="flex h-[calc(100vh-28px)] print:block print:h-auto">
       <Sidebar />
-      <main className="min-w-0 flex-1 overflow-auto">{children}</main>
+      <main className="min-w-0 flex-1 overflow-auto print:overflow-visible">{children}</main>
     </div>
   );
 }

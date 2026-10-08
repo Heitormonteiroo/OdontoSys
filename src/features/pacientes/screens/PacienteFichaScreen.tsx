@@ -7,6 +7,7 @@ import { SemPermissao } from '@/components/feedback/SemPermissao';
 import { Icon } from '@/components/ui';
 import { can } from '@/lib/permissions';
 import { useCurrentUser, useStore } from '@/mock/store';
+import { EnviarTabletDialog, useEnviarAoTablet } from '@/features/anamnese/components/EnviarTabletDialog';
 import { PacienteHeader } from '../components/PacienteHeader';
 import { ABAS, type AbaId } from '../tabs';
 
@@ -16,6 +17,7 @@ export function PacienteFichaScreen({ id }: { id: string }) {
   const users = useStore((s) => s.users);
   const paciente = useMemo(() => patients.find((p) => p.id === id), [patients, id]);
   const [aba, setAba] = useState<AbaId>('linha');
+  const tablet = useEnviarAoTablet();
 
   if (!paciente) {
     return (
@@ -43,7 +45,7 @@ export function PacienteFichaScreen({ id }: { id: string }) {
 
   return (
     <div className="flex min-h-full flex-col">
-      <div className="flex shrink-0 items-center gap-1.5 border-b border-surface-muted bg-white px-8 py-3 text-[13px] text-ink-600">
+      <div className="no-print flex shrink-0 items-center gap-1.5 border-b border-surface-muted bg-white px-8 py-3 text-[13px] text-ink-600">
         <Link href="/pacientes" className="font-medium text-brand">
           Pacientes
         </Link>
@@ -56,11 +58,14 @@ export function PacienteFichaScreen({ id }: { id: string }) {
         dentistaNome={dentista}
         podeEvoluir={can(user?.papel, 'evolucao:registrar')}
         podeReceitar={can(user?.papel, 'receita:emitir')}
+        podeEnviarAnamnese={can(user?.papel, 'anamnese:enviar')}
         onNovaEvolucao={() => setAba('linha')}
         onVerAnamnese={() => setAba('anam')}
+        onEnviarAnamnese={() => tablet.enviar(paciente.id)}
       />
+      <EnviarTabletDialog envio={tablet.envio} onClose={tablet.fechar} />
 
-      <div role="tablist" className="flex shrink-0 gap-1 border-b border-line bg-white px-6">
+      <div role="tablist" className="no-print flex shrink-0 gap-1 border-b border-line bg-white px-6">
         {ABAS.map((a) => {
           const ativa = a.id === aba;
           return (
@@ -80,7 +85,7 @@ export function PacienteFichaScreen({ id }: { id: string }) {
         })}
       </div>
 
-      <div className="flex-1 px-8 pb-10 pt-6">
+      <div className="flex-1 px-8 pb-10 pt-6 print:px-0">
         {permitido ? (
           <atual.Component paciente={paciente} />
         ) : (

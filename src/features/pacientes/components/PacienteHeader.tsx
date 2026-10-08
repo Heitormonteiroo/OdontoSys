@@ -11,15 +11,19 @@ export function PacienteHeader({
   dentistaNome,
   podeEvoluir,
   podeReceitar,
+  podeEnviarAnamnese,
   onNovaEvolucao,
   onVerAnamnese,
+  onEnviarAnamnese,
 }: {
   paciente: Patient;
   dentistaNome: string;
   podeEvoluir: boolean;
   podeReceitar: boolean;
+  podeEnviarAnamnese: boolean;
   onNovaEvolucao: () => void;
   onVerAnamnese: () => void;
+  onEnviarAnamnese: () => void;
 }) {
   const temAlertas = p.alertas.length > 0;
   return (
@@ -44,7 +48,7 @@ export function PacienteHeader({
             {p.responsavel && <span>Responsável: {p.responsavel}</span>}
           </div>
         </div>
-        <div className="flex gap-2.5">
+        <div className="no-print flex gap-2.5">
           {podeReceitar && (
             <Link
               href={`/receitas/nova?paciente=${p.id}`}
@@ -86,6 +90,14 @@ export function PacienteHeader({
             <strong>Alertas desconhecidos.</strong> A anamnese ainda não foi preenchida — confirme alergias e
             medicamentos antes de qualquer procedimento.
           </span>
+          {podeEnviarAnamnese && (
+            <button
+              onClick={onEnviarAnamnese}
+              className="no-print h-9 shrink-0 rounded-md border border-[#FEC84B] bg-white px-3.5 text-sm font-semibold text-warn-text"
+            >
+              Enviar anamnese ao tablet
+            </button>
+          )}
         </div>
       ) : (
         <div className="flex items-center gap-2.5 border-t border-line bg-surface-bg px-8 py-2 text-[13px] text-ink-600">

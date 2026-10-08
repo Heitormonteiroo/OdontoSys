@@ -21,7 +21,7 @@ features/<area>/
 | `odontograma/` | a fazer | Odontograma |
 | `plano/` | a fazer | Plano de tratamento e orçamento |
 | `receitas/` | a fazer | Receitas e calculadora pediátrica |
-| `anamnese/` | a fazer | Totem de anamnese |
+| `anamnese/` | pronta (totem no tablet, aba Anamnese da ficha) | Totem de anamnese |
 | `agenda/` | a fazer | Agenda semanal |
 
 Regras da casa:

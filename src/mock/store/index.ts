@@ -3,6 +3,7 @@
 import { create } from 'zustand';
 import type { User } from '../types';
 import { createSeed } from '../seed';
+import { createAnamneseSlice } from './anamnese';
 import { createPatientsSlice } from './patients';
 import { createSessionSlice } from './session';
 import type { AppState } from './types';
@@ -19,6 +20,7 @@ export const useStore = create<AppState>()((...a) => ({
   ...createSeed(),
   ...createSessionSlice(...a),
   ...createPatientsSlice(...a),
+  ...createAnamneseSlice(...a),
   reset: () => a[0]({ ...createSeed() }),
 }));
 

@@ -10,6 +10,7 @@ export type Permissao =
   | 'plano:ver'
   | 'documentos:ver'
   | 'anamnese:ver'
+  | 'anamnese:enviar'
   | 'receita:emitir'
   | 'evolucao:registrar'
   | 'paciente:cadastrar'
@@ -22,12 +23,13 @@ const matriz: Record<Role, Permissao[]> = {
     'plano:ver',
     'documentos:ver',
     'anamnese:ver',
+    'anamnese:enviar',
     'receita:emitir',
     'evolucao:registrar',
     'paciente:cadastrar',
     'agenda:gerir',
   ],
-  recepcao: ['plano:ver', 'documentos:ver', 'anamnese:ver', 'paciente:cadastrar', 'agenda:gerir'],
+  recepcao: ['plano:ver', 'documentos:ver', 'anamnese:ver', 'anamnese:enviar', 'paciente:cadastrar', 'agenda:gerir'],
 };
 
 export function can(role: Role | undefined, permissao: Permissao): boolean {
