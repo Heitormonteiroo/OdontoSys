@@ -1,4 +1,4 @@
-import { can, type Permissao } from '@/lib/permissions';
+import { can, type Permissao } from '@/utils/permissions';
 import type { User } from '../types';
 import type { AppState } from './types';
 

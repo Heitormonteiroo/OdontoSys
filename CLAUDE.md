@@ -11,10 +11,11 @@ Legenda usada neste arquivo:
 
 - **[DECIDIDO]** Banco, autenticação e storage: Supabase (Postgres, Auth, Storage, RLS).
 - **[DECIDIDO]** Hospedagem: Vercel.
-- **[PROPOSTA]** Next.js (App Router) + TypeScript estrito + Tailwind.
+- **[DECIDIDO]** Front: Next.js (App Router) + TypeScript estrito + Tailwind.
+- **[DECIDIDO]** Back: serviço Node separado em `backend/` (Express ou Fastify: **[A DEFINIR]**), com a mesma divisão em módulos do front. Estrutura na seção 9.
 - **[PROPOSTA]** Validação com Zod em toda entrada de API.
 - **[PROPOSTA]** Camada de dados: migrations SQL puras via Supabase CLI + supabase-js com tipos gerados (sem ORM, para não conflitar com RLS).
-- **[PROPOSTA]** PDF: `pdf-lib` ou `@react-pdf/renderer`. Não usar Puppeteer na Vercel.
+- **[DECIDIDO]** PDF: PDFKit ou `pdf-lib`, gerado no backend, com os moldes escritos em TypeScript. Não usar Puppeteer nem moldes HTML/EJS.
 - **[PROPOSTA]** Região: Supabase em São Paulo (sa-east-1) e funções da Vercel em `gru1`.
 - Dados reais de pacientes só entram em plano pago (Supabase Pro e Vercel Pro). Plano free apenas com dados fictícios.
 
@@ -143,6 +144,7 @@ Não assuma estes itens. Pergunte ao responsável antes de implementar a parte a
 | 19 | Etapas do plano de tratamento | Número de etapa livre por item | Fase 5 |
 | 20 | Regras do orçamento | Validade padrão configurável (ex.: 30 dias), desconto só pelo dentista, condições de pagamento em texto livre | Fase 5 |
 | 21 | Regras sobre orçamento e honorários | Validar com o CRO-MS e um advogado | Antes do piloto |
+| 22 | Framework do backend | Express ou Fastify (os dois rodam na Vercel como função) | Fase 1 |
 
 ## 6. Modelo de dados (rascunho [PROPOSTA])
 
@@ -182,11 +184,72 @@ A ordem das fases 3 a 8 é **[PROPOSTA]**. Meta: colocar as fases 1 a 4 em uso n
 7. Texto de interface em português do Brasil. Fuso horário guardado em UTC e exibido no fuso da clínica.
 8. Mensagens de commit curtas e descritivas.
 
-## 9. Comandos
+## 9. Estrutura de pastas [DECIDIDO]
+
+Front e back divididos pelos mesmos módulos de negócio. Não crie pastas fora deste molde sem perguntar.
+
+### Front (raiz do repositório, Next.js)
+
+```
+src/
+├── app/            # Rotas do Next (exigidas pelo App Router). Arquivos finos: só importam uma página de modules/
+├── assets/         # Imagens genéricas, ícones (criar quando houver)
+├── components/     # UI global: ui/ (Button, Field, Modal…), feedback/, print/ (folha A4 de impressão)
+├── config/         # Cliente do Supabase e do HTTP para o backend (criar na Fase 1)
+├── hooks/          # Hooks globais: useAuth (sessão, usuários), useClinica
+├── layouts/        # Estrutura visual de página: Sidebar, banners
+├── modules/        # O coração do sistema, dividido por negócio
+│   ├── auth/
+│   ├── pacientes/      # Lista, cadastro, ficha; componentes de prontuário, anamnese/totem, odontograma, plano de tratamento
+│   ├── orcamentos/     # Orçamento gerado a partir do plano (NÃO é controle financeiro)
+│   ├── documentos/     # Documentos emitidos; receitas, atestados, termos; utils/ com a calculadora de dose pediátrica
+│   └── agenda/
+│       (cada módulo: pages/, components/, utils/ e services.ts)
+├── utils/          # Funções globais: datas, máscaras (CPF, telefone), dinheiro em centavos, permissões
+└── mock/           # Só no protótipo: dados fictícios em memória, usados apenas pelos services.ts e hooks/
+```
+
+- Não existe `routes/`: no Next as rotas são as pastas de `src/app/`.
+- `services.ts` é a **única porta de dados** de cada módulo. Telas e componentes nunca importam `mock/`, `config/` ou o cliente do Supabase direto. Hoje os services leem o `mock/`; na Fase 1 passam a chamar o backend.
+- `utils/` (global e de cada módulo) só tem funções puras, sem React e sem acesso a dados.
+- Um módulo pode usar componentes, utils e services de outro (ex.: a aba Plano, em `pacientes`, usa `orcamentos/components`).
+
+### Back (`backend/`, criado na Fase 1)
+
+```
+backend/src/
+├── config/         # Conexão com Supabase/PostgreSQL, variáveis de ambiente
+├── middlewares/    # Autenticação, verificação do PIN do dentista, limite de tentativas
+├── modules/        # Mesma divisão do front
+│   ├── agenda/
+│   │   ├── controllers/
+│   │   ├── routes.ts
+│   │   └── services/    # Integração com a API do Google Calendar
+│   ├── pacientes/
+│   │   ├── controllers/
+│   │   ├── routes.ts
+│   │   └── services/    # Imutabilidade do prontuário (adendo em vez de UPDATE), odontograma, plano, token do totem
+│   ├── orcamentos/
+│   │   ├── controllers/
+│   │   ├── routes.ts
+│   │   └── services/    # Snapshot, número sequencial e hash do orçamento
+│   └── documentos/
+│       ├── controllers/
+│       ├── routes.ts
+│       ├── templates/   # Moldes dos PDFs em TypeScript (PDFKit/pdf-lib), versionados
+│       └── services/    # Geração do PDF e envio ao Storage privado
+└── server.ts       # Ponto de entrada (Express ou Fastify: [A DEFINIR])
+```
+
+- As regras de segurança da seção 4 continuam valendo no banco (RLS, REVOKE, triggers). O backend não substitui a RLS.
+- Service role key só em `backend/src/config/`, lida de variável de ambiente.
+- Rotas do totem não usam Supabase Auth: validam o token em `pacientes/services` e gravam só aquela anamnese.
+
+## 10. Comandos
 
 A preencher após a criação do projeto (instalação, desenvolvimento, testes, migrations, geração de tipos).
 
-## 10. Pontos regulatórios para validar (não tratar como definitivos)
+## 11. Pontos regulatórios para validar (não tratar como definitivos)
 
 Valide com o CRO-MS, um farmacêutico e um advogado antes de vender:
 - Regras de receita para antimicrobianos (campos obrigatórios, validade, vias) e para controlados.

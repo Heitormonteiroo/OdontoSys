@@ -6,7 +6,7 @@ import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import 'material-symbols/rounded.css';
 import './globals.css';
-import { PrototypeBanner } from '@/components/layout/PrototypeBanner';
+import { PrototypeBanner } from '@/layouts/PrototypeBanner';
 
 export const metadata: Metadata = {
   title: 'Odonto Ipê · Protótipo',

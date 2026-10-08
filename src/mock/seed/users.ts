@@ -1,4 +1,4 @@
-import { hashSimulado } from '@/lib/hash';
+import { hashSimulado } from '@/utils/hash';
 import type { User } from '../types';
 
 // Pessoas e registros profissionais FICTÍCIOS. O login usa o primeiro usuário de cada papel.

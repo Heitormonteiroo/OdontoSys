@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import { PacienteNovoScreen } from '@/features/pacientes/screens/PacienteNovoScreen';
+import { PacienteNovoPage } from '@/modules/pacientes/pages/PacienteNovoPage';
 
 export default function Page() {
   return (
     <Suspense>
-      <PacienteNovoScreen />
+      <PacienteNovoPage />
     </Suspense>
   );
 }

@@ -1,7 +1,7 @@
 import type { StateCreator } from 'zustand';
-import { ORDEM_FACES, dentesValidos, siglasFaces } from '@/features/odontograma/lib/dentes';
-import { bloqueioRegistro, catalogoPorId, estadoDente, idsCorrigidos, rotuloAchado } from '@/features/odontograma/lib/estado';
-import { agora } from '@/lib/dates';
+import { ORDEM_FACES, dentesValidos, siglasFaces } from '@/modules/pacientes/utils/odontograma/dentes';
+import { bloqueioRegistro, catalogoPorId, estadoDente, idsCorrigidos, rotuloAchado } from '@/modules/pacientes/utils/odontograma/estado';
+import { agora } from '@/utils/dates';
 import type { NovoEventoDente, ToothEvent } from '../types';
 import { novaEntrada } from './prontuario';
 import type { AppState, OdontogramaSlice } from './types';

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { useStore } from '@/mock/store';
+import { useClinica } from '@/hooks/useClinica';
 
 /**
  * Renderiza `children` numa folha A4 e abre a impressão do navegador.
@@ -33,7 +33,7 @@ export function Imprimivel({ children, onFim }: { children: ReactNode; onFim: ()
 
 /** Timbre da clínica + linha do profissional (dados fictícios; configuráveis por clínica). */
 export function Timbre({ titulo, direita }: { titulo: string; direita?: ReactNode }) {
-  const clinic = useStore((s) => s.clinic);
+  const clinic = useClinica();
   return (
     <header className="mb-6 flex items-start justify-between border-b-2 border-ink pb-3">
       <div>

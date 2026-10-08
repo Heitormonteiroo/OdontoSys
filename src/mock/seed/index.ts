@@ -1,5 +1,5 @@
-import { PIN_TENTATIVAS } from '@/features/anamnese/lib/regras';
-import { planoAtual, statusGeral, statusItem } from '@/features/plano/lib/plano';
+import { PIN_TENTATIVAS } from '@/modules/pacientes/utils/anamnese/regras';
+import { planoAtual, statusGeral, statusItem } from '@/modules/pacientes/utils/plano';
 import type { SeedData } from '../types';
 import { anamneseTemplates, createAnamneseRespostas } from './anamnese';
 import { clinic } from './clinic';

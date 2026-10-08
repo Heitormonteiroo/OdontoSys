@@ -1,5 +1,5 @@
-import { LoginScreen } from '@/features/auth/LoginScreen';
+import { LoginPage } from '@/modules/auth/pages/LoginPage';
 
 export default function Page() {
-  return <LoginScreen />;
+  return <LoginPage />;
 }

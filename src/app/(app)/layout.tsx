@@ -2,13 +2,13 @@
 
 import { useEffect, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { useStore } from '@/mock/store';
-import { Sidebar } from '@/components/layout/Sidebar';
+import { useSessao } from '@/hooks/useAuth';
+import { Sidebar } from '@/layouts/Sidebar';
 
 /** Área logada. Sem sessão (ex.: após recarregar a página), volta ao login. */
 export default function AppLayout({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const session = useStore((s) => s.session);
+  const session = useSessao();
 
   useEffect(() => {
     if (!session) router.replace('/login');

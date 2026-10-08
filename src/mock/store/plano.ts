@@ -1,20 +1,10 @@
 import type { StateCreator } from 'zustand';
-import { ORDEM_FACES, dentesValidos, siglasFaces } from '@/features/odontograma/lib/dentes';
-import {
-  TRANSICOES,
-  erroDesconto,
-  hashOrcamento,
-  linhagemItem,
-  planoAtual,
-  somaCentavos,
-  somarDias,
-  statusGeral,
-  statusItem,
-  statusOrcamento,
-} from '@/features/plano/lib/plano';
-import { agora, HOJE } from '@/lib/dates';
-import { formatarCentavos } from '@/lib/dinheiro';
-import { hashSimulado } from '@/lib/hash';
+import { ORDEM_FACES, dentesValidos, siglasFaces } from '@/modules/pacientes/utils/odontograma/dentes';
+import { TRANSICOES, linhagemItem, planoAtual, statusGeral, statusItem } from '@/modules/pacientes/utils/plano';
+import { erroDesconto, hashOrcamento, somaCentavos, somarDias, statusOrcamento } from '@/modules/orcamentos/utils/orcamento';
+import { agora, HOJE } from '@/utils/dates';
+import { formatarCentavos } from '@/utils/dinheiro';
+import { hashSimulado } from '@/utils/hash';
 import type { IssuedDocument, Patient, PlanItemEvent, Quote, StatusTratamento, TreatmentPlan, TreatmentPlanItem } from '../types';
 import { prepararEventoDente } from './odontograma';
 import { novaEntrada } from './prontuario';

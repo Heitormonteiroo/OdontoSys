@@ -1,10 +1,10 @@
 import type { StateCreator } from 'zustand';
-import { HASH_INICIAL, hashEntrada } from '@/features/prontuario/lib/cadeia';
-import { agora } from '@/lib/dates';
+import { HASH_INICIAL, hashEntrada } from '@/modules/pacientes/utils/prontuario/cadeia';
+import { agora } from '@/utils/dates';
 import type { ClinicalEntry, IssuedDocument, NovaEntrada, NovoDocumento } from '../types';
 import type { AppState, DocumentosSlice, ProntuarioSlice } from './types';
 import { autorizado, congelar, falha, proximoNumero } from './util';
-import { hashSimulado } from '@/lib/hash';
+import { hashSimulado } from '@/utils/hash';
 
 /**
  * Grava uma entrada append-only, encadeando o hash com a última entrada do paciente.

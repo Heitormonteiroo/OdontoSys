@@ -1,10 +1,10 @@
-import { textoAnamnese } from '@/features/anamnese/lib/respostas';
-import { HASH_INICIAL, hashEntrada } from '@/features/prontuario/lib/cadeia';
-import { PERM_INF, PERM_SUP } from '@/features/odontograma/lib/dentes';
-import { hashOrcamento, somaCentavos, somarDias } from '@/features/plano/lib/plano';
-import { dataHora } from '@/lib/dates';
-import { formatarCentavos } from '@/lib/dinheiro';
-import { hashSimulado } from '@/lib/hash';
+import { textoAnamnese } from '@/modules/pacientes/utils/anamnese/respostas';
+import { HASH_INICIAL, hashEntrada } from '@/modules/pacientes/utils/prontuario/cadeia';
+import { PERM_INF, PERM_SUP } from '@/modules/pacientes/utils/odontograma/dentes';
+import { hashOrcamento, somaCentavos, somarDias } from '@/modules/orcamentos/utils/orcamento';
+import { dataHora } from '@/utils/dates';
+import { formatarCentavos } from '@/utils/dinheiro';
+import { hashSimulado } from '@/utils/hash';
 import type {
   Achado,
   AnamneseResposta,

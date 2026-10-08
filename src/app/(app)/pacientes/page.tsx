@@ -1,5 +1,5 @@
-import { PacientesListScreen } from '@/features/pacientes/screens/PacientesListScreen';
+import { PacientesListPage } from '@/modules/pacientes/pages/PacientesListPage';
 
 export default function Page() {
-  return <PacientesListScreen />;
+  return <PacientesListPage />;
 }

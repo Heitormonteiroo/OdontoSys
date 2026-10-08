@@ -1,8 +1,8 @@
 import type { StateCreator } from 'zustand';
-import { derivarAlertas, limparRespostas, validarRespostas } from '@/features/anamnese/lib/respostas';
-import { LINK_VALIDADE_HORAS, PIN_BLOQUEIO_MINUTOS, PIN_TENTATIVAS } from '@/features/anamnese/lib/regras';
-import { agora } from '@/lib/dates';
-import { gerarToken, hashSimulado } from '@/lib/hash';
+import { derivarAlertas, limparRespostas, validarRespostas } from '@/modules/pacientes/utils/anamnese/respostas';
+import { LINK_VALIDADE_HORAS, PIN_BLOQUEIO_MINUTOS, PIN_TENTATIVAS } from '@/modules/pacientes/utils/anamnese/regras';
+import { agora } from '@/utils/dates';
+import { gerarToken, hashSimulado } from '@/utils/hash';
 import type { AnamneseLink, AnamneseResposta } from '../types';
 import { novaEntrada } from './prontuario';
 import type { AnamneseSlice, AppState, SituacaoLink } from './types';

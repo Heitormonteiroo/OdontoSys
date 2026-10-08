@@ -1,6 +1,6 @@
-import { PacienteFichaScreen } from '@/features/pacientes/screens/PacienteFichaScreen';
+import { PacienteFichaPage } from '@/modules/pacientes/pages/PacienteFichaPage';
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  return <PacienteFichaScreen id={id} />;
+  return <PacienteFichaPage id={id} />;
 }
