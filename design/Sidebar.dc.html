@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<nav aria-label="Navegação principal" style="width:248px;height:100%;background:#FFFFFF;border-right:1px solid #E1E8ED;display:flex;flex-direction:column;padding:20px 14px;box-sizing:border-box;font-family:Inter,system-ui,sans-serif;color:#14232E;">
+  <div style="display:flex;align-items:center;gap:12px;padding:4px 10px 24px;">
+    <div style="width:38px;height:38px;border-radius:10px;background:#0F766E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;">I</div>
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div style="font-weight:700;font-size:16px;letter-spacing:-0.01em;">Odonto Ipê</div>
+      <div style="font-size:12px;color:#5B6E7C;">Apoio ao atendimento</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px;">
+    <sc-for list="{{ items }}" as="it" hint-placeholder-count="5">
+      <sc-if value="{{ it.active }}">
+        <a href="#" aria-current="page" style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border-radius:8px;background:#E6F4F2;color:#0B5B55;font-weight:600;font-size:15px;text-decoration:none;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;font-style:normal;white-space:nowrap;font-variation-settings:'FILL' 1;">{{ it.icon }}</span>{{ it.label }}</a>
+      </sc-if>
+      <sc-if value="{{ it.idle }}">
+        <a href="#" style="height:44px;display:flex;align-items:center;gap:12px;padding:0 12px;border-radius:8px;color:#3B4F5D;font-weight:500;font-size:15px;text-decoration:none;outline:none;" style-hover="background:#F2F5F7;color:#14232E;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;font-style:normal;white-space:nowrap;">{{ it.icon }}</span>{{ it.label }}</a>
+      </sc-if>
+    </sc-for>
+  </div>
+  <div style="flex:1;"></div>
+  <div style="display:flex;align-items:center;gap:10px;padding:12px 10px;border-top:1px solid #E1E8ED;">
+    <div style="width:36px;height:36px;border-radius:50%;background:#E6F4F2;color:#0B5B55;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;">HP</div>
+    <div style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;">
+      <div style="font-weight:600;font-size:14px;">Dra. Helena Prado</div>
+      <div style="font-size:12px;color:#5B6E7C;">Dentista · CRO-MS 4821</div>
+    </div>
+    <button aria-label="Sair" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#5B6E7C;display:flex;align-items:center;justify-content:center;cursor:pointer;outline:none;" style-hover="background:#F2F5F7;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">logout</span></button>
+  </div>
+</nav>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:248,&quot;height&quot;:800},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inicio&quot;,&quot;agenda&quot;,&quot;pacientes&quot;,&quot;documentos&quot;,&quot;config&quot;],&quot;default&quot;:&quot;inicio&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const a = this.props.active ?? 'inicio';
+    const base = [
+      ['inicio', 'Início', 'home'], ['agenda', 'Agenda', 'calendar_month'], ['pacientes', 'Pacientes', 'group'],
+      ['documentos', 'Documentos', 'description'], ['config', 'Configurações', 'settings']];
+    return { items: base.map(([id, label, icon]) => ({ label, icon, active: id === a, idle: id !== a })) };
+  }
+}
+</script>
+</body>
+</html>

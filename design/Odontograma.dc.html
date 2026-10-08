@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+<style>a{color:#0F766E;} a:hover{color:#0B5B55;}</style>
+</helmet>
+<div style="width:1440px;height:100%;min-height:900px;display:flex;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <dc-import name="Sidebar" active="pacientes" hint-size="248px,100%" style="width:248px;height:100%;flex-shrink:0;"></dc-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+    <div style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:12px 32px;font-size:13px;color:#4A5D6B;background:#FFFFFF;border-bottom:1px solid #EEF2F5;">
+      <a href="#" style="color:#0F766E;text-decoration:none;font-weight:500;">Pacientes</a><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">chevron_right</span><span>Mariana Alves Costa</span><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">chevron_right</span><span>Odontograma</span>
+    </div>
+    <dc-import name="PatientHeader" variant="normal" hint-size="100%,150px" style="flex-shrink:0;"></dc-import>
+    <div role="tablist" style="flex-shrink:0;display:flex;gap:4px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #E1E8ED;">
+      <button role="tab" aria-selected="false" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid transparent;color:#4A5D6B;font:500 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;" style-hover="color:#14232E;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">timeline</span>Linha do tempo</button>
+      <button role="tab" aria-selected="true" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid #0F766E;color:#0B5B55;font:600 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">dentistry</span>Odontograma</button>
+      <button role="tab" aria-selected="false" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid transparent;color:#4A5D6B;font:500 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;" style-hover="color:#14232E;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">request_quote</span>Plano e orçamento</button>
+      <button role="tab" aria-selected="false" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid transparent;color:#4A5D6B;font:500 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;" style-hover="color:#14232E;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">description</span>Documentos</button>
+      <button role="tab" aria-selected="false" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid transparent;color:#4A5D6B;font:500 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;" style-hover="color:#14232E;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">assignment</span>Anamnese</button>
+    </div>
+    <main style="flex:1;min-height:0;overflow:auto;padding:24px 32px 40px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;">
+
+      <section style="flex-shrink:0;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span style="font-size:13px;font-weight:600;color:#4A5D6B;width:76px;">Ferramenta</span>
+          <sc-for list="{{ tools }}" as="p" hint-placeholder-count="8">
+            <sc-if value="{{ p.on }}">
+              <button aria-pressed="true" onClick="{{ p.click }}" style="height:44px;padding:0 12px;border-radius:10px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;box-sizing:border-box;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+                <sc-if value="{{ p.isSelect }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">arrow_selector_tool</span></sc-if>
+                <sc-if value="{{ p.notSelect }}"><span style="position:relative;width:18px;height:18px;border-radius:4px;box-sizing:border-box;background:{{ p.swBg }};border:{{ p.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:700;color:{{ p.swIc }};">{{ p.swIcon }}</span></span></sc-if>
+                {{ p.label }}</button>
+            </sc-if>
+            <sc-if value="{{ p.off }}">
+              <button aria-pressed="false" onClick="{{ p.click }}" style="height:44px;padding:0 12px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;box-sizing:border-box;outline:none;" style-hover="border-color:#8A9BA8;background:#F8FAFB;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+                <sc-if value="{{ p.isSelect }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">arrow_selector_tool</span></sc-if>
+                <sc-if value="{{ p.notSelect }}"><span style="position:relative;width:18px;height:18px;border-radius:4px;box-sizing:border-box;background:{{ p.swBg }};border:{{ p.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:700;color:{{ p.swIc }};">{{ p.swIcon }}</span></span></sc-if>
+                {{ p.label }}</button>
+            </sc-if>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:8px;opacity:{{ statusOpacity }};">
+            <span style="font-size:13px;font-weight:600;color:#4A5D6B;width:76px;">Registrar como</span>
+            <div role="radiogroup" style="display:flex;padding:3px;border-radius:10px;background:#EEF2F5;gap:2px;">
+              <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="3">
+                <sc-if value="{{ s.on }}"><button role="radio" aria-checked="true" onClick="{{ s.click }}" style="height:36px;padding:0 14px;border:none;border-radius:8px;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.12);font:600 14px Inter,sans-serif;color:{{ s.fg }};display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span style="width:8px;height:8px;border-radius:50%;background:{{ s.fg }};"></span>{{ s.label }}</button></sc-if>
+                <sc-if value="{{ s.off }}"><button role="radio" aria-checked="false" onClick="{{ s.click }}" style="height:36px;padding:0 14px;border:none;border-radius:8px;background:transparent;font:500 14px Inter,sans-serif;color:#4A5D6B;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ s.label }}</button></sc-if>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:13px;font-weight:600;color:#4A5D6B;">Dentição</span>
+            <div role="radiogroup" style="display:flex;padding:3px;border-radius:10px;background:#EEF2F5;gap:2px;">
+              <sc-for list="{{ dents }}" as="d" hint-placeholder-count="3">
+                <sc-if value="{{ d.on }}"><button role="radio" aria-checked="true" onClick="{{ d.click }}" style="height:36px;padding:0 14px;border:none;border-radius:8px;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.12);font:600 14px Inter,sans-serif;color:#14232E;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ d.label }}</button></sc-if>
+                <sc-if value="{{ d.off }}"><button role="radio" aria-checked="false" onClick="{{ d.click }}" style="height:36px;padding:0 14px;border:none;border-radius:8px;background:transparent;font:500 14px Inter,sans-serif;color:#4A5D6B;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ d.label }}</button></sc-if>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <sc-if value="{{ toast }}">
+        <div role="status" style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:#ECFDF3;border:1px solid #ABEFC6;color:#05603A;font-size:14px;">
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#067647;">check_circle</span>
+          <span style="flex:1;">{{ toast }}</span>
+          <button aria-label="Fechar aviso" onClick="{{ closeToast }}" style="width:32px;height:32px;border:none;border-radius:6px;background:transparent;color:#05603A;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">close</span></button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isBlank }}">
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:#EFF8FF;border:1px solid #B2DDFF;color:#1849A9;font-size:14px;line-height:1.45;">
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#175CD3;">info</span>
+          <span><strong>Odontograma sem registros.</strong> Escolha um achado na barra de ferramentas e clique nas faces ou no número do dente. Cada registro vira um evento permanente no prontuário.</span>
+        </div>
+      </sc-if>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start;">
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:18px 20px 16px;display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
+            <h2 style="margin:0;font-size:18px;font-weight:700;">Odontograma · {{ dentLabel }}</h2>
+            <span style="font-size:13px;color:#4A5D6B;">Notação FDI · vista do profissional</span>
+          </div>
+
+          <sc-if value="{{ pendHint }}">
+            <div style="display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 14px;border-radius:10px;border:1px dashed #0F766E;background:#F3FAF9;color:#0B5B55;font-size:14px;box-sizing:border-box;">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">touch_app</span><span style="flex:1;">{{ pendLabel }}</span>
+              <button onClick="{{ exitTool }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 13px Inter,sans-serif;cursor:pointer;">Sair do modo de registro</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pendReady }}">
+            <div style="display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 8px 6px 14px;border-radius:10px;background:#0F766E;color:#FFFFFF;font-size:14px;box-sizing:border-box;">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">edit_note</span><span style="flex:1;font-weight:500;">{{ pendLabel }}</span>
+              <button onClick="{{ clearPending }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid rgba(255,255,255,.5);background:transparent;color:#FFFFFF;font:600 13px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Cancelar</button>
+              <button onClick="{{ register }}" style="height:36px;padding:0 14px;border-radius:8px;border:none;background:#FFFFFF;color:#0B5B55;font:700 13px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registrar evento</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pendBlocked }}">
+            <div role="alert" style="display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 8px 6px 14px;border-radius:10px;background:#FFFAEB;border:1px solid #FEDF89;color:#93370D;font-size:14px;box-sizing:border-box;">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;color:#B54708;">warning</span><span style="flex:1;">{{ blockText }}</span>
+              <button onClick="{{ clearPending }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #FEC84B;background:#FFFFFF;color:#93370D;font:600 13px Inter,sans-serif;cursor:pointer;">Entendi</button>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:#5B6E7C;letter-spacing:0.04em;text-transform:uppercase;padding:0 4px;">
+            <span>← Direito do paciente</span><span>Esquerdo do paciente →</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <sc-for list="{{ rows }}" as="r" hint-placeholder-count="3">
+              <sc-if value="{{ r.isDiv }}"><div style="height:1px;background:#C9D4DC;margin:2px 0;"></div></sc-if>
+              <sc-if value="{{ r.isRow }}">
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <sc-if value="{{ r.caption }}"><div style="text-align:center;font-size:11px;font-weight:600;color:#5B6E7C;letter-spacing:0.05em;text-transform:uppercase;">{{ r.caption }}</div></sc-if>
+                  <div style="display:flex;justify-content:center;gap:2px;">
+                    <sc-for list="{{ r.teeth }}" as="t" hint-placeholder-count="16">
+                      <div style="width:40px;padding:4px 0;border-radius:8px;background:{{ t.tileBg }};display:flex;flex-direction:{{ t.dir }};align-items:center;gap:3px;margin-right:{{ t.gap }};">
+                        <sc-if value="{{ t.isSel }}"><button onClick="{{ t.pick }}" aria-label="Dente {{ t.n }} selecionado" style="height:24px;width:34px;padding:0;border-radius:6px;border:none;background:#0F766E;color:#FFFFFF;font:700 13px Inter,sans-serif;font-variant-numeric:tabular-nums;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ t.n }}</button></sc-if>
+                        <sc-if value="{{ t.notSel }}"><button onClick="{{ t.pick }}" aria-label="Selecionar dente {{ t.n }}" style="height:24px;width:34px;padding:0;border-radius:6px;border:none;background:transparent;color:#3B4F5D;font:600 13px Inter,sans-serif;font-variant-numeric:tabular-nums;cursor:pointer;outline:none;" style-hover="background:#EEF2F5;color:#14232E;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ t.n }}</button></sc-if>
+                        <div aria-hidden="true" style="position:relative;width:34px;height:14px;">
+                          <div style="position:absolute;left:11px;top:0;width:12px;height:14px;border-radius:2px;background:{{ t.implBg }};opacity:{{ t.implOp }};"></div>
+                          <div style="position:absolute;left:15px;top:0;width:4px;height:14px;box-sizing:border-box;background:{{ t.canalBg }};border-left:{{ t.canalBd }};"></div>
+                        </div>
+                        <div style="position:relative;width:34px;height:34px;box-sizing:border-box;border:1.5px solid #8A9BA8;border-radius:6px;outline:{{ t.crownOutline }};outline-offset:1px;">
+                          <div style="position:absolute;inset:0;border-radius:4px;overflow:hidden;">
+                            <sc-for list="{{ t.faces }}" as="f" hint-placeholder-count="5">
+                              <div role="button" tabindex="0" aria-label="{{ f.aria }}" title="{{ f.aria }}" onClick="{{ f.click }}" style="position:absolute;inset:0;clip-path:{{ f.clip }};background:{{ f.bg }};cursor:pointer;outline:none;" style-hover="filter:brightness(0.88);" style-focus="filter:brightness(0.8);"></div>
+                            </sc-for>
+                            <div style="position:absolute;left:30%;top:30%;width:40%;height:40%;box-sizing:border-box;border:1px solid #8A9BA8;pointer-events:none;"></div>
+                            <div style="position:absolute;left:0;top:0;width:42.43%;height:1px;background:#8A9BA8;transform-origin:0 0;transform:rotate(45deg);pointer-events:none;"></div>
+                            <div style="position:absolute;right:0;top:0;width:42.43%;height:1px;background:#8A9BA8;transform-origin:100% 0;transform:rotate(-45deg);pointer-events:none;"></div>
+                            <div style="position:absolute;left:0;bottom:0;width:42.43%;height:1px;background:#8A9BA8;transform-origin:0 100%;transform:rotate(-45deg);pointer-events:none;"></div>
+                            <div style="position:absolute;right:0;bottom:0;width:42.43%;height:1px;background:#8A9BA8;transform-origin:100% 100%;transform:rotate(45deg);pointer-events:none;"></div>
+                          </div>
+                          <sc-if value="{{ t.ausente }}">
+                            <div style="position:absolute;left:-12%;top:50%;width:124%;height:3px;margin-top:-1.5px;border-radius:2px;background:{{ t.xBg }};transform:rotate(45deg);pointer-events:none;"></div>
+                            <div style="position:absolute;left:-12%;top:50%;width:124%;height:3px;margin-top:-1.5px;border-radius:2px;background:{{ t.xBg }};transform:rotate(-45deg);pointer-events:none;"></div>
+                          </sc-if>
+                          <sc-if value="{{ t.higido }}"><span aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:700;color:#079455;pointer-events:none;">check</span></sc-if>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
+          <sc-if value="{{ showDecNote }}"><div style="font-size:13px;color:#4A5D6B;text-align:center;">Paciente de 34 anos: nenhum registro na dentição decídua.</div></sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:10px;padding-top:12px;border-top:1px solid #EEF2F5;">
+            <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+              <span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;">Legenda</span>
+              <sc-for list="{{ legend }}" as="l" hint-placeholder-count="7">
+                <span style="display:flex;align-items:center;gap:6px;font-size:13px;color:#14232E;"><span style="width:18px;height:18px;border-radius:4px;box-sizing:border-box;background:{{ l.swBg }};border:{{ l.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:700;color:{{ l.swIc }};">{{ l.swIcon }}</span></span>{{ l.label }}</span>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;color:#3B4F5D;">
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:18px;height:18px;border-radius:4px;background:#1570EF;"></span>Sólido: existente ou realizado</span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:18px;height:18px;border-radius:4px;box-sizing:border-box;border:1.5px solid #1570EF;background:repeating-linear-gradient(45deg,#1570EF 0 2.5px,#FFFFFF 2.5px 5px);"></span>Hachurado ou tracejado: planejado</span>
+              <span>Faces: <strong>O/I</strong> oclusal/incisal · <strong>M</strong> mesial · <strong>D</strong> distal · <strong>V</strong> vestibular · <strong>L/P</strong> lingual/palatina</span>
+            </div>
+          </div>
+        </section>
+
+        <aside style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);display:flex;flex-direction:column;">
+          <sc-if value="{{ showPanelEmpty }}">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:48px 24px;text-align:center;">
+              <div style="width:64px;height:64px;border-radius:50%;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:32px;line-height:1;font-weight:normal;">dentistry</span></div>
+              <div style="font-size:17px;font-weight:600;">Nenhum dente selecionado</div>
+              <div style="font-size:14px;color:#4A5D6B;line-height:1.5;">Clique no número de um dente para ver as faces e o histórico de eventos.</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showSummary }}">
+            <div style="padding:18px 20px;border-bottom:1px solid #EEF2F5;display:flex;flex-direction:column;gap:4px;">
+              <h2 style="margin:0;font-size:17px;font-weight:700;">Resumo do odontograma</h2>
+              <span style="font-size:13px;color:#4A5D6B;">Exame inicial em 23/09/2026 · {{ eventCount }} eventos</span>
+            </div>
+            <div style="padding:14px 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;">
+              <sc-for list="{{ summary }}" as="s" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:#F8FAFB;">
+                  <span style="width:18px;height:18px;border-radius:4px;box-sizing:border-box;background:{{ s.swBg }};border:{{ s.swBd }};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:700;color:{{ s.swIc }};">{{ s.swIcon }}</span></span>
+                  <span style="flex:1;font-size:13px;color:#3B4F5D;">{{ s.label }}</span>
+                  <span style="font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;">{{ s.count }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:6px 20px 8px;font-size:13px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;">Planejado ({{ plannedCount }})</div>
+            <div style="display:flex;flex-direction:column;padding:0 12px 12px;">
+              <sc-for list="{{ planned }}" as="p" hint-placeholder-count="5">
+                <button onClick="{{ p.pick }}" style="display:flex;align-items:center;gap:12px;min-height:48px;padding:8px;border:none;border-radius:8px;background:transparent;text-align:left;font-family:Inter,sans-serif;cursor:pointer;outline:none;" style-hover="background:#F5F8FA;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+                  <span style="width:38px;height:28px;border-radius:6px;background:#EFF8FF;color:#175CD3;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">{{ p.tooth }}</span>
+                  <span style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:14px;font-weight:600;color:#14232E;">{{ p.text }}</span><span style="font-size:12px;color:#4A5D6B;">{{ p.sub }}</span></span>
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;color:#8A9BA8;">chevron_right</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="padding:14px 20px;border-top:1px solid #EEF2F5;">
+              <button style="width:100%;height:44px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">print</span>Imprimir odontograma</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasSel }}">
+            <div style="display:flex;align-items:flex-start;gap:10px;padding:18px 20px 14px;border-bottom:1px solid #EEF2F5;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                <h2 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-0.01em;">Dente {{ selN }}</h2>
+                <span style="font-size:14px;color:#4A5D6B;">{{ selName }}</span>
+              </div>
+              <button aria-label="Fechar painel do dente" onClick="{{ deselect }}" style="width:36px;height:36px;border-radius:8px;border:none;background:transparent;color:#4A5D6B;cursor:pointer;display:flex;align-items:center;justify-content:center;outline:none;" style-hover="background:#F2F5F7;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">close</span></button>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;border-bottom:1px solid #EEF2F5;">
+              <span style="font-size:12px;font-weight:700;color:#4A5D6B;">{{ lblTop }}</span>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="width:64px;text-align:right;font-size:12px;font-weight:700;color:#4A5D6B;">{{ lblLeft }}</span>
+                <div style="position:relative;width:112px;height:112px;box-sizing:border-box;border:2px solid #8A9BA8;border-radius:12px;outline:{{ selOutline }};outline-offset:3px;">
+                  <div style="position:absolute;inset:0;border-radius:10px;overflow:hidden;">
+                    <sc-for list="{{ bigFaces }}" as="f" hint-placeholder-count="5">
+                      <div role="button" tabindex="0" aria-label="{{ f.aria }}" title="{{ f.aria }}" onClick="{{ f.click }}" style="position:absolute;inset:0;clip-path:{{ f.clip }};background:{{ f.bg }};cursor:pointer;outline:none;" style-hover="filter:brightness(0.9);" style-focus="filter:brightness(0.8);"></div>
+                    </sc-for>
+                    <div style="position:absolute;left:30%;top:30%;width:40%;height:40%;box-sizing:border-box;border:1.5px solid #8A9BA8;pointer-events:none;"></div>
+                    <div style="position:absolute;left:0;top:0;width:42.43%;height:1.5px;background:#8A9BA8;transform-origin:0 0;transform:rotate(45deg);pointer-events:none;"></div>
+                    <div style="position:absolute;right:0;top:0;width:42.43%;height:1.5px;background:#8A9BA8;transform-origin:100% 0;transform:rotate(-45deg);pointer-events:none;"></div>
+                    <div style="position:absolute;left:0;bottom:0;width:42.43%;height:1.5px;background:#8A9BA8;transform-origin:0 100%;transform:rotate(-45deg);pointer-events:none;"></div>
+                    <div style="position:absolute;right:0;bottom:0;width:42.43%;height:1.5px;background:#8A9BA8;transform-origin:100% 100%;transform:rotate(45deg);pointer-events:none;"></div>
+                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#14232E;pointer-events:none;">{{ lblCenter }}</div>
+                  </div>
+                </div>
+                <span style="width:64px;font-size:12px;font-weight:700;color:#4A5D6B;">{{ lblRight }}</span>
+              </div>
+              <span style="font-size:12px;font-weight:700;color:#4A5D6B;">{{ lblBottom }}</span>
+              <div style="font-size:13px;color:#3B4F5D;text-align:center;min-height:18px;">{{ selFaceInfo }}</div>
+            </div>
+            <div style="padding:14px 20px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid #EEF2F5;">
+              <span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;">Situação atual</span>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                <sc-for list="{{ situation }}" as="s" hint-placeholder-count="2">
+                  <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:8px;border:1px solid #E1E8ED;font-size:13px;font-weight:600;color:#14232E;"><span style="width:16px;height:16px;border-radius:4px;box-sizing:border-box;background:{{ s.swBg }};border:{{ s.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:700;color:{{ s.swIc }};">{{ s.swIcon }}</span></span>{{ s.text }}<span style="font-weight:500;color:#4A5D6B;">· {{ s.sub }}</span></span>
+                </sc-for>
+                <sc-if value="{{ situationEmpty }}"><span style="font-size:14px;color:#4A5D6B;">Sem achados registrados.</span></sc-if>
+              </div>
+            </div>
+            <div style="padding:14px 20px 6px;display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;">Histórico · {{ histCount }}</span>
+              <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#4A5D6B;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;">lock</span>Eventos não editáveis</span>
+            </div>
+            <sc-if value="{{ histEmpty }}"><div style="padding:8px 20px 20px;font-size:14px;color:#4A5D6B;">Nenhum evento registrado neste dente.</div></sc-if>
+            <div style="display:flex;flex-direction:column;gap:10px;padding:6px 16px 18px;">
+              <sc-for list="{{ history }}" as="e" hint-placeholder-count="3">
+                <article style="border:1px solid {{ e.cardBd }};background:{{ e.cardBg }};border-radius:12px;overflow:hidden;">
+                  <sc-if value="{{ e.isCorrection }}">
+                    <div style="display:flex;align-items:center;gap:6px;padding:7px 12px;background:#EFF8FF;color:#1849A9;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">link</span>CORREÇÃO · substitui {{ e.replaces }}</div>
+                  </sc-if>
+                  <div style="padding:10px 12px;display:flex;flex-direction:column;gap:6px;">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                      <span style="display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;background:{{ e.stBg }};color:{{ e.stFg }};font-size:12px;font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:{{ e.stFg }};"></span>{{ e.stLabel }}</span>
+                      <span style="flex:1;"></span>
+                      <span title="Registro imutável" style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:999px;border:1px solid #D5DEE4;color:#3B4F5D;font-size:11px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>{{ e.id }}</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;">
+                      <span style="width:16px;height:16px;border-radius:4px;box-sizing:border-box;background:{{ e.swBg }};border:{{ e.swBd }};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:700;color:{{ e.swIc }};">{{ e.swIcon }}</span></span>
+                      <span style="font-size:15px;font-weight:600;color:{{ e.textColor }};text-decoration:{{ e.deco }};">{{ e.ach }}</span>
+                      <span style="font-size:13px;color:#4A5D6B;">· {{ e.facesLabel }}</span>
+                    </div>
+                    <sc-if value="{{ e.hasNote }}"><p style="margin:0;font-size:14px;line-height:1.5;color:{{ e.textColor }};text-wrap:pretty;">{{ e.note }}</p></sc-if>
+                    <div style="font-size:12px;color:#4A5D6B;"><strong style="color:#3B4F5D;font-weight:600;">{{ e.author }}</strong> · {{ e.date }}</div>
+                  </div>
+                  <sc-if value="{{ e.isCorrected }}">
+                    <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;border-top:1px solid #EEF2F5;font-size:12px;color:#4A5D6B;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:normal;">history</span>Substituído por {{ e.corrBy }} · mantido no histórico</div>
+                  </sc-if>
+                  <sc-if value="{{ e.canCorrect }}">
+                    <div style="display:flex;justify-content:flex-end;padding:4px 6px;border-top:1px solid #F2F5F7;background:#FBFCFD;">
+                      <button onClick="{{ e.start }}" style="height:36px;padding:0 10px;border-radius:8px;border:none;background:transparent;color:#0F766E;font:600 13px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-hover="background:#E6F4F2;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;font-weight:normal;">add_link</span>Registrar correção</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ e.composing }}">
+                    <div style="padding:12px;border-top:2px solid #0F766E;background:#FFFFFF;display:flex;flex-direction:column;gap:12px;">
+                      <div style="font-size:14px;font-weight:700;">Correção de {{ e.id }}</div>
+                      <div style="font-size:12px;color:#4A5D6B;line-height:1.45;">O evento original não é alterado. A correção cria um novo evento vinculado.</div>
+                      <div style="display:flex;flex-direction:column;gap:6px;">
+                        <span style="font-size:13px;font-weight:600;">Achado correto</span>
+                        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                          <sc-for list="{{ cTools }}" as="c" hint-placeholder-count="7">
+                            <sc-if value="{{ c.on }}"><button onClick="{{ c.click }}" style="height:32px;padding:0 10px;border-radius:999px;border:1px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 12px Inter,sans-serif;cursor:pointer;">{{ c.label }}</button></sc-if>
+                            <sc-if value="{{ c.off }}"><button onClick="{{ c.click }}" style="height:32px;padding:0 10px;border-radius:999px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 12px Inter,sans-serif;cursor:pointer;">{{ c.label }}</button></sc-if>
+                          </sc-for>
+                        </div>
+                      </div>
+                      <sc-if value="{{ cFaceScope }}">
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                          <span style="font-size:13px;font-weight:600;">Faces</span>
+                          <div style="display:flex;gap:6px;">
+                            <sc-for list="{{ cFaceChips }}" as="c" hint-placeholder-count="5">
+                              <sc-if value="{{ c.on }}"><button title="{{ c.name }}" onClick="{{ c.click }}" style="width:40px;height:36px;border-radius:8px;border:1px solid #0F766E;background:#0F766E;color:#FFFFFF;font:700 13px Inter,sans-serif;cursor:pointer;">{{ c.label }}</button></sc-if>
+                              <sc-if value="{{ c.off }}"><button title="{{ c.name }}" onClick="{{ c.click }}" style="width:40px;height:36px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:600 13px Inter,sans-serif;cursor:pointer;">{{ c.label }}</button></sc-if>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <div style="display:flex;gap:6px;">
+                        <sc-for list="{{ cStatuses }}" as="c" hint-placeholder-count="3">
+                          <sc-if value="{{ c.on }}"><button onClick="{{ c.click }}" style="flex:1;height:32px;border-radius:8px;border:1px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 12px Inter,sans-serif;cursor:pointer;">{{ c.label }}</button></sc-if>
+                          <sc-if value="{{ c.off }}"><button onClick="{{ c.click }}" style="flex:1;height:32px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 12px Inter,sans-serif;cursor:pointer;">{{ c.label }}</button></sc-if>
+                        </sc-for>
+                      </div>
+                      <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;">Motivo da correção (obrigatório)
+                        <textarea value="{{ motivo }}" onChange="{{ setMotivo }}" placeholder="Ex.: face registrada errada; confirmado na radiografia." style="min-height:72px;padding:10px;border-radius:8px;border:1px solid #C9D4DC;font:400 14px/1.45 Inter,sans-serif;color:#14232E;resize:vertical;outline:none;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;"></textarea>
+                      </label>
+                      <div style="display:flex;gap:8px;justify-content:flex-end;">
+                        <button onClick="{{ cancelCorrect }}" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 13px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Cancelar</button>
+                        <sc-if value="{{ canSave }}"><button onClick="{{ saveCorrect }}" style="height:40px;padding:0 14px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 13px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registrar correção</button></sc-if>
+                        <sc-if value="{{ cantSave }}"><button disabled="" title="Informe o motivo para continuar" style="height:40px;padding:0 14px;border-radius:8px;border:none;background:#D5DEE4;color:#5B6E7C;font:600 13px Inter,sans-serif;cursor:not-allowed;">Registrar correção</button></sc-if>
+                      </div>
+                    </div>
+                  </sc-if>
+                </article>
+              </sc-for>
+            </div>
+          </sc-if>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1100},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inicial&quot;,&quot;selecionado&quot;,&quot;preenchido&quot;],&quot;default&quot;:&quot;selecionado&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;denticao&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;permanente&quot;,&quot;decidua&quot;,&quot;mista&quot;],&quot;default&quot;:&quot;permanente&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  A = {
+    carie: { label: 'Cárie', color: '#DC6803', scope: 'face' },
+    restauracao: { label: 'Restauração', color: '#1570EF', scope: 'face' },
+    coroa: { label: 'Coroa', color: '#6938EF', scope: 'tooth' },
+    canal: { label: 'Canal', color: '#C11574', scope: 'tooth' },
+    implante: { label: 'Implante', color: '#344054', scope: 'tooth' },
+    ausente: { label: 'Ausente', color: '#475467', scope: 'tooth' },
+    higido: { label: 'Hígido', color: '#079455', scope: 'tooth' }
+  };
+  ORDER = ['O', 'M', 'D', 'V', 'L'];
+  SL = { existente: 'Existente', planejado: 'Planejado', realizado: 'Realizado' };
+  SC = { existente: ['#F0F3F5', '#3B4F5D'], planejado: ['#EFF8FF', '#175CD3'], realizado: ['#ECFDF3', '#067647'] };
+  CL = { top: 'polygon(0 0,100% 0,70% 30%,30% 30%)', right: 'polygon(100% 0,100% 100%,70% 70%,70% 30%)', bottom: 'polygon(30% 70%,70% 70%,100% 100%,0 100%)', left: 'polygon(0 0,30% 30%,30% 70%,0 100%)', center: 'polygon(30% 30%,70% 30%,70% 70%,30% 70%)' };
+  state = this.init();
+
+  init() {
+    const p = this.props || {};
+    const s = p.state ?? 'selecionado';
+    const events = s === 'inicial' ? [] : this.seed();
+    return { events, seq: 160 + events.length, sel: s === 'selecionado' ? 36 : null, face: s === 'selecionado' ? 'O' : null,
+      dent: p.denticao ?? 'permanente', tool: 'select', status: 'existente', pending: null,
+      correcting: null, cAchado: null, cFaces: [], cStatus: 'existente', motivo: '', toast: null };
+  }
+  seed() {
+    const H = 'Dra. Helena Prado', M = 'Dr. Marcos Teles', d = '23/09/2026 às ';
+    const list = [
+      [46, 'restauracao', 'existente', ['O'], H, '09:40', 'Restauração em amálgama anterior ao 1º atendimento (≈2019).'],
+      [17, 'restauracao', 'existente', ['O'], H, '09:40', ''],
+      [48, 'ausente', 'existente', [], H, '09:41', 'Extraído antes do 1º atendimento.'],
+      [24, 'coroa', 'existente', [], H, '09:41', 'Coroa metalocerâmica prévia, adaptação satisfatória.'],
+      [25, 'implante', 'existente', [], H, '09:42', 'Implante instalado em outra clínica (2021).'],
+      [25, 'coroa', 'existente', [], H, '09:42', 'Coroa sobre implante.'],
+      [26, 'carie', 'existente', ['M', 'O'], H, '09:42', ''],
+      [14, 'carie', 'existente', ['M'], H, '09:43', 'Lesão inicial em esmalte.'],
+      [37, 'carie', 'existente', ['O'], H, '09:43', ''],
+      [36, 'carie', 'existente', ['O', 'M'], H, '09:44', 'Cárie profunda com provável envolvimento pulpar.'],
+      [36, 'carie', 'existente', ['O', 'D'], H, '09:58', 'A lesão é ocluso-distal, não ocluso-mesial. Confirmado na radiografia periapical.', 9],
+      [36, 'canal', 'planejado', [], H, '10:00', 'Endodontia em 3 sessões.'],
+      [36, 'coroa', 'planejado', [], H, '10:00', 'Após a conclusão do canal.'],
+      [14, 'restauracao', 'planejado', ['M'], H, '10:02', ''],
+      [37, 'restauracao', 'planejado', ['O'], H, '10:02', ''],
+      [18, 'ausente', 'planejado', [], M, '10:12', 'Extração do siso planejada — aguardar o fim da gestação.'],
+      [26, 'restauracao', 'realizado', ['M', 'O'], H, '10:30', 'Resina composta classe II, isolamento relativo.']
+    ];
+    const special = new Set(list.map(r => r[0]));
+    const all = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+    const ev = [];
+    let i = 0;
+    const id = () => 'EV-0' + (160 + i);
+    all.filter(n => !special.has(n)).forEach(n => { ev.push({ id: id(), seq: i, tooth: n, achado: 'higido', status: 'existente', faces: [], author: H, date: d + '09:39', note: '' }); i++; });
+    const base = i, ids = [];
+    list.forEach((r, k) => { const e = { id: id(), seq: i, tooth: r[0], achado: r[1], status: r[2], faces: r[3], author: r[4], date: d + r[5], note: r[6] }; if (r[7] !== undefined) e.replaces = ids[r[7]]; ids.push(e.id); ev.push(e); i++; });
+    return ev;
+  }
+  q(n) { return Math.floor(n / 10); }
+  isUp(n) { return [1, 2, 5, 6].includes(this.q(n)); }
+  posMap(n) { const up = this.isUp(n), mr = [1, 4, 5, 8].includes(this.q(n)); return { top: up ? 'V' : 'L', bottom: up ? 'L' : 'V', left: mr ? 'D' : 'M', right: mr ? 'M' : 'D', center: 'O' }; }
+  faceShort(n, c) { if (c === 'O') return n % 10 <= 3 ? 'I' : 'O'; if (c === 'L') return this.isUp(n) ? 'P' : 'L'; return c; }
+  faceName(n, c) { return { O: n % 10 <= 3 ? 'Incisal' : 'Oclusal', M: 'Mesial', D: 'Distal', V: 'Vestibular', L: this.isUp(n) ? 'Palatina' : 'Lingual' }[c]; }
+  toothName(n) {
+    const q = this.q(n), u = n % 10, dec = q >= 5;
+    const perm = { 1: 'Incisivo central', 2: 'Incisivo lateral', 3: 'Canino', 4: '1º pré-molar', 5: '2º pré-molar', 6: '1º molar', 7: '2º molar', 8: '3º molar (siso)' };
+    const decN = { 1: 'Incisivo central', 2: 'Incisivo lateral', 3: 'Canino', 4: '1º molar', 5: '2º molar' };
+    const side = { 1: 'superior direito', 2: 'superior esquerdo', 3: 'inferior esquerdo', 4: 'inferior direito' }[dec ? q - 4 : q];
+    return `${(dec ? decN : perm)[u]} ${side}${dec ? ' · decíduo' : ' · permanente'}`;
+  }
+  derive(n) {
+    const evs = this.state.events.filter(e => e.tooth === n);
+    const corrected = new Set(evs.filter(e => e.replaces).map(e => e.replaces));
+    const faces = { O: {}, M: {}, D: {}, V: {}, L: {} }, whole = {};
+    evs.filter(e => !corrected.has(e.id)).sort((a, b) => a.seq - b.seq).forEach(e => {
+      if (this.A[e.achado].scope === 'face') e.faces.forEach(c => { const fs = faces[c]; if (e.status === 'planejado') fs.plan = e.achado; else { fs.cur = e.achado; if (fs.plan === e.achado) fs.plan = null; } });
+      else if (e.status === 'planejado') { if (!whole[e.achado]) whole[e.achado] = 'planejado'; }
+      else whole[e.achado] = 'solid';
+    });
+    const hasFace = this.ORDER.some(c => faces[c].cur || faces[c].plan);
+    const others = Object.keys(whole).filter(k => k !== 'higido');
+    const hig = !!whole.higido && !hasFace && others.length === 0;
+    return { evs, faces, whole, hig, hasFindings: hasFace || others.length > 0 };
+  }
+  sw(a, planned) {
+    const c = this.A[a].color, dash = planned ? 'dashed' : 'solid';
+    const hatch = `repeating-linear-gradient(45deg,${c} 0 2.5px,#FFFFFF 2.5px 5px)`;
+    const r = { swBg: '#FFFFFF', swBd: `1.5px ${dash} #C9D4DC`, swIcon: '', swIc: c };
+    if (a === 'carie' || a === 'restauracao') Object.assign(r, { swBg: planned ? hatch : c, swBd: `1.5px solid ${c}` });
+    if (a === 'coroa') r.swBd = `2.5px ${dash} ${c}`;
+    if (a === 'canal') Object.assign(r, { swBg: `linear-gradient(90deg,transparent 5.5px,${c} 5.5px 9.5px,transparent 9.5px)`, swBd: planned ? `1.5px dashed ${c}` : '1.5px solid #C9D4DC' });
+    if (a === 'implante') Object.assign(r, { swBg: `repeating-linear-gradient(180deg,${c} 0 2px,#FFFFFF 2px 4px)`, swBd: planned ? `1.5px dashed ${c}` : `1.5px solid ${c}` });
+    if (a === 'ausente') Object.assign(r, { swIcon: 'close' });
+    if (a === 'higido') Object.assign(r, { swIcon: 'check', swBd: '1.5px solid #ABEFC6' });
+    return r;
+  }
+  faceBg(fs, aus, pending, selected) {
+    const A = this.A, base = aus ? '#EEF2F5' : '#FFFFFF', c = fs.cur ? A[fs.cur].color : base;
+    let bg = fs.plan ? `repeating-linear-gradient(45deg,${A[fs.plan].color} 0 2.5px,${c} 2.5px 5px)` : c;
+    if (pending) return `linear-gradient(rgba(15,118,110,.62),rgba(15,118,110,.62)),${bg}`;
+    if (selected) return `linear-gradient(rgba(15,118,110,.3),rgba(15,118,110,.3)),${bg}`;
+    return bg;
+  }
+  onFace(n, c) {
+    const st = this.state;
+    if (st.tool === 'select') return this.setState({ sel: n, face: c, correcting: null });
+    let p = st.pending && st.pending.tooth === n ? st.pending : { tooth: n, faces: [] };
+    if (this.A[st.tool].scope === 'face') p = { tooth: n, faces: p.faces.includes(c) ? p.faces.filter(f => f !== c) : [...p.faces, c] };
+    this.setState({ pending: p, sel: n, face: c, correcting: null });
+  }
+  onTooth(n) {
+    const st = this.state;
+    if (st.tool !== 'select' && this.A[st.tool].scope === 'tooth') return this.setState({ pending: { tooth: n, faces: [] }, sel: n, face: null, correcting: null });
+    this.setState({ sel: n, face: null, correcting: null, pending: st.pending && st.pending.tooth === n ? st.pending : null });
+  }
+  now() { const d = new Date(); return `${d.toLocaleDateString('pt-BR')} às ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
+  addEvent(e, msg) {
+    const st = this.state, id = 'EV-0' + st.seq;
+    this.setState({ events: [...st.events, { ...e, id, seq: st.seq, author: 'Dra. Helena Prado', date: this.now() }], seq: st.seq + 1, toast: msg(id) });
+  }
+  register() {
+    const st = this.state, p = st.pending; if (!p) return;
+    const faces = this.ORDER.filter(c => p.faces.includes(c));
+    this.addEvent({ tooth: p.tooth, achado: st.tool, status: st.status, faces, note: '' },
+      id => `${id} registrado no dente ${p.tooth}: ${this.A[st.tool].label} (${this.SL[st.status].toLowerCase()}). O evento não pode ser editado.`);
+    this.setState({ pending: null });
+  }
+  startCorrect(e) { this.setState({ correcting: e.id, cAchado: e.achado, cFaces: [...e.faces], cStatus: e.status, motivo: '' }); }
+  saveCorrect() {
+    const st = this.state, orig = st.events.find(e => e.id === st.correcting); if (!orig) return;
+    const faces = this.A[st.cAchado].scope === 'face' ? this.ORDER.filter(c => st.cFaces.includes(c)) : [];
+    this.addEvent({ tooth: orig.tooth, achado: st.cAchado, status: st.cStatus, faces, note: st.motivo.trim(), replaces: orig.id },
+      id => `${id} registrado como correção de ${orig.id}. O evento original continua no histórico.`);
+    this.setState({ correcting: null, motivo: '' });
+  }
+
+  renderVals() {
+    const st = this.state, A = this.A, SL = this.SL, SC = this.SC;
+    const cache = {}, D = n => cache[n] || (cache[n] = this.derive(n));
+    const pend = st.pending, scope = st.tool === 'select' ? null : A[st.tool].scope;
+    const tooth = (n, idx, mid) => {
+      const d = D(n), pm = this.posMap(n), isSel = st.sel === n, isPend = pend && pend.tooth === n, aus = d.whole.ausente;
+      const co = d.whole.coroa, ca = d.whole.canal, im = d.whole.implante;
+      return {
+        n, isSel, notSel: !isSel, dir: this.isUp(n) ? 'column' : 'column-reverse', gap: idx === mid ? '14px' : '0', tileBg: isSel ? '#E6F4F2' : 'transparent',
+        faces: ['top', 'right', 'bottom', 'left', 'center'].map(pos => { const c = pm[pos]; return { clip: this.CL[pos], bg: this.faceBg(d.faces[c], !!aus, isPend && (scope === 'tooth' || pend.faces.includes(c)), isSel && st.face === c && !scope), aria: `Dente ${n}, face ${this.faceName(n, c)}`, click: () => this.onFace(n, c) }; }),
+        crownOutline: co ? `2px ${co === 'planejado' ? 'dashed' : 'solid'} ${A.coroa.color}` : 'none',
+        canalBg: ca === 'solid' ? A.canal.color : 'transparent', canalBd: ca === 'planejado' ? `4px dashed ${A.canal.color}` : 'none',
+        implBg: im ? `repeating-linear-gradient(180deg,${A.implante.color} 0 2px,transparent 2px 4px)` : 'transparent', implOp: im === 'planejado' ? 0.45 : 1,
+        ausente: !!aus, xBg: aus === 'planejado' ? `repeating-linear-gradient(90deg,${A.ausente.color} 0 4px,transparent 4px 7px)` : A.ausente.color,
+        higido: d.hig, pick: () => this.onTooth(n)
+      };
+    };
+    const P_UP = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28], P_LO = [48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+    const D_UP = [55,54,53,52,51,61,62,63,64,65], D_LO = [85,84,83,82,81,71,72,73,74,75];
+    const mk = (arr, cap) => ({ isRow: true, isDiv: false, caption: cap || '', teeth: arr.map((n, i) => tooth(n, i, arr.length / 2 - 1)) });
+    const div = { isRow: false, isDiv: true };
+    const rows = st.dent === 'decidua' ? [mk(D_UP), div, mk(D_LO)] : st.dent === 'mista'
+      ? [mk(P_UP, 'Permanentes superiores'), mk(D_UP, 'Decíduos superiores'), div, mk(D_LO, 'Decíduos inferiores'), mk(P_LO, 'Permanentes inferiores')]
+      : [mk(P_UP), div, mk(P_LO)];
+
+    const toolIds = ['select', 'carie', 'restauracao', 'coroa', 'canal', 'implante', 'ausente', 'higido'];
+    const tools = toolIds.map(id => ({ label: id === 'select' ? 'Selecionar' : A[id].label, on: st.tool === id, off: st.tool !== id, isSelect: id === 'select', notSelect: id !== 'select', ...(id === 'select' ? {} : this.sw(id, false)), click: () => this.setState({ tool: id, pending: null }) }));
+    const statuses = ['existente', 'planejado', 'realizado'].map(s => ({ label: SL[s], fg: SC[s][1], on: st.status === s, off: st.status !== s, click: () => st.tool !== 'select' && this.setState({ status: s }) }));
+    const dents = [['permanente', 'Permanente'], ['decidua', 'Decídua'], ['mista', 'Mista']].map(([id, label]) => ({ label, on: st.dent === id, off: st.dent !== id, click: () => this.setState({ dent: id }) }));
+
+    let pendHint = false, pendReady = false, pendBlocked = false, pendLabel = '', blockText = '';
+    if (scope) {
+      const lab = `${A[st.tool].label} · ${SL[st.status].toLowerCase()}`;
+      if (!pend || (scope === 'face' && !pend.faces.length)) { pendHint = true; pendLabel = `Modo de registro: ${lab}. Clique ${scope === 'face' ? 'nas faces de um dente' : 'no número ou nas faces de um dente'}.`; }
+      else {
+        const d = D(pend.tooth);
+        if (st.tool === 'higido' && d.hasFindings) { pendBlocked = true; blockText = `O dente ${pend.tooth} tem achados ativos. Para marcá-lo como hígido, registre uma correção nos eventos dele.`; }
+        else if (scope === 'face' && d.whole.ausente === 'solid') { pendBlocked = true; blockText = `O dente ${pend.tooth} está registrado como ausente. Não é possível marcar faces.`; }
+        else { pendReady = true; pendLabel = `Dente ${pend.tooth}${scope === 'face' ? ' · faces ' + this.ORDER.filter(c => pend.faces.includes(c)).map(c => this.faceShort(pend.tooth, c)).join(', ') : ' · dente inteiro'} → ${lab}`; }
+      }
+    }
+
+    const legend = ['carie', 'restauracao', 'coroa', 'canal', 'implante', 'ausente', 'higido'].map(a => ({ label: a === 'canal' ? 'Tratamento de canal' : A[a].label, ...this.sw(a, false) }));
+    const out = {
+      tools, statuses, dents, rows, legend, statusOpacity: scope ? 1 : 0.5,
+      dentLabel: { permanente: 'dentição permanente', decidua: 'dentição decídua', mista: 'dentição mista' }[st.dent],
+      pendHint, pendReady, pendBlocked, pendLabel, blockText,
+      exitTool: () => this.setState({ tool: 'select', pending: null }), clearPending: () => this.setState({ pending: null }), register: () => this.register(),
+      toast: st.toast || '', closeToast: () => this.setState({ toast: null }),
+      isBlank: st.events.length === 0, showDecNote: st.dent !== 'permanente' && !st.events.some(e => e.tooth >= 51),
+      hasSel: st.sel != null, showPanelEmpty: st.sel == null && st.events.length === 0, showSummary: st.sel == null && st.events.length > 0,
+      deselect: () => this.setState({ sel: null, face: null, correcting: null }), eventCount: st.events.length
+    };
+
+    if (out.showSummary) {
+      const teeth = [...P_UP, ...P_LO, ...D_UP, ...D_LO].map(n => D(n));
+      const cnt = { carie: 0, restauracao: 0, coroa: 0, canal: 0, implante: 0, ausente: 0, higido: 0 };
+      teeth.forEach(d => {
+        if (this.ORDER.some(c => d.faces[c].cur === 'carie')) cnt.carie++;
+        if (this.ORDER.some(c => d.faces[c].cur === 'restauracao')) cnt.restauracao++;
+        ['coroa', 'canal', 'implante', 'ausente'].forEach(a => { if (d.whole[a] === 'solid') cnt[a]++; });
+        if (d.hig) cnt.higido++;
+      });
+      out.summary = Object.keys(cnt).map(a => ({ label: { carie: 'Com cárie', restauracao: 'Restaurados', coroa: 'Coroas', canal: 'Com canal', implante: 'Implantes', ausente: 'Ausentes', higido: 'Hígidos' }[a], count: cnt[a], ...this.sw(a, false) }));
+      const corrected = new Set(st.events.filter(e => e.replaces).map(e => e.replaces));
+      const pl = st.events.filter(e => e.status === 'planejado' && !corrected.has(e.id)).filter(e => {
+        return !st.events.some(x => x.tooth === e.tooth && x.achado === (e.achado === 'carie' ? 'carie' : e.achado) && x.seq > e.seq && x.status !== 'planejado' && !corrected.has(x.id) && (e.faces.length === 0 || e.faces.every(f => x.faces.includes(f))));
+      }).sort((a, b) => a.tooth - b.tooth);
+      out.planned = pl.map(e => ({ tooth: e.tooth, text: (e.achado === 'ausente' ? 'Extração' : e.achado === 'canal' ? 'Tratamento de canal' : A[e.achado].label) + (e.faces.length ? ' · ' + e.faces.map(c => this.faceShort(e.tooth, c)).join(', ') : ''), sub: `${e.author} · ${e.date.split(' ')[0]}`, pick: () => this.setState({ sel: e.tooth, face: null }) }));
+      out.plannedCount = pl.length;
+    }
+
+    if (out.hasSel) {
+      const n = st.sel, d = D(n), pm = this.posMap(n), aus = d.whole.ausente;
+      const lbl = pos => `${this.faceShort(n, pm[pos])} · ${this.faceName(n, pm[pos])}`;
+      Object.assign(out, {
+        selN: n, selName: this.toothName(n), lblTop: lbl('top'), lblBottom: lbl('bottom'), lblLeft: lbl('left'), lblRight: lbl('right'), lblCenter: this.faceShort(n, 'O'),
+        selOutline: d.whole.coroa ? `3px ${d.whole.coroa === 'planejado' ? 'dashed' : 'solid'} ${A.coroa.color}` : 'none',
+        bigFaces: ['top', 'right', 'bottom', 'left', 'center'].map(pos => { const c = pm[pos]; return { clip: this.CL[pos], bg: this.faceBg(d.faces[c], !!aus, pend && pend.tooth === n && (scope === 'tooth' || pend.faces.includes(c)), st.face === c && !scope), aria: `Face ${this.faceName(n, c)}`, click: () => this.onFace(n, c) }; })
+      });
+      if (st.face) { const fs = d.faces[st.face]; const parts = []; if (fs.cur) parts.push(A[fs.cur].label); if (fs.plan) parts.push(A[fs.plan].label + ' planejada'); out.selFaceInfo = `Face ${this.faceName(n, st.face).toLowerCase()}: ${parts.length ? parts.join(' + ') : 'sem achados'}`; }
+      else out.selFaceInfo = 'Clique em uma face para ver os achados dela.';
+      const byKey = {};
+      this.ORDER.forEach(c => { const fs = d.faces[c]; if (fs.cur) (byKey[fs.cur + '|s'] = byKey[fs.cur + '|s'] || []).push(c); if (fs.plan) (byKey[fs.plan + '|p'] = byKey[fs.plan + '|p'] || []).push(c); });
+      const sit = Object.entries(byKey).map(([k, fcs]) => { const [a, p] = k.split('|'); return { text: `${A[a].label} ${fcs.map(c => this.faceShort(n, c)).join(', ')}`, sub: p === 'p' ? 'planejada' : 'presente', ...this.sw(a, p === 'p') }; });
+      Object.entries(d.whole).forEach(([a, v]) => { if (a === 'higido' && !d.hig) return; sit.push({ text: A[a].label, sub: v === 'planejado' ? 'planejado' : 'presente', ...this.sw(a, v === 'planejado') }); });
+      out.situation = sit; out.situationEmpty = sit.length === 0;
+      const hist = d.evs.slice().sort((a, b) => b.seq - a.seq).map(e => {
+        const corrBy = d.evs.find(x => x.replaces === e.id);
+        return { id: e.id, stLabel: SL[e.status], stBg: SC[e.status][0], stFg: SC[e.status][1],
+          ach: e.achado === 'ausente' && e.status === 'planejado' ? 'Extração' : e.achado === 'canal' ? 'Tratamento de canal' : A[e.achado].label,
+          facesLabel: e.faces.length ? 'faces ' + e.faces.map(c => this.faceShort(n, c)).join(', ') : 'dente inteiro',
+          author: e.author, date: e.date, note: e.note, hasNote: !!e.note, isCorrected: !!corrBy, corrBy: corrBy ? corrBy.id : '',
+          isCorrection: !!e.replaces, replaces: e.replaces || '', canCorrect: !corrBy && st.correcting !== e.id, composing: st.correcting === e.id,
+          cardBg: corrBy ? '#F8FAFB' : '#FFFFFF', cardBd: e.replaces ? '#B2DDFF' : st.correcting === e.id ? '#0F766E' : '#E1E8ED',
+          textColor: corrBy ? '#5B6E7C' : '#1F3240', deco: corrBy ? 'line-through' : 'none',
+          start: () => this.startCorrect(e), ...this.sw(e.achado, e.status === 'planejado') };
+      });
+      out.history = hist; out.histCount = hist.length === 1 ? '1 evento' : `${hist.length} eventos`; out.histEmpty = hist.length === 0;
+      if (st.correcting) {
+        const fScope = A[st.cAchado] && A[st.cAchado].scope === 'face';
+        Object.assign(out, {
+          cTools: Object.keys(A).map(a => ({ label: a === 'canal' ? 'Canal' : A[a].label, on: st.cAchado === a, off: st.cAchado !== a, click: () => this.setState({ cAchado: a }) })),
+          cFaceScope: fScope,
+          cFaceChips: this.ORDER.map(c => ({ label: this.faceShort(n, c), name: this.faceName(n, c), on: st.cFaces.includes(c), off: !st.cFaces.includes(c), click: () => this.setState(s => ({ cFaces: s.cFaces.includes(c) ? s.cFaces.filter(x => x !== c) : [...s.cFaces, c] })) })),
+          cStatuses: ['existente', 'planejado', 'realizado'].map(s => ({ label: SL[s], on: st.cStatus === s, off: st.cStatus !== s, click: () => this.setState({ cStatus: s }) })),
+          motivo: st.motivo, setMotivo: ev => this.setState({ motivo: ev.target.value }),
+          cancelCorrect: () => this.setState({ correcting: null, motivo: '' }), saveCorrect: () => this.saveCorrect()
+        });
+        out.canSave = st.motivo.trim().length >= 5 && (!fScope || st.cFaces.length > 0); out.cantSave = !out.canSave;
+      }
+    }
+    return out;
+  }
+}
+</script>
+</body>
+</html>

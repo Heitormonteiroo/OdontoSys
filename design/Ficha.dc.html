@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<div style="width:1440px;height:900px;display:flex;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <dc-import name="Sidebar" active="pacientes" hint-size="248px,900px" style="width:248px;height:900px;flex-shrink:0;"></dc-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+    <div style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:12px 32px;font-size:13px;color:#4A5D6B;background:#FFFFFF;border-bottom:1px solid #EEF2F5;">
+      <a href="#" style="color:#0F766E;text-decoration:none;font-weight:500;">Pacientes</a><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">chevron_right</span><span>{{ crumb }}</span>
+    </div>
+    <dc-import name="PatientHeader" variant="{{ headerVariant }}" hint-size="100%,150px" style="flex-shrink:0;"></dc-import>
+    <div role="tablist" style="flex-shrink:0;display:flex;gap:4px;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #E1E8ED;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+        <sc-if value="{{ t.active }}"><button role="tab" aria-selected="true" onClick="{{ t.go }}" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid #0F766E;color:#0B5B55;font:600 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">{{ t.icon }}</span>{{ t.label }}</button></sc-if>
+        <sc-if value="{{ t.idle }}"><button role="tab" aria-selected="false" onClick="{{ t.go }}" style="height:52px;padding:0 14px;border:none;background:transparent;border-bottom:3px solid transparent;color:#4A5D6B;font:500 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="color:#14232E;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">{{ t.icon }}</span>{{ t.label }}</button></sc-if>
+      </sc-for>
+    </div>
+    <main style="flex:1;min-height:0;overflow:auto;padding:24px 32px 40px;box-sizing:border-box;">
+
+      <sc-if value="{{ isLoading }}">
+        <div aria-busy="true" style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;">
+          <div style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:18px;">
+            <div style="display:flex;align-items:center;gap:10px;color:#4A5D6B;font-size:14px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">hourglass_top</span>Carregando ficha do paciente…</div>
+            <sc-for list="{{ skel }}" as="k" hint-placeholder-count="5"><div style="display:flex;gap:16px;align-items:center;"><div style="width:44px;height:16px;border-radius:5px;background:#E8EEF2;"></div><div style="flex:1;height:16px;border-radius:5px;background:#EEF2F5;"></div><div style="width:110px;height:26px;border-radius:999px;background:#EEF2F5;"></div></div></sc-for>
+          </div>
+          <div style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;height:260px;"></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showPlano }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start;">
+          <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;">
+              <div style="display:flex;flex-direction:column;gap:3px;"><h2 style="margin:0;font-size:18px;font-weight:700;">Plano de tratamento</h2><div style="font-size:13px;color:#4A5D6B;">Orçamento nº 0412 · criado em 23/09/2026 por Dra. Helena Prado</div></div>
+              <button style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">add</span>Adicionar procedimento</button>
+            </div>
+            <div style="margin:0 22px 14px;display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:10px;background:#FFFAEB;border:1px solid #FEDF89;color:#93370D;font-size:14px;line-height:1.45;">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;color:#B54708;">warning</span>
+              <span><strong>Gestante e anticoagulada.</strong> Procedimentos cirúrgicos e eletivos ficam bloqueados para aprovação até reavaliação médica.</span>
+            </div>
+            <div style="display:grid;grid-template-columns:64px minmax(0,1fr) 130px 110px 140px;gap:14px;padding:10px 22px;background:#F8FAFB;border-top:1px solid #E1E8ED;border-bottom:1px solid #E1E8ED;font-size:12px;font-weight:600;color:#4A5D6B;letter-spacing:0.04em;text-transform:uppercase;"><span>Dente</span><span>Procedimento</span><span>Dentista</span><span style="text-align:right;">Valor</span><span>Status</span></div>
+            <sc-for list="{{ plan }}" as="p" hint-placeholder-count="6">
+              <div style="display:grid;grid-template-columns:64px minmax(0,1fr) 130px 110px 140px;gap:14px;align-items:center;padding:14px 22px;border-bottom:1px solid #F2F5F7;font-size:14px;">
+                <span style="font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;">{{ p.tooth }}</span>
+                <div style="display:flex;flex-direction:column;gap:3px;"><span style="font-weight:600;font-size:15px;text-decoration:{{ p.deco }};color:{{ p.nameColor }};">{{ p.name }}</span><sc-if value="{{ p.note }}"><span style="font-size:13px;color:{{ p.noteColor }};display:flex;align-items:center;gap:4px;">{{ p.note }}</span></sc-if></div>
+                <span style="color:#3B4F5D;">{{ p.doc }}</span>
+                <span style="text-align:right;font-variant-numeric:tabular-nums;font-weight:500;color:{{ p.nameColor }};">{{ p.value }}</span>
+                <span><span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:{{ p.bg }};color:{{ p.fg }};font-size:13px;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:{{ p.fg }};"></span>{{ p.status }}</span></span>
+              </div>
+            </sc-for>
+          </section>
+          <aside style="display:flex;flex-direction:column;gap:16px;">
+            <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:20px;display:flex;flex-direction:column;gap:14px;">
+              <h2 style="margin:0;font-size:17px;font-weight:700;">Resumo do orçamento</h2>
+              <div style="display:flex;flex-direction:column;gap:10px;font-size:15px;font-variant-numeric:tabular-nums;">
+                <div style="display:flex;justify-content:space-between;"><span style="color:#4A5D6B;">Total do plano</span><span style="font-weight:600;">R$ 3.660,00</span></div>
+                <div style="display:flex;justify-content:space-between;"><span style="color:#4A5D6B;">Aprovado pelo paciente</span><span style="font-weight:600;">R$ 3.310,00</span></div>
+                <div style="display:flex;justify-content:space-between;"><span style="color:#4A5D6B;">Pago</span><span style="font-weight:600;color:#067647;">R$ 1.460,00</span></div>
+                <div style="height:1px;background:#E1E8ED;"></div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-weight:600;">Saldo a pagar</span><span style="font-weight:700;font-size:22px;">R$ 1.850,00</span></div>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:#ECFDF3;color:#05603A;font-size:13px;line-height:1.4;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">task_alt</span>Impresso e assinado à mão em 23/09/2026. Cópia digitalizada em Documentos.</div>
+              <button style="height:48px;border-radius:10px;border:none;background:#0F766E;color:#FFFFFF;font:600 15px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">print</span>Imprimir para assinatura</button>
+              <button style="height:44px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Registrar pagamento</button>
+            </section>
+          </aside>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ emptyPlano }}">
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:12px;padding:80px 24px;text-align:center;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:32px;line-height:1;font-weight:normal;">request_quote</span></div>
+          <div style="font-size:18px;font-weight:600;">Nenhum plano de tratamento ainda</div>
+          <div style="font-size:15px;color:#4A5D6B;max-width:460px;line-height:1.5;">Monte o plano a partir do odontograma. O orçamento é gerado automaticamente e impresso para assinatura.</div>
+          <div style="display:flex;gap:10px;margin-top:6px;">
+            <button style="height:44px;padding:0 16px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;">Abrir odontograma</button>
+            <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Criar plano de tratamento</button>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ showOdonto }}">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start;">
+          <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:22px;display:flex;flex-direction:column;gap:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><h2 style="margin:0;font-size:18px;font-weight:700;">Odontograma · dentição permanente</h2><span style="font-size:13px;color:#4A5D6B;">Clique em um dente para ver os procedimentos</span></div>
+            <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
+              <div style="display:flex;gap:6px;"><sc-for list="{{ upper }}" as="t" hint-placeholder-count="16">
+                <button onClick="{{ t.pick }}" aria-label="Dente {{ t.n }}" style="width:44px;height:58px;border-radius:10px 10px 8px 8px;border:{{ t.border }};background:{{ t.bg }};color:{{ t.fg }};font:600 14px Inter,sans-serif;box-shadow:{{ t.ring }};cursor:pointer;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;margin-right:{{ t.gap }};outline:none;" style-focus="outline:3px solid #99D5CE;outline-offset:2px;">{{ t.n }}</button>
+              </sc-for></div>
+              <div style="width:100%;max-width:820px;height:1px;background:#C9D4DC;"></div>
+              <div style="display:flex;gap:6px;"><sc-for list="{{ lower }}" as="t" hint-placeholder-count="16">
+                <button onClick="{{ t.pick }}" aria-label="Dente {{ t.n }}" style="width:44px;height:58px;border-radius:8px 8px 10px 10px;border:{{ t.border }};background:{{ t.bg }};color:{{ t.fg }};font:600 14px Inter,sans-serif;box-shadow:{{ t.ring }};cursor:pointer;display:flex;align-items:flex-start;justify-content:center;padding-top:6px;margin-right:{{ t.gap }};outline:none;" style-focus="outline:3px solid #99D5CE;outline-offset:2px;">{{ t.n }}</button>
+              </sc-for></div>
+            </div>
+            <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:#3B4F5D;padding-top:6px;border-top:1px solid #EEF2F5;">
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#ECFDF3;border:2px solid #067647;"></span>Concluído</span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#FFFAEB;border:2px solid #B54708;"></span>Em andamento</span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#E6F4F2;border:2px solid #0F766E;"></span>Aprovado</span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#EFF8FF;border:2px solid #175CD3;"></span>Proposto</span>
+              <span style="display:flex;align-items:center;gap:6px;"><span style="width:14px;height:14px;border-radius:4px;background:#F5F8FA;border:2px dashed #8A9BA8;"></span>Ausente</span>
+            </div>
+          </section>
+          <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="display:flex;align-items:baseline;gap:10px;"><h2 style="margin:0;font-size:22px;font-weight:700;">Dente {{ sel }}</h2><span style="font-size:13px;color:#4A5D6B;">{{ selName }}</span></div>
+            <sc-for list="{{ selProcs }}" as="p" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:6px;padding:12px;border-radius:10px;border:1px solid #E1E8ED;">
+                <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;"><span style="font-weight:600;font-size:15px;">{{ p.name }}</span><span style="display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:999px;background:{{ p.bg }};color:{{ p.fg }};font-size:12px;font-weight:600;white-space:nowrap;">{{ p.status }}</span></div>
+                <span style="font-size:13px;color:#4A5D6B;">{{ p.info }}</span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ selEmpty }}"><div style="font-size:14px;color:#4A5D6B;padding:8px 0;">Nenhum procedimento registrado neste dente.</div></sc-if>
+            <button style="height:44px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">add</span>Adicionar ao plano</button>
+          </section>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showDocs }}">
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;"><h2 style="margin:0;font-size:18px;font-weight:700;">Documentos</h2><button style="height:40px;padding:0 14px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">add</span>Novo documento</button></div>
+          <sc-for list="{{ docs }}" as="d" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:40px minmax(0,1fr) 150px 170px 220px 120px;gap:14px;align-items:center;padding:14px 22px;border-top:1px solid #F2F5F7;font-size:14px;">
+              <span style="width:40px;height:40px;border-radius:10px;background:#F0F3F5;color:#3B4F5D;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">{{ d.icon }}</span></span>
+              <div style="display:flex;flex-direction:column;gap:2px;"><span style="font-weight:600;font-size:15px;">{{ d.title }}</span><span style="font-size:13px;color:#4A5D6B;">{{ d.sub }}</span></div>
+              <span style="color:#3B4F5D;font-variant-numeric:tabular-nums;">{{ d.date }}</span>
+              <span style="color:#3B4F5D;">{{ d.author }}</span>
+              <span><span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;background:{{ d.bg }};color:{{ d.fg }};font-size:12px;font-weight:600;">{{ d.status }}</span></span>
+              <button style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 13px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;justify-self:end;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">print</span>Reimprimir</button>
+            </div>
+          </sc-for>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ showAnam }}">
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:22px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;flex-direction:column;gap:3px;"><h2 style="margin:0;font-size:18px;font-weight:700;">Anamnese</h2><span style="font-size:13px;color:#4A5D6B;">Preenchida pela paciente no tablet em 07/10/2026 às 08:58 · conferida por Patrícia Lima</span></div>
+            <div style="display:flex;gap:10px;">
+              <button style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">tablet</span>Enviar ao tablet</button>
+              <button style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">print</span>Imprimir para assinatura</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+            <sc-for list="{{ anam }}" as="q" hint-placeholder-count="10">
+              <div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:10px;background:{{ q.bg }};border:1px solid {{ q.bd }};">
+                <span style="font-size:13px;color:#4A5D6B;">{{ q.q }}</span>
+                <span style="font-size:15px;font-weight:600;color:{{ q.fg }};">{{ q.a }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+      </sc-if>
+
+      <sc-if value="{{ emptyOther }}">
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:64px 24px;text-align:center;font-size:15px;color:#4A5D6B;">Nenhum registro nesta aba ainda.</section>
+      </sc-if>
+
+      <sc-if value="{{ showLinha }}">
+        <div style="max-width:960px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <sc-for list="{{ typeFilters }}" as="f" hint-placeholder-count="5">
+                <sc-if value="{{ f.on }}"><button style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;cursor:pointer;">{{ f.label }}</button></sc-if>
+                <sc-if value="{{ f.off }}"><button style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 14px Inter,sans-serif;cursor:pointer;" style-hover="border-color:#8A9BA8;">{{ f.label }}</button></sc-if>
+              </sc-for>
+            </div>
+            <button style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="border-color:#0F766E;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">picture_as_pdf</span>Exportar prontuário em PDF</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#4A5D6B;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">lock</span>Entradas são permanentes e não podem ser editadas. Correções são feitas por adendo vinculado. Ordem: mais recentes primeiro.</div>
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="font-size:13px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;padding-top:6px;">{{ g.label }}</div>
+              <sc-for list="{{ g.entries }}" as="e" hint-placeholder-count="2">
+                <div style="position:relative;padding-left:36px;display:flex;flex-direction:column;gap:10px;">
+                  <div style="position:absolute;left:11px;top:0;bottom:-14px;width:2px;background:#E1E8ED;"></div>
+                  <div style="position:absolute;left:4px;top:20px;width:16px;height:16px;border-radius:50%;background:#FFFFFF;border:3px solid #0F766E;box-sizing:border-box;"></div>
+                  <article style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);overflow:hidden;">
+                    <div style="display:flex;align-items:center;gap:10px;padding:14px 18px 0;flex-wrap:wrap;">
+                      <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:7px;background:#F0F3F5;color:#14232E;font-size:13px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;color:#0F766E;">{{ e.icon }}</span>{{ e.type }}</span>
+                      <span style="font-size:14px;font-weight:600;">{{ e.author }}</span>
+                      <span style="font-size:14px;color:#4A5D6B;font-variant-numeric:tabular-nums;">{{ e.when }}</span>
+                      <span style="flex:1;"></span>
+                      <span title="Registro imutável: não pode ser editado nem excluído" style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 9px;border-radius:999px;border:1px solid #D5DEE4;color:#3B4F5D;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registro imutável · {{ e.id }}</span>
+                    </div>
+                    <p style="margin:0;padding:10px 18px 14px;font-size:15px;line-height:1.6;color:#1F3240;text-wrap:pretty;">{{ e.text }}</p>
+                    <sc-if value="{{ e.hasAdd }}">
+                      <div style="display:flex;align-items:center;gap:8px;margin:0 18px 12px;padding:8px 12px;border-radius:8px;background:#EFF8FF;color:#1849A9;font-size:13px;font-weight:500;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">south</span>Esta entrada possui {{ e.addLabel }} de correção logo abaixo. Leia em conjunto.</div>
+                    </sc-if>
+                    <div style="display:flex;align-items:center;gap:10px;padding:10px 18px;border-top:1px solid #F2F5F7;background:#FBFCFD;">
+                      <sc-if value="{{ e.tag }}"><span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;color:#3B4F5D;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;font-weight:normal;">print</span>{{ e.tag }}</span></sc-if>
+                      <span style="flex:1;"></span>
+                      <button onClick="{{ e.add }}" style="height:36px;padding:0 12px;border-radius:8px;border:1px solid transparent;background:transparent;color:#0F766E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-hover="background:#E6F4F2;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">add_comment</span>Adicionar adendo</button>
+                    </div>
+                  </article>
+                  <sc-for list="{{ e.addenda }}" as="a" hint-placeholder-count="0">
+                    <div style="display:flex;">
+                      <div style="width:28px;flex-shrink:0;margin-left:14px;"><div style="width:20px;height:30px;border-left:2px solid #84CAFF;border-bottom:2px solid #84CAFF;border-bottom-left-radius:10px;margin-top:-10px;"></div></div>
+                      <article style="flex:1;background:#F5FAFF;border:1px solid #B2DDFF;border-radius:12px;overflow:hidden;">
+                        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px 0;flex-wrap:wrap;">
+                          <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:7px;background:#175CD3;color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:0.03em;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">link</span>ADENDO</span>
+                          <span style="font-size:13px;color:#1849A9;font-weight:500;">Corrige {{ e.id }} de {{ e.when }}</span>
+                          <span style="flex:1;"></span>
+                          <span style="display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:999px;border:1px solid #B2DDFF;color:#1849A9;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registro imutável · {{ a.id }}</span>
+                        </div>
+                        <div style="padding:6px 16px 0;font-size:13px;color:#3B4F5D;"><strong style="color:#14232E;">{{ a.author }}</strong> · {{ a.when }}</div>
+                        <p style="margin:0;padding:8px 16px 14px;font-size:15px;line-height:1.6;color:#1F3240;">{{ a.text }}</p>
+                      </article>
+                    </div>
+                  </sc-for>
+                  <sc-if value="{{ e.composing }}">
+                    <div style="display:flex;">
+                      <div style="width:28px;flex-shrink:0;margin-left:14px;"><div style="width:20px;height:30px;border-left:2px dashed #0F766E;border-bottom:2px dashed #0F766E;border-bottom-left-radius:10px;margin-top:-10px;"></div></div>
+                      <div style="flex:1;background:#FFFFFF;border:2px solid #0F766E;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+                        <div style="font-size:15px;font-weight:700;">Novo adendo à entrada {{ e.id }}</div>
+                        <textarea defaultValue="{{ e.draft }}" placeholder="Descreva a correção ou complemento. A entrada original não será alterada." style="min-height:88px;padding:12px;border-radius:8px;border:1px solid #C9D4DC;font:400 15px/1.5 Inter,sans-serif;color:#14232E;resize:vertical;outline:none;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;"></textarea>
+                        <sc-if value="{{ e.composeErr }}">
+                          <div role="alert" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:10px;background:#FEF3F2;border:1px solid #FECDCA;color:#7A271A;font-size:14px;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">error</span><span><strong>O adendo não foi salvo.</strong> A conexão com o servidor falhou. Seu texto continua aqui — tente novamente.</span></div>
+                        </sc-if>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                          <span style="flex:1;font-size:13px;color:#4A5D6B;display:flex;align-items:center;gap:6px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">lock</span>Depois de salvo, o adendo também não poderá ser editado.</span>
+                          <button onClick="{{ cancelCompose }}" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Cancelar</button>
+                          <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ e.saveLabel }}</button>
+                        </div>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ emptyLinha }}">
+        <div style="max-width:960px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;justify-content:flex-end;"><button disabled="" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #E1E8ED;background:#F8FAFB;color:#8A9BA8;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">picture_as_pdf</span>Exportar prontuário em PDF</button></div>
+          <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:12px;padding:72px 24px;text-align:center;">
+            <div style="width:64px;height:64px;border-radius:50%;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:32px;line-height:1;font-weight:normal;">history_edu</span></div>
+            <div style="font-size:18px;font-weight:600;">Prontuário sem registros</div>
+            <div style="font-size:15px;color:#4A5D6B;max-width:480px;line-height:1.5;">Cada entrada é permanente: depois de salva não pode ser editada, apenas complementada por adendo.</div>
+            <button style="margin-top:6px;height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Registrar primeira evolução</button>
+          </section>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;vazio&quot;,&quot;carregando&quot;,&quot;erro&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;tab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;linha&quot;,&quot;odonto&quot;,&quot;plano&quot;,&quot;docs&quot;,&quot;anam&quot;],&quot;default&quot;:&quot;plano&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { tab: null, sel: 36, compose: undefined };
+  renderVals() {
+    const s = this.props.state ?? 'normal';
+    const tab = this.state.tab ?? this.props.tab ?? 'plano';
+    const isEmpty = s === 'vazio', isLoading = s === 'carregando', ok = s === 'normal' || s === 'erro';
+    const C = { 'Concluído': ['#ECFDF3', '#067647'], 'Em andamento': ['#FFFAEB', '#B54708'], 'Aprovado': ['#E6F4F2', '#0B5B55'], 'Proposto': ['#EFF8FF', '#175CD3'], 'Cancelado': ['#F0F3F5', '#4A5D6B'], 'Ausente': ['#F0F3F5', '#4A5D6B'] };
+    const T = [['linha', 'Linha do tempo', 'timeline'], ['odonto', 'Odontograma', 'dentistry'], ['plano', 'Plano e orçamento', 'request_quote'], ['docs', 'Documentos', 'description'], ['anam', 'Anamnese', 'assignment']];
+    const tabs = T.map(([id, label, icon]) => ({ label, icon, active: id === tab, idle: id !== tab, go: () => this.setState({ tab: id }) }));
+    const plan = [
+      ['26', 'Restauração em resina · 2 faces (MO)', 'Dra. Helena', 'R$ 280,00', 'Concluído', ''],
+      ['—', 'Profilaxia e raspagem', 'Dra. Helena', 'R$ 180,00', 'Concluído', ''],
+      ['36', 'Tratamento de canal · molar', 'Dra. Helena', 'R$ 1.200,00', 'Em andamento', 'Sessão 2 de 3 realizada hoje'],
+      ['36', 'Coroa metalocerâmica', 'Dra. Helena', 'R$ 1.650,00', 'Aprovado', 'Após conclusão do canal'],
+      ['18', 'Extração de siso', 'Dr. Marcos', 'R$ 350,00', 'Proposto', '⚠ Aprovação bloqueada: reavaliar após a gestação'],
+      ['11, 21', 'Clareamento de consultório', 'Dra. Helena', 'R$ 900,00', 'Cancelado', 'Contraindicado durante a gestação']
+    ].map(r => ({ tooth: r[0], name: r[1], doc: r[2], value: r[3], status: r[4], note: r[5], bg: C[r[4]][0], fg: C[r[4]][1],
+      deco: r[4] === 'Cancelado' ? 'line-through' : 'none', nameColor: r[4] === 'Cancelado' ? '#5B6E7C' : '#14232E', noteColor: r[5].startsWith('⚠') ? '#B54708' : '#4A5D6B' }));
+    const TS = { 26: 'Concluído', 46: 'Concluído', 17: 'Concluído', 36: 'Em andamento', 18: 'Proposto', 48: 'Ausente' };
+    const TP = {
+      36: [['Tratamento de canal · molar', 'Em andamento', 'Sessão 2 de 3 · 07/10/2026'], ['Coroa metalocerâmica', 'Aprovado', 'Após conclusão do canal']],
+      26: [['Restauração em resina · 2 faces (MO)', 'Concluído', '23/09/2026 · Dra. Helena']],
+      18: [['Extração de siso', 'Proposto', 'Reavaliar após a gestação']],
+      46: [['Restauração em amálgama', 'Concluído', 'Registro anterior · 2019']],
+      17: [['Restauração em resina · 1 face', 'Concluído', '2023 · Dr. Marcos']],
+      48: [['Dente ausente', 'Ausente', 'Extraído antes do primeiro atendimento']]
+    };
+    const sel = this.state.sel;
+    const tooth = (n, i) => {
+      const st = TS[n];
+      const map = { 'Concluído': ['#ECFDF3', '2px solid #067647', '#05603A'], 'Em andamento': ['#FFFAEB', '2px solid #B54708', '#93370D'], 'Proposto': ['#EFF8FF', '2px solid #175CD3', '#1849A9'], 'Ausente': ['#F5F8FA', '2px dashed #8A9BA8', '#5B6E7C'] };
+      const [bg, border, fg] = map[st] || ['#FFFFFF', '1px solid #C9D4DC', '#14232E'];
+      return { n, bg, border, fg, gap: i === 7 ? '18px' : '0', ring: n === sel ? '0 0 0 3px #FFFFFF, 0 0 0 6px #0F766E' : 'none', pick: () => this.setState({ sel: n }) };
+    };
+    const upper = [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28].map(tooth);
+    const lower = [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38].map(tooth);
+    const selProcs = (TP[sel] || []).map(p => ({ name: p[0], status: p[1], info: p[2], bg: C[p[1]][0], fg: C[p[1]][1] }));
+    const names = { 1: 'Incisivo central', 2: 'Incisivo lateral', 3: 'Canino', 4: '1º pré-molar', 5: '2º pré-molar', 6: '1º molar', 7: '2º molar', 8: '3º molar (siso)' };
+    const docs = [
+      ['prescriptions', 'Receita · Paracetamol 750 mg', 'Receita simples', '07/10/2026', 'Dra. Helena Prado', 'Impressa · assinar à mão', '#FFFAEB', '#B54708'],
+      ['badge', 'Atestado de comparecimento', 'Período: 08:50 às 10:00', '07/10/2026', 'Dra. Helena Prado', 'Assinado e digitalizado', '#ECFDF3', '#067647'],
+      ['assignment', 'Anamnese', 'Preenchida no tablet', '07/10/2026', 'Patrícia Lima', 'Assinada e digitalizada', '#ECFDF3', '#067647'],
+      ['contract', 'Termo de consentimento · Endodontia', 'Dente 36', '23/09/2026', 'Dra. Helena Prado', 'Assinado e digitalizado', '#ECFDF3', '#067647'],
+      ['request_quote', 'Orçamento nº 0412', '6 procedimentos', '23/09/2026', 'Patrícia Lima', 'Assinado e digitalizado', '#ECFDF3', '#067647']
+    ].map(r => ({ icon: r[0], title: r[1], sub: r[2], date: r[3], author: r[4], status: r[5], bg: r[6], fg: r[7] }));
+    const anam = [
+      ['Alergia a medicamentos?', 'Sim — Penicilina (urticária em 2018)', 1], ['Usa anticoagulante?', 'Sim — Enoxaparina 40 mg/dia', 1],
+      ['Está grávida?', 'Sim — 24 semanas', 1], ['Medicamentos em uso', 'Enoxaparina, ácido fólico, sulfato ferroso', 0],
+      ['Pressão arterial', '110/70 mmHg (aferida em 07/10)', 0], ['Diabetes', 'Não', 0],
+      ['Problemas cardíacos', 'Não', 0], ['Sangramento prolongado após cortes', 'Não', 0],
+      ['Alergia a látex', 'Não', 0], ['Fuma', 'Não', 0]
+    ].map(r => ({ q: r[0], a: r[1], bg: r[2] ? '#FEF3F2' : '#F8FAFB', bd: r[2] ? '#FECDCA' : '#EEF2F5', fg: r[2] ? '#B42318' : '#14232E' }));
+    const composeId = this.state.compose !== undefined ? this.state.compose : (s === 'erro' ? 'E-1043' : null);
+    const E = (id, type, icon, author, when, text, tag, addenda) => ({
+      id, type, icon, author, when, text, tag, addenda: addenda || [], hasAdd: !!(addenda && addenda.length),
+      addLabel: addenda && addenda.length === 1 ? '1 adendo' : `${(addenda || []).length} adendos`,
+      composing: composeId === id, composeErr: s === 'erro' && composeId === id,
+      draft: s === 'erro' && id === 'E-1043' ? 'Complemento: paciente orientada a retornar em 7 dias para a 3ª sessão. Evitar mastigar do lado esquerdo até a coroa definitiva.' : '',
+      saveLabel: s === 'erro' && composeId === id ? 'Tentar salvar novamente' : 'Salvar adendo',
+      add: () => this.setState({ compose: id })
+    });
+    const groups = [
+      { label: 'Hoje · 07/10/2026', entries: [
+        E('E-1045', 'Prescrição', 'prescriptions', 'Dra. Helena Prado · CRO-MS 4821', '07/10/2026 às 09:48', 'Paracetamol 750 mg — 1 comprimido via oral a cada 6 horas, se houver dor, por até 3 dias. Anti-inflamatórios evitados (gestação e uso de enoxaparina).', 'Receita impressa para assinatura à mão'),
+        E('E-1043', 'Evolução clínica', 'stethoscope', 'Dra. Helena Prado · CRO-MS 4821', '07/10/2026 às 09:24', 'Tratamento endodôntico do dente 36, sessão 2 de 3. Instrumentação dos canais MV, ML e D até lima 35. Medicação intracanal com hidróxido de cálcio e selamento provisório. Anestesia: lidocaína 2% com epinefrina 1:100.000, 1 tubete. Paciente sem queixas ao final.', '',
+          [{ id: 'A-1046', author: 'Dra. Helena Prado · CRO-MS 4821', when: '07/10/2026 às 09:52', text: 'Correção da quantidade de anestésico: foram utilizados 2 tubetes (72 mg de lidocaína), e não 1. Dose dentro do limite seguro para a paciente.' }]),
+        E('E-1041', 'Anamnese · atualização', 'assignment', 'Patrícia Lima · Recepção', '07/10/2026 às 09:02', 'Paciente informou gestação de 24 semanas e início de enoxaparina 40 mg/dia, prescrita pelo obstetra. Alertas críticos da ficha atualizados.', 'Anamnese assinada e digitalizada')] },
+      { label: '23/09/2026', entries: [
+        E('E-1027', 'Procedimento', 'dentistry', 'Dra. Helena Prado · CRO-MS 4821', '23/09/2026 às 10:30', 'Restauração em resina composta classe II no dente 26 (faces mesial e oclusal). Isolamento relativo. Ajuste oclusal realizado.', ''),
+        E('E-1026', 'Evolução clínica', 'stethoscope', 'Dra. Helena Prado · CRO-MS 4821', '23/09/2026 às 10:05', 'Abertura coronária e pulpectomia do dente 36 (sessão 1 de 3). Odontometria eletrônica. Curativo de demora e selamento provisório.', '')] }
+    ];
+    return {
+      tabs, isLoading, plan, upper, lower, sel, selProcs, selEmpty: selProcs.length === 0, selName: names[sel % 10] || '', docs, anam, groups,
+      showPlano: tab === 'plano' && ok, emptyPlano: tab === 'plano' && isEmpty,
+      showOdonto: tab === 'odonto' && ok, showDocs: tab === 'docs' && ok, showAnam: tab === 'anam' && ok,
+      showLinha: tab === 'linha' && ok, emptyLinha: tab === 'linha' && isEmpty,
+      emptyOther: isEmpty && !['plano', 'linha'].includes(tab), skel: [1, 2, 3, 4, 5],
+      headerVariant: isEmpty ? 'semAlertas' : isLoading ? 'carregando' : 'normal',
+      crumb: isEmpty ? 'Rafael Nunes Batista' : isLoading ? 'Carregando…' : 'Mariana Alves Costa',
+      typeFilters: ['Todos', 'Evoluções', 'Procedimentos', 'Prescrições', 'Anamnese', 'Adendos'].map((l, i) => ({ label: l, on: i === 0, off: i !== 0 })),
+      cancelCompose: () => this.setState({ compose: null })
+    };
+  }
+}
+</script>
+</body>
+</html>

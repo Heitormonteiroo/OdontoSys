@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background: #f5f8fa;
+  color: #14232e;
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ícones Material Symbols Rounded (mesma fonte do design) */
+.icon {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  white-space: nowrap;
+  display: inline-block;
+  user-select: none;
+  font-feature-settings: 'liga';
+}
+
+/* Foco: anel teal de 3 px */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px #99d5ce;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

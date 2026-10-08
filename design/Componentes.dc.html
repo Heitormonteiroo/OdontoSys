@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<div style="width:1440px;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;padding:48px;box-sizing:border-box;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;">
+  <div style="grid-column:1 / -1;display:flex;flex-direction:column;gap:6px;">
+    <h1 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.02em;">Componentes</h1>
+    <div style="font-size:15px;color:#4A5D6B;">Inter · teal #0F766E · neutros cinza-azulados · raio 8–14 px · alvo mínimo 44 px (desktop) e 48 px (tablet) · foco: anel teal de 3 px</div>
+  </div>
+
+  <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px;">
+    <h2 style="margin:0;font-size:18px;font-weight:700;">Botões</h2>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;" style-hover="background:#0B5B55;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">add</span>Primário</button>
+      <button style="height:44px;padding:0 18px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;" style-hover="background:#F5F8FA;">Secundário</button>
+      <button style="height:44px;padding:0 14px;border-radius:8px;border:none;background:transparent;color:#0F766E;font:600 14px Inter,sans-serif;cursor:pointer;" style-hover="background:#E6F4F2;">Terciário</button>
+      <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#B42318;color:#FFFFFF;font:600 14px Inter,sans-serif;cursor:pointer;">Destrutivo</button>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+      <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;box-shadow:0 0 0 3px #FFFFFF,0 0 0 6px #0F766E;">Com foco</button>
+      <button disabled="" style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#D5DEE4;color:#5B6E7C;font:600 14px Inter,sans-serif;">Desabilitado</button>
+      <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;opacity:0.85;"><span style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,255,255,.4);border-top-color:#FFFFFF;box-sizing:border-box;"></span>Salvando…</button>
+      <button style="height:56px;padding:0 24px;border-radius:12px;border:none;background:#0F766E;color:#FFFFFF;font:600 17px Inter,sans-serif;">Tablet · 56 px</button>
+    </div>
+  </section>
+
+  <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px;">
+    <h2 style="margin:0;font-size:18px;font-weight:700;">Campos</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;">Nome completo<input value="Mariana Alves Costa" style="height:44px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;font:400 15px Inter,sans-serif;color:#14232E;outline:none;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;">Telefone (foco)<input placeholder="(00) 00000-0000" style="height:44px;padding:0 12px;border-radius:8px;border:2px solid #0F766E;box-shadow:0 0 0 4px #CCE9E5;font:400 15px Inter,sans-serif;outline:none;"></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;">CPF<input value="412.735.890-1" style="height:44px;padding:0 12px;border-radius:8px;border:2px solid #D92D20;font:400 15px Inter,sans-serif;color:#14232E;outline:none;"><span style="font-weight:500;font-size:13px;color:#B42318;display:flex;gap:4px;align-items:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">error</span>CPF incompleto: falta 1 dígito.</span></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#5B6E7C;">Prontuário nº<input disabled="" value="00318" style="height:44px;padding:0 12px;border-radius:8px;border:1px solid #E1E8ED;background:#F5F8FA;font:400 15px Inter,sans-serif;color:#5B6E7C;"><span style="font-weight:400;font-size:13px;">Gerado automaticamente.</span></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;">Dentista<div style="height:44px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;display:flex;align-items:center;justify-content:space-between;font-weight:400;font-size:15px;">Dra. Helena Prado<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;color:#4A5D6B;">expand_more</span></div></label>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;">Busca<div style="height:44px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;display:flex;align-items:center;gap:8px;color:#5B6E7C;font-weight:400;font-size:15px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">search</span>Nome, CPF ou telefone</div></label>
+    </div>
+  </section>
+
+  <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px;">
+    <h2 style="margin:0;font-size:18px;font-weight:700;">Chips de status · tratamento</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:#EFF8FF;color:#175CD3;font-size:13px;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:#175CD3;"></span>Proposto</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:#E6F4F2;color:#0B5B55;font-size:13px;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:#0B5B55;"></span>Aprovado</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:#FFFAEB;color:#B54708;font-size:13px;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:#B54708;"></span>Em andamento</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:#ECFDF3;color:#067647;font-size:13px;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:#067647;"></span>Concluído</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:#F0F3F5;color:#4A5D6B;font-size:13px;font-weight:600;"><span style="width:7px;height:7px;border-radius:50%;background:#4A5D6B;"></span>Cancelado</span>
+    </div>
+    <h2 style="margin:0;font-size:15px;font-weight:700;color:#3B4F5D;">Agenda</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;background:#F0F3F5;color:#3B4F5D;font-size:13px;font-weight:600;">Agendado</span>
+      <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;background:#EFF8FF;color:#175CD3;font-size:13px;font-weight:600;">Confirmado</span>
+      <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;background:#FFFAEB;color:#B54708;font-size:13px;font-weight:600;">Aguardando</span>
+      <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;background:#E6F4F2;color:#0B5B55;font-size:13px;font-weight:600;">Em atendimento</span>
+      <span style="display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;background:#ECFDF3;color:#067647;font-size:13px;font-weight:600;">Concluído</span>
+    </div>
+    <h2 style="margin:0;font-size:15px;font-weight:700;color:#3B4F5D;">Alerta crítico · selo imutável · adendo</h2>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <span style="display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:14px;font-weight:600;">Alergia: Penicilina</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 9px;border-radius:999px;background:#FEF3F2;color:#B42318;border:1px solid #FECDCA;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>Anticoagulante</span>
+      <span style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 9px;border-radius:999px;border:1px solid #D5DEE4;color:#3B4F5D;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registro imutável · E-1043</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:7px;background:#175CD3;color:#FFFFFF;font-size:12px;font-weight:700;letter-spacing:0.03em;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">link</span>ADENDO</span>
+    </div>
+  </section>
+
+  <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:12px;">
+    <h2 style="margin:0 0 6px;font-size:18px;font-weight:700;">Alertas</h2>
+    <div role="alert" style="display:flex;gap:12px;padding:14px 16px;border-radius:10px;background:#FEF3F2;border:1px solid #FECDCA;color:#7A271A;font-size:14px;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">error</span><span><strong>Dose acima do máximo.</strong> Lidocaína 2%: 9 tubetes excedem o limite de 7 para 60 kg. Revise antes de imprimir.</span></div>
+    <div style="display:flex;gap:12px;padding:14px 16px;border-radius:10px;background:#FFFAEB;border:1px solid #FEDF89;color:#93370D;font-size:14px;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B54708;">warning</span><span><strong>Anamnese vencida.</strong> Última atualização há 14 meses.</span></div>
+    <div style="display:flex;gap:12px;padding:14px 16px;border-radius:10px;background:#ECFDF3;border:1px solid #ABEFC6;color:#05603A;font-size:14px;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#067647;">check_circle</span><span><strong>Adendo salvo.</strong> Vinculado à entrada E-1043.</span></div>
+    <div style="display:flex;gap:12px;padding:14px 16px;border-radius:10px;background:#EFF8FF;border:1px solid #B2DDFF;color:#1849A9;font-size:14px;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#175CD3;">info</span><span><strong>Documento para impressão.</strong> Assinatura feita à mão pelo paciente.</span></div>
+  </section>
+
+  <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px;">
+    <h2 style="margin:0;font-size:18px;font-weight:700;">Cartões</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px;border-radius:12px;border:1px solid #E1E8ED;box-shadow:0 1px 2px rgba(16,40,56,.05);">
+        <div style="width:44px;height:44px;border-radius:50%;background:#EEF2F5;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:#3B4F5D;">JR</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font-weight:600;font-size:15px;">João Pedro Ramos</span><span style="font-size:13px;color:#4A5D6B;">52 anos · (67) 98123-0915</span></div>
+        <span style="width:10px;height:10px;border-radius:50%;background:#B42318;" title="Possui alerta crítico"></span>
+      </div>
+      <button style="display:flex;align-items:center;gap:12px;padding:16px;border-radius:12px;border:1px solid #E1E8ED;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.05);text-align:left;font-family:Inter,sans-serif;cursor:pointer;" style-hover="border-color:#0F766E;">
+        <span style="width:44px;height:44px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">prescriptions</span></span>
+        <span style="display:flex;flex-direction:column;gap:2px;"><span style="font-weight:600;font-size:15px;color:#14232E;">Nova receita</span><span style="font-size:13px;color:#4A5D6B;">Atalho · R</span></span>
+      </button>
+    </div>
+    <h2 style="margin:6px 0 0;font-size:15px;font-weight:700;color:#3B4F5D;">Abas</h2>
+    <div style="display:flex;gap:4px;border-bottom:1px solid #E1E8ED;">
+      <span style="height:44px;padding:0 12px;border-bottom:3px solid #0F766E;color:#0B5B55;font-weight:600;font-size:14px;display:flex;align-items:center;">Ativa</span>
+      <span style="height:44px;padding:0 12px;border-bottom:3px solid transparent;color:#4A5D6B;font-weight:500;font-size:14px;display:flex;align-items:center;">Inativa</span>
+      <span style="height:44px;padding:0 12px;border-bottom:3px solid transparent;color:#4A5D6B;font-weight:500;font-size:14px;display:flex;align-items:center;box-shadow:inset 0 0 0 3px #99D5CE;border-radius:6px 6px 0 0;">Com foco</span>
+    </div>
+  </section>
+
+  <section style="grid-column:1 / -1;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;overflow:hidden;">
+    <div style="padding:20px 24px;"><h2 style="margin:0;font-size:18px;font-weight:700;">Tabela</h2></div>
+    <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 1fr 140px;gap:16px;padding:12px 24px;background:#F8FAFB;border-top:1px solid #E1E8ED;border-bottom:1px solid #E1E8ED;font-size:12px;font-weight:600;color:#4A5D6B;letter-spacing:0.04em;text-transform:uppercase;"><span>Paciente</span><span>CPF</span><span>Telefone</span><span>Último atendimento</span><span>Tratamento</span></div>
+    <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 1fr 140px;gap:16px;padding:14px 24px;border-bottom:1px solid #F2F5F7;font-size:14px;align-items:center;"><span style="font-weight:600;">Thiago Moreira Lins</span><span style="font-variant-numeric:tabular-nums;color:#3B4F5D;">671.290.334-58</span><span style="color:#3B4F5D;">(67) 99370-2248</span><span style="color:#3B4F5D;">Hoje, 08:40</span><span><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:#ECFDF3;color:#067647;font-size:12px;font-weight:600;">Concluído</span></span></div>
+    <div style="display:grid;grid-template-columns:minmax(0,2fr) 1fr 1fr 1fr 140px;gap:16px;padding:14px 24px;font-size:14px;align-items:center;background:#F8FAFB;box-shadow:inset 0 0 0 3px #99D5CE;"><span style="font-weight:600;">Renata Campos Duarte <span style="font-weight:400;color:#4A5D6B;">· linha com foco</span></span><span style="font-variant-numeric:tabular-nums;color:#3B4F5D;">356.071.248-65</span><span style="color:#3B4F5D;">(67) 99189-4402</span><span style="color:#3B4F5D;">30/09/2026</span><span><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:#FFFAEB;color:#B54708;font-size:12px;font-weight:600;">Em andamento</span></span></div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1480}}"></script>
+</body>
+</html>

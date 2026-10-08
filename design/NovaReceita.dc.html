@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+<style>a{color:#0F766E;} a:hover{color:#0B5B55;}</style>
+</helmet>
+<div style="width:1440px;height:100%;min-height:900px;display:flex;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <dc-import name="Sidebar" active="pacientes" hint-size="248px,100%" style="width:248px;height:100%;flex-shrink:0;"></dc-import>
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+    <div style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:12px 28px;font-size:13px;color:#4A5D6B;background:#FFFFFF;border-bottom:1px solid #EEF2F5;">
+      <a href="#" style="color:#0F766E;text-decoration:none;font-weight:500;">Pacientes</a><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">chevron_right</span><a href="#" style="color:#0F766E;text-decoration:none;font-weight:500;">{{ patName }}</a><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">chevron_right</span><span>Nova receita</span>
+    </div>
+    <main style="flex:1;min-height:0;overflow:auto;padding:22px 28px 32px;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.02em;">Nova receita</h1>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:{{ typeBg }};color:{{ typeFg }};font-size:13px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;font-weight:normal;">{{ typeIcon }}</span>{{ typeLabel }}</span>
+        <span style="flex:1;"></span>
+        <button style="height:44px;padding:0 16px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Cancelar</button>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:16px;padding:14px 18px;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#EEF2F5;color:#3B4F5D;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;flex-shrink:0;">{{ patIni }}</div>
+        <div style="display:flex;flex-direction:column;gap:3px;min-width:220px;">
+          <span style="font-size:16px;font-weight:700;">{{ patName }}</span>
+          <span style="font-size:13px;color:#4A5D6B;">{{ patInfo }}</span>
+        </div>
+        <div style="flex:1;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+          <sc-for list="{{ patAlerts }}" as="a" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:13px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>{{ a }}</span>
+          </sc-for>
+          <sc-if value="{{ noAlerts }}"><span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:#ECFDF3;color:#067647;font-size:13px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">check</span>Sem alertas críticos na anamnese</span></sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ toast }}">
+        <div role="status" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:#ECFDF3;border:1px solid #ABEFC6;color:#05603A;font-size:14px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#067647;">check_circle</span><span style="flex:1;">{{ toast }}</span><button aria-label="Fechar" onClick="{{ closeToast }}" style="width:32px;height:32px;border:none;border-radius:6px;background:transparent;color:#05603A;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">close</span></button></div>
+      </sc-if>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) 492px;gap:24px;align-items:start;">
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0;">
+
+          <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:20px;display:flex;flex-direction:column;gap:16px;">
+            <h2 style="margin:0;font-size:17px;font-weight:700;">1 · Medicamento</h2>
+            <sc-if value="{{ noDrugOrQuery }}">
+              <label style="display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border-radius:10px;border:2px solid #0F766E;box-shadow:0 0 0 4px #CCE9E5;background:#FFFFFF;box-sizing:border-box;">
+                <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#0F766E;">search</span>
+                <input value="{{ query }}" onChange="{{ setQuery }}" placeholder="Buscar por nome comercial ou princípio ativo" style="flex:1;border:none;outline:none;font:400 16px Inter,sans-serif;color:#14232E;background:transparent;">
+              </label>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <span style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;color:#B54708;font-variation-settings:'FILL' 1;">star</span>Favoritos</span>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                  <sc-for list="{{ favs }}" as="f" hint-placeholder-count="6">
+                    <button onClick="{{ f.pick }}" style="height:40px;padding:0 12px;border-radius:999px;border:1px solid {{ f.bd }};background:{{ f.bg }};color:#14232E;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="border-color:#0F766E;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ f.label }}
+                      <sc-if value="{{ f.tag }}"><span style="height:22px;padding:0 8px;border-radius:999px;background:{{ f.tagBg }};color:{{ f.tagFg }};font-size:11px;font-weight:700;display:flex;align-items:center;gap:3px;">{{ f.tag }}</span></sc-if>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-if value="{{ hasResults }}">
+                <div style="display:flex;flex-direction:column;border:1px solid #E1E8ED;border-radius:12px;overflow:hidden;">
+                  <div style="padding:8px 14px;background:#F8FAFB;font-size:12px;font-weight:600;color:#4A5D6B;border-bottom:1px solid #E1E8ED;">{{ resultsLabel }}</div>
+                  <sc-for list="{{ results }}" as="r" hint-placeholder-count="2">
+                    <button onClick="{{ r.pick }}" style="display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border:none;border-bottom:1px solid #F2F5F7;background:#FFFFFF;text-align:left;font-family:Inter,sans-serif;cursor:pointer;outline:none;" style-hover="background:#F5F8FA;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;">
+                      <span style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font-size:15px;font-weight:600;color:#14232E;">{{ r.name }}</span><span style="font-size:13px;color:#4A5D6B;">{{ r.sub }}</span></span>
+                      <sc-if value="{{ r.typeTag }}"><span style="height:24px;padding:0 9px;border-radius:999px;background:{{ r.typeBg }};color:{{ r.typeFg }};font-size:12px;font-weight:600;display:flex;align-items:center;">{{ r.typeTag }}</span></sc-if>
+                      <sc-if value="{{ r.flag }}"><span style="height:24px;padding:0 9px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>{{ r.flag }}</span></sc-if>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ noResults }}"><div style="padding:14px;border-radius:10px;background:#F8FAFB;font-size:14px;color:#4A5D6B;">Nenhum medicamento encontrado para “{{ query }}”. Confira a grafia ou busque pelo princípio ativo.</div></sc-if>
+            </sc-if>
+
+            <sc-if value="{{ hasDrug }}">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:#F8FAFB;border:1px solid #E1E8ED;">
+                <span style="width:44px;height:44px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">medication</span></span>
+                <div style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-size:17px;font-weight:700;">{{ drugName }}</span><span style="font-size:13px;color:#4A5D6B;">{{ drugCls }}</span></div>
+                <button onClick="{{ clearDrug }}" style="height:40px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 13px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">swap_horiz</span>Trocar</button>
+              </div>
+
+              <sc-if value="{{ allergy }}">
+                <div role="alert" style="display:flex;gap:14px;padding:16px 18px;border-radius:12px;background:#B42318;color:#FFFFFF;">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:30px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">dangerous</span>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                    <span style="font-size:16px;font-weight:700;letter-spacing:0.02em;">ALERGIA: NÃO PRESCREVER</span>
+                    <span style="font-size:14px;line-height:1.5;">{{ allergy }}</span>
+                    <div style="display:flex;gap:8px;margin-top:6px;">
+                      <button onClick="{{ clearDrug }}" style="height:40px;padding:0 14px;border-radius:8px;border:none;background:#FFFFFF;color:#B42318;font:700 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #FECDCA;">Escolher outro medicamento</button>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ caution }}">
+                <div style="display:flex;gap:12px;padding:14px 16px;border-radius:12px;background:#FFFAEB;border:1px solid #FEDF89;color:#93370D;font-size:14px;line-height:1.5;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B54708;">warning</span><span>{{ caution }}</span></div>
+              </sc-if>
+              <sc-if value="{{ isAntimicro }}">
+                <div style="display:flex;gap:12px;padding:12px 16px;border-radius:12px;background:#EFF8FF;border:1px solid #B2DDFF;color:#1849A9;font-size:14px;line-height:1.5;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#175CD3;">info</span><span><strong>Antimicrobiano.</strong> A receita sai em 2 vias (1ª via farmácia, 2ª via paciente) e vale por 10 dias a partir da emissão.</span></div>
+              </sc-if>
+
+              <sc-if value="{{ isControlled }}">
+                <div role="alert" style="display:flex;flex-direction:column;gap:14px;padding:18px 20px;border-radius:12px;background:#FFFAEB;border:2px solid #F79009;color:#7A2E0E;">
+                  <div style="display:flex;align-items:center;gap:12px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:30px;line-height:1;font-weight:normal;color:#B54708;font-variation-settings:'FILL' 1;">lock</span><span style="font-size:17px;font-weight:700;">Medicamento controlado: o sistema não gera esta receita</span></div>
+                  <span style="font-size:15px;line-height:1.55;">{{ controlledText }}</span>
+                  <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:1.45;">
+                    <span style="display:flex;gap:8px;"><strong style="width:20px;">1.</strong>Use o talão numerado de <strong>{{ controlledForm }}</strong>, emitido pela Vigilância Sanitária.</span>
+                    <span style="display:flex;gap:8px;"><strong style="width:20px;">2.</strong>Preencha e assine à mão. Não use impressão do sistema.</span>
+                    <span style="display:flex;gap:8px;"><strong style="width:20px;">3.</strong>Registre no prontuário o número da notificação utilizada.</span>
+                  </div>
+                  <sc-if value="{{ notRegistered }}">
+                    <div style="display:flex;gap:10px;align-items:flex-end;">
+                      <label style="flex:1;display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;">Nº da notificação (opcional)<input placeholder="Ex.: MS-B 0048213" style="height:44px;padding:0 12px;border-radius:8px;border:1px solid #FEC84B;background:#FFFFFF;font:400 15px Inter,sans-serif;color:#14232E;outline:none;" style-focus="border-color:#B54708;box-shadow:0 0 0 4px #FEF0C7;"></label>
+                      <button onClick="{{ registerControlled }}" style="height:44px;padding:0 16px;border-radius:8px;border:none;background:#B54708;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #FEDF89;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registrar no prontuário (sem PDF)</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ registered }}"><div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;background:#ECFDF3;color:#05603A;font-size:14px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">check_circle</span>Registrado no prontuário como prescrição em receituário especial.</div></sc-if>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ showPresentation }}">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <span style="font-size:14px;font-weight:600;">Forma farmacêutica</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <sc-for list="{{ forms }}" as="o" hint-placeholder-count="2">
+                      <sc-if value="{{ o.on }}"><button aria-pressed="true" onClick="{{ o.click }}" style="height:44px;padding:0 16px;border-radius:10px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ o.label }}</button></sc-if>
+                      <sc-if value="{{ o.off }}"><button aria-pressed="false" onClick="{{ o.click }}" style="height:44px;padding:0 16px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;outline:none;" style-hover="border-color:#8A9BA8;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ o.label }}</button></sc-if>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <span style="font-size:14px;font-weight:600;">Concentração</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <sc-for list="{{ concs }}" as="o" hint-placeholder-count="2">
+                      <sc-if value="{{ o.on }}"><button aria-pressed="true" onClick="{{ o.click }}" style="height:44px;padding:0 16px;border-radius:10px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ o.label }}</button></sc-if>
+                      <sc-if value="{{ o.off }}"><button aria-pressed="false" onClick="{{ o.click }}" style="height:44px;padding:0 16px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;outline:none;" style-hover="border-color:#8A9BA8;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ o.label }}</button></sc-if>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </sc-if>
+          </section>
+
+          <sc-if value="{{ showCalc }}">
+            <section style="background:#FFFFFF;border:{{ calcBd }};border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:20px;display:flex;flex-direction:column;gap:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                <h2 style="margin:0;font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#0F766E;">calculate</span>2 · Calculadora pediátrica</h2>
+                <span style="font-size:12px;color:#4A5D6B;">Obrigatória para menores de 12 anos</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;">
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;">Peso do paciente
+                  <div style="display:flex;align-items:center;height:48px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;overflow:hidden;"><input value="{{ peso }}" onChange="{{ setPeso }}" inputmode="decimal" style="flex:1;min-width:0;height:100%;padding:0 12px;border:none;outline:none;font:600 18px Inter,sans-serif;color:#14232E;font-variant-numeric:tabular-nums;"><span style="padding:0 12px;font-size:14px;color:#4A5D6B;font-weight:500;">kg</span></div>
+                  <span style="font-weight:400;font-size:12px;color:#4A5D6B;">Pesado hoje na recepção</span>
+                </label>
+                <label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;">Dose por kg
+                  <div style="display:flex;align-items:center;height:48px;border-radius:8px;border:{{ mgkgBd }};background:#FFFFFF;overflow:hidden;box-sizing:border-box;"><input value="{{ mgkg }}" onChange="{{ setMgkg }}" inputmode="decimal" style="flex:1;min-width:0;height:100%;padding:0 12px;border:none;outline:none;font:600 18px Inter,sans-serif;color:#14232E;font-variant-numeric:tabular-nums;"><span style="padding:0 12px;font-size:14px;color:#4A5D6B;font-weight:500;">mg/kg/dia</span></div>
+                  <span style="font-weight:400;font-size:12px;color:#4A5D6B;">Referência cadastrada: {{ refMgkg }} mg/kg/dia</span>
+                </label>
+                <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;">Concentração
+                  <div style="display:flex;align-items:center;height:48px;padding:0 12px;border-radius:8px;background:#F5F8FA;border:1px solid #E1E8ED;font-size:15px;font-weight:600;color:#3B4F5D;box-sizing:border-box;">{{ concLabel }}</div>
+                  <span style="font-weight:400;font-size:12px;color:#4A5D6B;">{{ freqHuman }} ({{ perDay }} doses/dia)</span>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px;padding:16px;border-radius:12px;background:{{ resBg }};">
+                <div style="display:flex;flex-direction:column;gap:2px;">
+                  <span style="font-size:12px;font-weight:700;letter-spacing:0.05em;color:{{ resFg }};">RESULTADO POR DOSE</span>
+                  <span style="font-size:40px;font-weight:700;letter-spacing:-0.02em;color:{{ resFg }};font-variant-numeric:tabular-nums;line-height:1.1;">{{ mlDose }} mL</span>
+                  <span style="font-size:14px;color:#3B4F5D;font-variant-numeric:tabular-nums;">= {{ mgDose }} mg por dose</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;justify-content:center;">
+                  <sc-for list="{{ limits }}" as="l" hint-placeholder-count="2">
+                    <div style="display:flex;flex-direction:column;gap:5px;">
+                      <div style="display:flex;justify-content:space-between;font-size:13px;font-variant-numeric:tabular-nums;"><span style="font-weight:600;color:#14232E;">{{ l.label }}</span><span style="color:{{ l.fg }};font-weight:{{ l.weight }};">{{ l.value }} de {{ l.max }} mg máx.</span></div>
+                      <div style="height:8px;border-radius:999px;background:#E1E8ED;overflow:hidden;"><div style="height:100%;width:{{ l.pct }};border-radius:999px;background:{{ l.bar }};"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-if value="{{ exceeded }}">
+                <div role="alert" style="display:flex;gap:14px;padding:16px 18px;border-radius:12px;background:#B42318;color:#FFFFFF;">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:30px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">dangerous</span>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                    <span style="font-size:16px;font-weight:700;letter-spacing:0.02em;">DOSE ACIMA DO MÁXIMO</span>
+                    <sc-for list="{{ exceedLines }}" as="x" hint-placeholder-count="2"><span style="font-size:14px;line-height:1.5;">{{ x }}</span></sc-for>
+                    <span style="font-size:14px;line-height:1.5;">A confirmação fica bloqueada até a dose ser ajustada.</span>
+                    <div style="display:flex;gap:8px;margin-top:6px;"><button onClick="{{ adjustMax }}" style="height:40px;padding:0 14px;border-radius:8px;border:none;background:#FFFFFF;color:#B42318;font:700 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #FECDCA;">Ajustar para {{ maxMgkg }} mg/kg/dia (dentro do limite)</button></div>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ needConfirm }}">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:2px dashed #0F766E;background:#F3FAF9;">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#0F766E;">verified_user</span>
+                  <span style="flex:1;font-size:14px;line-height:1.45;color:#0B3B37;"><strong>Confirmação obrigatória.</strong> Confira peso, dose e concentração antes de liberar a receita.</span>
+                  <button onClick="{{ confirm }}" style="height:48px;padding:0 18px;border-radius:10px;border:none;background:#0F766E;color:#FFFFFF;font:700 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">task_alt</span>Confirmo a dose de {{ mlDose }} mL</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ confirmBlocked }}">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;border:1px solid #E1E8ED;background:#F5F8FA;">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#5B6E7C;">lock</span>
+                  <span style="flex:1;font-size:14px;color:#3B4F5D;">Confirmação indisponível enquanto a dose exceder o máximo.</span>
+                  <button disabled="" style="height:48px;padding:0 18px;border-radius:10px;border:none;background:#D5DEE4;color:#5B6E7C;font:700 14px Inter,sans-serif;cursor:not-allowed;">Confirmar dose</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ confirmed }}">
+                <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;background:#ECFDF3;border:1px solid #ABEFC6;color:#05603A;">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">verified</span>
+                  <span style="flex:1;font-size:14px;line-height:1.45;"><strong>Dose confirmada</strong> por Dra. Helena Prado · CRO-MS 4821 · {{ confirmedAt }}</span>
+                  <button onClick="{{ unconfirm }}" style="height:40px;padding:0 12px;border-radius:8px;border:1px solid #ABEFC6;background:#FFFFFF;color:#05603A;font:600 13px Inter,sans-serif;cursor:pointer;">Desfazer</button>
+                </div>
+              </sc-if>
+            </section>
+          </sc-if>
+          <sc-if value="{{ pedsSolidHint }}">
+            <div style="display:flex;gap:12px;padding:12px 16px;border-radius:12px;background:#EFF8FF;border:1px solid #B2DDFF;color:#1849A9;font-size:14px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#175CD3;">info</span>Paciente pediátrico: escolha a forma líquida para usar a calculadora por peso.</div>
+          </sc-if>
+
+          <sc-if value="{{ showPoso }}">
+            <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);padding:20px;display:flex;flex-direction:column;gap:16px;">
+              <h2 style="margin:0;font-size:17px;font-weight:700;">{{ posoTitle }}</h2>
+              <div style="display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:20px;align-items:start;">
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <span style="font-size:13px;font-weight:600;">Quantidade por dose</span>
+                  <sc-if value="{{ qtyFromCalc }}"><div style="height:48px;padding:0 14px;border-radius:8px;background:#F5F8FA;border:1px solid #E1E8ED;display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;box-sizing:border-box;">{{ mlDose }} mL<span style="font-size:12px;font-weight:500;color:#4A5D6B;">da calculadora</span></div></sc-if>
+                  <sc-if value="{{ qtyManual }}">
+                    <div style="display:flex;align-items:center;height:48px;border-radius:8px;border:1px solid #C9D4DC;overflow:hidden;">
+                      <button aria-label="Diminuir" onClick="{{ qtyDown }}" style="width:44px;height:100%;border:none;background:#F5F8FA;color:#14232E;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">remove</span></button>
+                      <span style="min-width:110px;text-align:center;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;">{{ qtyLabel }}</span>
+                      <button aria-label="Aumentar" onClick="{{ qtyUp }}" style="width:44px;height:100%;border:none;background:#F5F8FA;color:#14232E;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">add</span></button>
+                    </div>
+                  </sc-if>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <span style="font-size:13px;font-weight:600;">Duração</span>
+                  <div style="display:flex;align-items:center;height:48px;border-radius:8px;border:1px solid #C9D4DC;overflow:hidden;">
+                    <button aria-label="Menos dias" onClick="{{ daysDown }}" style="width:44px;height:100%;border:none;background:#F5F8FA;color:#14232E;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">remove</span></button>
+                    <span style="min-width:80px;text-align:center;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;">{{ daysLabel }}</span>
+                    <button aria-label="Mais dias" onClick="{{ daysUp }}" style="width:44px;height:100%;border:none;background:#F5F8FA;color:#14232E;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">add</span></button>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <span style="font-size:13px;font-weight:600;">Uso</span>
+                  <button onClick="{{ togglePrn }}" aria-pressed="{{ prn }}" style="height:48px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:10px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+                    <span style="width:40px;height:24px;border-radius:999px;background:{{ prnTrack }};position:relative;flex-shrink:0;"><span style="position:absolute;top:3px;left:{{ prnKnob }};width:18px;height:18px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.2);"></span></span>Somente se houver dor
+                  </button>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <span style="font-size:13px;font-weight:600;">Frequência</span>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <sc-for list="{{ freqs }}" as="o" hint-placeholder-count="4">
+                    <sc-if value="{{ o.on }}"><button aria-pressed="true" onClick="{{ o.click }}" style="height:44px;padding:0 16px;border-radius:10px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ o.label }}</button></sc-if>
+                    <sc-if value="{{ o.off }}"><button aria-pressed="false" onClick="{{ o.click }}" style="height:44px;padding:0 16px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;outline:none;" style-hover="border-color:#8A9BA8;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ o.label }}</button></sc-if>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-radius:12px;background:#F8FAFB;border:1px solid #EEF2F5;">
+                <span style="font-size:12px;font-weight:700;color:#4A5D6B;letter-spacing:0.05em;">TEXTO NA RECEITA</span>
+                <span style="font-size:16px;line-height:1.5;color:#14232E;">{{ posoText }}</span>
+                <span style="font-size:14px;color:#3B4F5D;">Quantidade a dispensar: <strong>{{ totalLabel }}</strong></span>
+              </div>
+            </section>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;">
+            <button style="height:44px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">star</span>Salvar nos favoritos</button>
+            <span style="flex:1;"></span>
+            <sc-if value="{{ cantGen }}"><span style="font-size:13px;color:#4A5D6B;display:flex;align-items:center;gap:6px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">lock</span>{{ genReason }}</span><button disabled="" style="height:48px;padding:0 20px;border-radius:10px;border:none;background:#D5DEE4;color:#5B6E7C;font:700 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:not-allowed;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">print</span>{{ genLabel }}</button></sc-if>
+            <sc-if value="{{ canGen }}"><button onClick="{{ generate }}" style="height:48px;padding:0 20px;border-radius:10px;border:none;background:#0F766E;color:#FFFFFF;font:700 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">print</span>{{ genLabel }}</button></sc-if>
+          </div>
+        </div>
+
+        <aside style="position:sticky;top:0;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <h2 style="margin:0;font-size:15px;font-weight:700;">Prévia do PDF · A4</h2>
+            <span style="font-size:13px;color:#4A5D6B;">{{ pagesLabel }}</span>
+          </div>
+          <sc-if value="{{ previewEmpty }}">
+            <div style="width:492px;height:696px;box-sizing:border-box;border:2px dashed #C9D4DC;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#4A5D6B;text-align:center;padding:40px;">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:40px;line-height:1;font-weight:normal;">description</span>
+              <span style="font-size:15px;font-weight:600;color:#3B4F5D;">A prévia aparece quando você escolher um medicamento</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ previewBlocked }}">
+            <div style="width:492px;height:696px;box-sizing:border-box;border-radius:6px;background:repeating-linear-gradient(135deg,#FFFFFF 0 14px,#F8FAFB 14px 28px);border:1px solid #E1E8ED;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:48px;">
+              <span style="width:84px;height:84px;border-radius:50%;background:#FFFAEB;color:#B54708;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:44px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span></span>
+              <span style="font-size:20px;font-weight:700;">PDF não disponível</span>
+              <span style="font-size:15px;line-height:1.55;color:#3B4F5D;">{{ blockedPreviewText }}</span>
+            </div>
+          </sc-if>
+          <sc-for list="{{ pages }}" as="p" hint-placeholder-count="1">
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <sc-if value="{{ p.via }}"><span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.04em;">{{ p.via }}</span></sc-if>
+              <div style="position:relative;width:492px;height:696px;box-sizing:border-box;background:#FFFFFF;box-shadow:0 1px 3px rgba(16,40,56,.12),0 8px 24px rgba(16,40,56,.08);padding:36px 40px 28px;display:flex;flex-direction:column;gap:14px;font-family:Inter,sans-serif;color:#14232E;overflow:hidden;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:12px;border-bottom:1.5px solid #0F766E;">
+                  <div style="display:flex;flex-direction:column;gap:3px;">
+                    <span style="font-size:15px;font-weight:700;color:#0B5B55;">Odonto Ipê · Clínica Odontológica</span>
+                    <span style="font-size:8.5px;color:#3B4F5D;line-height:1.45;">Rua das Paineiras, 1220 · Jardim dos Estados · Campo Grande – MS · CEP 79020-000<br>(67) 3321-4400 · CNPJ 00.000.000/0001-00</span>
+                  </div>
+                  <sc-if value="{{ p.via }}"><span style="flex-shrink:0;padding:5px 8px;border:1.5px solid #14232E;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:0.03em;text-align:center;line-height:1.3;">{{ p.viaShort }}</span></sc-if>
+                </div>
+                <div style="text-align:center;font-size:12px;font-weight:700;letter-spacing:0.12em;">{{ docTitle }}</div>
+                <div style="display:flex;flex-direction:column;gap:4px;font-size:10px;line-height:1.5;">
+                  <span><strong>Paciente:</strong> {{ patName }}</span>
+                  <span>{{ patLine }}</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px;">
+                  <span style="font-size:10px;font-weight:700;text-decoration:underline;">Uso oral</span>
+                  <div style="display:flex;align-items:baseline;gap:6px;font-size:11px;font-weight:700;"><span>1.</span><span>{{ itemLine }}</span><span style="flex:1;border-bottom:1px dotted #8A9BA8;transform:translateY(-3px);"></span><span>{{ totalLabel }}</span></div>
+                  <span style="font-size:10.5px;line-height:1.55;padding-left:14px;">{{ posoText }}</span>
+                </div>
+                <div style="flex:1;"></div>
+                <span style="font-size:10px;text-align:right;">Campo Grande, 7 de outubro de 2026</span>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:26px;">
+                  <div style="width:240px;border-top:1px solid #14232E;"></div>
+                  <span style="font-size:10px;font-weight:700;">Dra. Helena Prado</span>
+                  <span style="font-size:9px;color:#3B4F5D;">Cirurgiã-dentista · CRO-MS 4821</span>
+                </div>
+                <sc-if value="{{ p.pharmacy }}">
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:8px;line-height:1.9;color:#3B4F5D;">
+                    <div style="border:1px solid #8A9BA8;border-radius:3px;padding:6px 8px;"><strong style="color:#14232E;">Identificação do comprador</strong><br>Nome: ____________________________<br>RG: ____________ Tel.: ____________<br>Endereço: _________________________</div>
+                    <div style="border:1px solid #8A9BA8;border-radius:3px;padding:6px 8px;"><strong style="color:#14232E;">Identificação do fornecedor</strong><br>Data: ___/___/______<br>Farmacêutico: _____________________<br>Assinatura: _______________________</div>
+                  </div>
+                </sc-if>
+                <div style="display:flex;justify-content:space-between;font-size:7.5px;color:#5B6E7C;border-top:1px solid #E1E8ED;padding-top:6px;"><span>{{ validity }}</span><span>Gerado em 07/10/2026 · assinar à mão</span></div>
+                <sc-if value="{{ watermark }}"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;"><span style="transform:rotate(-30deg);font-size:30px;font-weight:800;letter-spacing:0.06em;color:rgba(180,35,24,.22);border:4px solid rgba(180,35,24,.22);padding:8px 18px;border-radius:8px;white-space:nowrap;">{{ watermark }}</span></div></sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:1100},&quot;cenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;inicial&quot;,&quot;simples&quot;,&quot;alergia&quot;,&quot;antimicrobiano&quot;,&quot;excedido&quot;,&quot;controlado&quot;],&quot;default&quot;:&quot;simples&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  FREQ = [['6/6h', 4, 'a cada 6 horas'], ['8/8h', 3, 'a cada 8 horas'], ['12/12h', 2, 'a cada 12 horas'], ['1x ao dia', 1, 'uma vez ao dia']];
+  CP = ['comprimido', 'comprimidos'];
+  CA = ['cápsula', 'cápsulas'];
+  ML = ['mL', 'mL'];
+  DB = {
+    paracetamol: { name: 'Paracetamol', cls: 'Analgésico e antitérmico', type: 'simples', forms: [{ f: 'Comprimido', u: this.CP, concs: [{ c: '500 mg' }, { c: '750 mg' }] }, { f: 'Solução oral (gotas)', u: this.ML, liquid: true, concs: [{ c: '200 mg/mL', mgml: 200, pkg: 15 }] }], def: { qty: 1, freq: '6/6h', dias: 3, prn: true }, peds: { mgkg: 60, maxDose: 750, maxDia: 3000 } },
+    dipirona: { name: 'Dipirona sódica', cls: 'Analgésico e antitérmico', type: 'simples', forms: [{ f: 'Comprimido', u: this.CP, concs: [{ c: '500 mg' }, { c: '1 g' }] }, { f: 'Solução oral (gotas)', u: this.ML, liquid: true, concs: [{ c: '500 mg/mL', mgml: 500, pkg: 20 }] }], def: { qty: 1, freq: '6/6h', dias: 2, prn: true }, peds: { mgkg: 60, maxDose: 1000, maxDia: 4000 } },
+    ibuprofeno: { name: 'Ibuprofeno', cls: 'Anti-inflamatório não esteroide', type: 'simples', caution: ['gestante', 'anticoag'], forms: [{ f: 'Comprimido', u: this.CP, concs: [{ c: '400 mg' }, { c: '600 mg' }] }, { f: 'Suspensão oral', u: this.ML, liquid: true, concs: [{ c: '100 mg/5 mL', mgml: 20, pkg: 100 }] }], def: { qty: 1, freq: '8/8h', dias: 3, prn: true }, peds: { mgkg: 30, maxDose: 400, maxDia: 1200 } },
+    amoxicilina: { name: 'Amoxicilina', cls: 'Antibiótico · penicilina', type: 'antimicrobiano', group: 'penicilina', forms: [{ f: 'Cápsula', u: this.CA, concs: [{ c: '500 mg' }] }, { f: 'Suspensão oral', u: this.ML, liquid: true, concs: [{ c: '250 mg/5 mL', mgml: 50, pkg: 150 }, { c: '500 mg/5 mL', mgml: 100, pkg: 150 }] }], def: { qty: 1, freq: '8/8h', dias: 7, prn: false }, peds: { mgkg: 50, maxDose: 500, maxDia: 1500 } },
+    amoxiclav: { name: 'Amoxicilina + clavulanato de potássio', cls: 'Antibiótico · penicilina', type: 'antimicrobiano', group: 'penicilina', forms: [{ f: 'Comprimido', u: this.CP, concs: [{ c: '875 mg + 125 mg' }] }, { f: 'Suspensão oral', u: this.ML, liquid: true, concs: [{ c: '400 mg + 57 mg/5 mL', mgml: 80, pkg: 70 }] }], def: { qty: 1, freq: '12/12h', dias: 7, prn: false }, peds: { mgkg: 45, maxDose: 875, maxDia: 1750 } },
+    azitromicina: { name: 'Azitromicina', cls: 'Antibiótico · macrolídeo', type: 'antimicrobiano', forms: [{ f: 'Comprimido', u: this.CP, concs: [{ c: '500 mg' }] }, { f: 'Suspensão oral', u: this.ML, liquid: true, concs: [{ c: '200 mg/5 mL', mgml: 40, pkg: 15 }] }], def: { qty: 1, freq: '1x ao dia', dias: 3, prn: false }, peds: { mgkg: 10, maxDose: 500, maxDia: 500 } },
+    clindamicina: { name: 'Clindamicina', cls: 'Antibiótico · lincosamida', type: 'antimicrobiano', forms: [{ f: 'Cápsula', u: this.CA, concs: [{ c: '300 mg' }] }], def: { qty: 1, freq: '6/6h', dias: 7, prn: false } },
+    clorexidina: { name: 'Digliconato de clorexidina', cls: 'Antisséptico bucal', type: 'simples', verb: 'Bochechar', mid: ' durante 1 minuto', after: ' Não engolir.', forms: [{ f: 'Solução para bochecho', u: this.ML, concs: [{ c: '0,12%', pkg: 250 }], bottle: true }], def: { qty: 15, freq: '12/12h', dias: 7, prn: false } },
+    diazepam: { name: 'Diazepam', cls: 'Ansiolítico · benzodiazepínico', type: 'controlado', list: 'B1', form: 'Notificação de Receita B (azul)', forms: [{ f: 'Comprimido', u: this.CP, concs: [{ c: '5 mg' }, { c: '10 mg' }] }], def: { qty: 1, freq: '1x ao dia', dias: 1, prn: false } }
+  };
+  FAV = [['paracetamol', 0, 1], ['dipirona', 0, 1], ['amoxicilina', 0, 0], ['ibuprofeno', 0, 1], ['clorexidina', 0, 0], ['azitromicina', 0, 0]];
+  PAT = {
+    mariana: { name: 'Mariana Alves Costa', ini: 'MC', info: '34 anos · Prontuário nº 00318', line: '34 anos · Sexo: F · CPF 412.735.890-12', alerts: ['Alergia: Penicilina', 'Anticoagulante: Enoxaparina', 'Gestante · 24 semanas'], groups: ['penicilina'], cautions: ['gestante', 'anticoag'] },
+    ana: { name: 'Ana Beatriz Souza', ini: 'AS', info: '8 anos · 26 kg · Responsável: Cláudia Souza', line: '8 anos · 26 kg · Sexo: F · Responsável: Cláudia Souza', peds: true, alerts: [], groups: [], cautions: [] },
+    thiago: { name: 'Thiago Moreira Lins', ini: 'TL', info: '29 anos · Prontuário nº 00412', line: '29 anos · Sexo: M · CPF 671.290.334-58', alerts: [], groups: [], cautions: [] }
+  };
+  state = this.init();
+
+  init() {
+    const c = (this.props && this.props.cenario) || 'simples';
+    const s = { pat: 'mariana', drug: null, form: 0, conc: 0, qty: 1, freq: '6/6h', dias: 3, prn: false, query: '', peso: '26', mgkg: '50', confirmed: false, toast: null, registered: false };
+    const pick = (id, f, k, extra) => { const d = this.DB[id].def; Object.assign(s, { drug: id, form: f, conc: k, qty: d.qty, freq: d.freq, dias: d.dias, prn: d.prn }, extra || {}); };
+    if (c === 'inicial') s.query = 'amo';
+    if (c === 'simples') pick('paracetamol', 0, 1);
+    if (c === 'alergia') pick('amoxicilina', 0, 0);
+    if (c === 'antimicrobiano') { s.pat = 'ana'; pick('amoxicilina', 1, 0, { confirmed: true }); }
+    if (c === 'excedido') { s.pat = 'ana'; pick('amoxicilina', 1, 0, { mgkg: '90' }); }
+    if (c === 'controlado') { s.pat = 'thiago'; pick('diazepam', 0, 0); }
+    return s;
+  }
+  norm(t) { return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  fmt(n, d = 1) { return n.toLocaleString('pt-BR', { maximumFractionDigits: d }); }
+  selectDrug(id, f, k) {
+    const D = this.DB[id], p = this.PAT[this.state.pat];
+    let form = f ?? 0;
+    if (p.peds && f === undefined) { const li = D.forms.findIndex(x => x.liquid); if (li >= 0) form = li; }
+    if (p.peds && f !== undefined) { const li = D.forms.findIndex(x => x.liquid); if (li >= 0) form = li; }
+    this.setState({ drug: id, form, conc: f === undefined || form !== f ? 0 : (k ?? 0), qty: D.def.qty, freq: D.def.freq, dias: D.def.dias, prn: D.def.prn, query: '', confirmed: false, registered: false, mgkg: String(D.peds ? D.peds.mgkg : 50) });
+  }
+  num(v) { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? 0 : n; }
+
+  renderVals() {
+    const st = this.state, P = this.PAT[st.pat], D = st.drug ? this.DB[st.drug] : null;
+    const out = {
+      patName: P.name, patIni: P.ini, patInfo: P.info, patLine: P.line, patAlerts: P.alerts, noAlerts: P.alerts.length === 0,
+      query: st.query, setQuery: e => this.setState({ query: e.target.value }), toast: st.toast || '', closeToast: () => this.setState({ toast: null }),
+      hasDrug: !!D, noDrugOrQuery: !D, clearDrug: () => this.setState({ drug: null, query: '', confirmed: false }),
+      pages: [], previewEmpty: !D, previewBlocked: false
+    };
+    const flagOf = d => d.group && P.groups.includes(d.group) ? ['Alergia', '#B42318', '#FFFFFF'] : d.caution && d.caution.some(x => P.cautions.includes(x)) ? ['Atenção', '#FEF0C7', '#93370D'] : d.type === 'controlado' ? ['Controlado', '#FEF0C7', '#93370D'] : null;
+    out.favs = this.FAV.map(([id, f, k]) => { const d = this.DB[id], fl = flagOf(d); return { label: `${d.name.split(' ')[0] === 'Digliconato' ? 'Clorexidina' : d.name.split(' sódica')[0]} ${d.forms[f].concs[k].c}`, tag: fl ? fl[0] : '', tagBg: fl ? fl[1] : '', tagFg: fl ? fl[2] : '', bg: fl && fl[0] === 'Alergia' ? '#FEF3F2' : '#FFFFFF', bd: fl && fl[0] === 'Alergia' ? '#FECDCA' : '#C9D4DC', pick: () => this.selectDrug(id, f, k) }; });
+    const q = this.norm(st.query.trim());
+    const res = q ? Object.keys(this.DB).filter(id => this.norm(this.DB[id].name + ' ' + this.DB[id].cls).includes(q)) : [];
+    out.results = res.map(id => { const d = this.DB[id], al = d.group && P.groups.includes(d.group); return { name: d.name, sub: `${d.cls} · ${d.forms.map(f => f.f.toLowerCase()).join(', ')}`, typeTag: d.type === 'antimicrobiano' ? 'Antimicrobiano' : d.type === 'controlado' ? `Controlado · ${d.list}` : '', typeBg: d.type === 'controlado' ? '#FEF0C7' : '#EFF8FF', typeFg: d.type === 'controlado' ? '#93370D' : '#175CD3', flag: al ? 'Alergia da paciente' : '', pick: () => this.selectDrug(id) }; });
+    out.hasResults = res.length > 0; out.noResults = !!q && res.length === 0;
+    out.resultsLabel = `${res.length} resultado${res.length === 1 ? '' : 's'} para “${st.query}”`;
+
+    const T = { simples: ['Receita simples', '#F0F3F5', '#3B4F5D', 'description'], antimicrobiano: ['Antimicrobiano · 2 vias', '#EFF8FF', '#175CD3', 'content_copy'], controlado: ['Controlado · receituário especial', '#FEF0C7', '#93370D', 'lock'] };
+    const t = D ? T[D.type] : ['Tipo definido pelo medicamento', '#F0F3F5', '#4A5D6B', 'help'];
+    Object.assign(out, { typeLabel: t[0], typeBg: t[1], typeFg: t[2], typeIcon: t[3] });
+    if (!D) { Object.assign(out, { cantGen: true, canGen: false, genReason: 'Escolha um medicamento', genLabel: 'Gerar PDF e imprimir', pagesLabel: '' }); return out; }
+
+    const F = D.forms[st.form], C = F.concs[st.conc];
+    const allergy = D.group && P.groups.includes(D.group) ? `${P.name.split(' ')[0]} tem alergia registrada a penicilina. ${D.name} é uma penicilina e pode causar reação grave.` : '';
+    const cautionHit = D.caution && D.caution.filter(x => P.cautions.includes(x));
+    const isCtrl = D.type === 'controlado';
+    Object.assign(out, {
+      drugName: D.name, drugCls: D.cls, allergy, isAntimicro: D.type === 'antimicrobiano' && !allergy, isControlled: isCtrl,
+      caution: cautionHit && cautionHit.length ? 'Atenção: anti-inflamatórios devem ser evitados em gestantes e em pacientes que usam anticoagulante. Considere paracetamol.' : '',
+      controlledText: isCtrl ? `${D.name} pertence à lista ${D.list} da Portaria SVS/MS nº 344/98 e exige ${D.form}. Este sistema não emite receituário especial.` : '',
+      controlledForm: D.form || '', notRegistered: isCtrl && !st.registered, registered: isCtrl && st.registered,
+      registerControlled: () => this.setState({ registered: true, toast: 'Prescrição em receituário especial registrada no prontuário (registro imutável).' }),
+      showPresentation: !isCtrl && !allergy,
+      forms: D.forms.map((f, i) => ({ label: f.f, on: st.form === i, off: st.form !== i, click: () => this.setState({ form: i, conc: 0, confirmed: false, qty: f.liquid ? 5 : D.def.qty }) })),
+      concs: F.concs.map((c, i) => ({ label: c.c, on: st.conc === i, off: st.conc !== i, click: () => this.setState({ conc: i, confirmed: false }) }))
+    });
+
+    const fr = this.FREQ.find(x => x[0] === st.freq) || this.FREQ[0];
+    const calc = !!(P.peds && F.liquid && D.peds && !allergy && !isCtrl);
+    out.showCalc = calc; out.pedsSolidHint = !!(P.peds && !F.liquid && !isCtrl && !allergy);
+    let mlDose = st.qty, exceeded = false;
+    if (calc) {
+      const peso = this.num(st.peso), mgkg = this.num(st.mgkg), mgDia = peso * mgkg, mgDose = mgDia / fr[1];
+      mlDose = Math.round(mgDose / C.mgml * 10) / 10;
+      const exD = mgDose > D.peds.maxDose, exA = mgDia > D.peds.maxDia; exceeded = exD || exA;
+      const maxMgkg = Math.floor(Math.min(D.peds.maxDose * fr[1], D.peds.maxDia) / peso);
+      const lim = (label, v, max, ex) => ({ label, value: this.fmt(v, 0), max: this.fmt(max, 0), pct: Math.min(100, v / max * 100) + '%', bar: ex ? '#D92D20' : v / max > 0.85 ? '#F79009' : '#0F766E', fg: ex ? '#B42318' : '#3B4F5D', weight: ex ? 700 : 500 });
+      const reset = { confirmed: false };
+      Object.assign(out, {
+        peso: st.peso, mgkg: st.mgkg, refMgkg: D.peds.mgkg, concLabel: C.c, freqHuman: fr[2].replace(/^a cada/, 'A cada').replace(/^uma/, 'Uma'), perDay: fr[1],
+        setPeso: e => this.setState({ peso: e.target.value, ...reset }), setMgkg: e => this.setState({ mgkg: e.target.value, ...reset }),
+        mlDose: this.fmt(mlDose), mgDose: this.fmt(mgDose, 0), exceeded,
+        limits: [lim('Por dose', mgDose, D.peds.maxDose, exD), lim('Por dia', mgDia, D.peds.maxDia, exA)],
+        exceedLines: [exD ? `${this.fmt(mgDose, 0)} mg por dose excede o máximo de ${this.fmt(D.peds.maxDose, 0)} mg.` : '', exA ? `${this.fmt(mgDia, 0)} mg por dia excede o máximo de ${this.fmt(D.peds.maxDia, 0)} mg.` : ''].filter(Boolean),
+        maxMgkg, adjustMax: () => this.setState({ mgkg: String(maxMgkg), confirmed: false }),
+        resBg: exceeded ? '#FEF3F2' : st.confirmed ? '#ECFDF3' : '#F3FAF9', resFg: exceeded ? '#B42318' : '#0B5B55',
+        calcBd: exceeded ? '2px solid #D92D20' : '1px solid #E1E8ED', mgkgBd: exceeded ? '2px solid #D92D20' : '1px solid #C9D4DC',
+        needConfirm: !exceeded && !st.confirmed, confirmBlocked: exceeded, confirmed: !exceeded && st.confirmed,
+        confirmedAt: '07/10/2026 às 10:14', confirm: () => this.setState({ confirmed: true }), unconfirm: () => this.setState({ confirmed: false })
+      });
+    } else out.mlDose = this.fmt(st.qty);
+
+    const u = F.u, qtyLabel = calc ? `${this.fmt(mlDose)} mL` : `${this.fmt(st.qty)} ${st.qty === 1 ? u[0] : u[1]}`;
+    const verb = D.verb || (P.peds ? 'Dar' : 'Tomar');
+    const posoText = `${verb} ${qtyLabel}${D.verb ? D.mid || '' : ' por via oral'} ${fr[2]}, por ${st.dias} dia${st.dias > 1 ? 's' : ''}${st.prn ? ', se houver dor' : ''}.${D.after || ''}`;
+    let totalLabel;
+    if (F.liquid || F.bottle) { const tot = mlDose * fr[1] * st.dias, pkg = C.pkg, n = Math.max(1, Math.ceil(tot / pkg)); totalLabel = `${n} frasco${n > 1 ? 's' : ''} de ${pkg} mL`; }
+    else { const tot = st.qty * fr[1] * st.dias; totalLabel = `${tot} ${tot === 1 ? u[0] : u[1]}`; }
+    const step = F.liquid || F.bottle ? 5 : 1;
+    Object.assign(out, {
+      showPoso: !isCtrl && !allergy, posoTitle: calc ? '3 · Posologia e duração' : '2 · Posologia e duração',
+      qtyFromCalc: calc, qtyManual: !calc, qtyLabel,
+      qtyUp: () => this.setState({ qty: st.qty + step }), qtyDown: () => this.setState({ qty: Math.max(step, st.qty - step) }),
+      daysLabel: `${st.dias} dia${st.dias > 1 ? 's' : ''}`, daysUp: () => this.setState({ dias: Math.min(30, st.dias + 1), confirmed: calc ? st.confirmed : false }), daysDown: () => this.setState({ dias: Math.max(1, st.dias - 1) }),
+      prn: st.prn, togglePrn: () => this.setState({ prn: !st.prn }), prnTrack: st.prn ? '#0F766E' : '#C9D4DC', prnKnob: st.prn ? '19px' : '3px',
+      freqs: this.FREQ.map(f => ({ label: f[0], on: st.freq === f[0], off: st.freq !== f[0], click: () => this.setState({ freq: f[0], confirmed: false }) })),
+      posoText, totalLabel, itemLine: `${D.name} ${C.c} — ${F.f.toLowerCase()}`
+    });
+
+    const anti = D.type === 'antimicrobiano';
+    let reason = '';
+    if (allergy) reason = 'Bloqueado: alergia da paciente';
+    else if (isCtrl) reason = 'Exige receituário especial';
+    else if (calc && exceeded) reason = 'Dose acima do máximo';
+    else if (calc && !st.confirmed) reason = 'Confirme a dose na calculadora';
+    Object.assign(out, {
+      canGen: !reason, cantGen: !!reason, genReason: reason, genLabel: anti ? 'Gerar PDF (2 vias) e imprimir' : 'Gerar PDF e imprimir',
+      generate: () => this.setState({ toast: `PDF gerado e registrado no prontuário${anti ? ' (2 vias)' : ''}. Imprima, assine à mão e entregue ao paciente.` }),
+      docTitle: anti ? 'RECEITA DE ANTIMICROBIANO' : 'RECEITUÁRIO', validity: anti ? 'Validade: 10 dias a partir da data de emissão' : 'Receita simples',
+      previewEmpty: false, previewBlocked: isCtrl || !!allergy,
+      blockedPreviewText: isCtrl ? `${D.name} exige ${D.form}, preenchida à mão em talão próprio. Nenhum PDF é gerado para medicamentos controlados.` : 'A receita não pode ser gerada porque o medicamento escolhido conflita com uma alergia registrada.'
+    });
+    const wm = calc && exceeded ? 'DOSE ACIMA DO MÁXIMO' : calc && !st.confirmed ? 'PRÉVIA · DOSE NÃO CONFIRMADA' : '';
+    out.pages = out.previewBlocked ? [] : anti
+      ? [{ via: '1ª VIA · FARMÁCIA (retenção)', viaShort: '1ª VIA\nFARMÁCIA', pharmacy: true, watermark: wm }, { via: '2ª VIA · PACIENTE', viaShort: '2ª VIA\nPACIENTE', pharmacy: false, watermark: wm }]
+      : [{ via: '', viaShort: '', pharmacy: false, watermark: wm }];
+    out.pages.forEach(p => { p.viaShort = p.viaShort.replace('\n', ' · '); p.watermark = wm; });
+    out.pagesLabel = out.previewBlocked ? 'Bloqueada' : anti ? '2 páginas · 1 por via' : '1 página';
+    return out;
+  }
+}
+</script>
+</body>
+</html>

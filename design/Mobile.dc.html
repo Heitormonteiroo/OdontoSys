@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+<style>a{color:#0F766E;} a:hover{color:#0B5B55;}</style>
+</helmet>
+<div style="position:relative;width:100%;height:100%;display:flex;flex-direction:column;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <div style="flex-shrink:0;height:{{ topPad }};background:#FFFFFF;"></div>
+
+  <header style="flex-shrink:0;display:flex;align-items:center;gap:4px;min-height:60px;padding:4px 6px;background:#FFFFFF;border-bottom:1px solid #E1E8ED;">
+    <button onClick="{{ leftClick }}" aria-label="{{ leftLabel }}" style="width:48px;height:48px;border:none;border-radius:12px;background:transparent;color:#14232E;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;outline:none;" style-active="background:#EEF2F5;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:26px;line-height:1;font-weight:normal;">{{ leftIcon }}</span></button>
+    <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;">
+      <span style="font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ title }}</span>
+      <span style="font-size:13px;color:#4A5D6B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ subtitle }}</span>
+    </div>
+    <sc-if value="{{ rightIcon }}"><button onClick="{{ rightClick }}" aria-label="{{ rightLabel }}" style="width:48px;height:48px;border:none;border-radius:12px;background:#E6F4F2;color:#0B5B55;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;outline:none;" style-active="background:#CCE9E5;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">{{ rightIcon }}</span></button></sc-if>
+  </header>
+
+  <sc-if value="{{ inPatient }}">
+    <div role="alert" style="flex-shrink:0;display:flex;align-items:center;gap:8px;padding:8px 12px;background:#FEF3F2;border-bottom:1px solid #FECDCA;overflow-x:auto;">
+      <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;flex-shrink:0;">error</span>
+      <span style="display:inline-flex;align-items:center;height:30px;padding:0 10px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0;">Alergia: Penicilina</span>
+      <span style="display:inline-flex;align-items:center;height:30px;padding:0 10px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0;">Anticoagulante</span>
+      <span style="display:inline-flex;align-items:center;height:30px;padding:0 10px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:13px;font-weight:600;white-space:nowrap;flex-shrink:0;">Gestante · 24 sem.</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{ showTabs }}">
+    <div role="tablist" style="flex-shrink:0;display:flex;background:#FFFFFF;border-bottom:1px solid #E1E8ED;overflow-x:auto;">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+        <sc-if value="{{ t.on }}"><button role="tab" aria-selected="true" onClick="{{ t.click }}" style="flex:1 0 auto;height:48px;padding:0 14px;border:none;border-bottom:3px solid #0F766E;background:transparent;color:#0B5B55;font:700 14px Inter,sans-serif;white-space:nowrap;cursor:pointer;outline:none;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;">{{ t.label }}</button></sc-if>
+        <sc-if value="{{ t.off }}"><button role="tab" aria-selected="false" onClick="{{ t.click }}" style="flex:1 0 auto;height:48px;padding:0 14px;border:none;border-bottom:3px solid transparent;background:transparent;color:#4A5D6B;font:500 14px Inter,sans-serif;white-space:nowrap;cursor:pointer;outline:none;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;">{{ t.label }}</button></sc-if>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <main style="flex:1;min-height:0;overflow-y:auto;padding:16px 16px 24px;box-sizing:border-box;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+    <sc-if value="{{ toast }}">
+      <div role="status" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;background:#ECFDF3;border:1px solid #ABEFC6;color:#05603A;font-size:14px;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#067647;">check_circle</span><span style="flex:1;">{{ toast }}</span></div>
+    </sc-if>
+
+    <sc-if value="{{ isList }}">
+      <sc-if value="{{ offline }}">
+        <div role="alert" style="display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:12px;background:#FFFAEB;border:1px solid #FEDF89;color:#93370D;font-size:14px;line-height:1.45;">
+          <div style="display:flex;gap:10px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B54708;">wifi_off</span><span><strong>Sem conexão.</strong> Mostrando a lista salva às 09:10. Novos registros ficam bloqueados até reconectar.</span></div>
+          <button style="height:44px;border-radius:10px;border:1px solid #FEC84B;background:#FFFFFF;color:#93370D;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">refresh</span>Tentar de novo</button>
+        </div>
+      </sc-if>
+      <label style="display:flex;align-items:center;gap:10px;height:52px;padding:0 14px;border-radius:12px;border:1px solid #C9D4DC;background:#FFFFFF;box-sizing:border-box;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#4A5D6B;">search</span>
+        <input placeholder="Nome, CPF ou telefone" style="flex:1;min-width:0;border:none;outline:none;font:400 16px Inter,sans-serif;color:#14232E;background:transparent;">
+      </label>
+      <div style="display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px;">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <sc-if value="{{ f.on }}"><button style="flex-shrink:0;height:40px;padding:0 14px;border-radius:999px;border:1px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;white-space:nowrap;">{{ f.label }}</button></sc-if>
+          <sc-if value="{{ f.off }}"><button style="flex-shrink:0;height:40px;padding:0 14px;border-radius:999px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 14px Inter,sans-serif;white-space:nowrap;">{{ f.label }}</button></sc-if>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;overflow:hidden;">
+        <sc-for list="{{ patients }}" as="p" hint-placeholder-count="6">
+          <button onClick="{{ openFicha }}" style="display:flex;align-items:center;gap:12px;min-height:72px;padding:10px 14px;border:none;border-bottom:1px solid #F2F5F7;background:#FFFFFF;text-align:left;font-family:Inter,sans-serif;cursor:pointer;outline:none;" style-active="background:#F5F8FA;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;">
+            <span style="width:42px;height:42px;border-radius:50%;background:#EEF2F5;color:#3B4F5D;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0;">{{ p.ini }}</span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+              <span style="font-size:16px;font-weight:600;color:#14232E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</span>
+              <span style="font-size:13px;color:#4A5D6B;">{{ p.info }}</span>
+              <span style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span style="display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;border-radius:999px;background:{{ p.chipBg }};color:{{ p.chipFg }};font-size:12px;font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.chipFg }};"></span>{{ p.status }}</span>
+                <sc-if value="{{ p.alert }}"><span style="display:inline-flex;align-items:center;gap:3px;height:22px;padding:0 8px;border-radius:999px;background:#FEF3F2;color:#B42318;border:1px solid #FECDCA;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>{{ p.alert }}</span></sc-if>
+              </span>
+            </span>
+            <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#8A9BA8;">chevron_right</span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isPlano }}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <button onClick="{{ goReceita }}" style="min-height:64px;padding:10px 12px;border-radius:14px;border:1px solid #E1E8ED;background:#FFFFFF;display:flex;align-items:center;gap:10px;text-align:left;font:600 15px Inter,sans-serif;color:#14232E;cursor:pointer;outline:none;" style-active="background:#F5F8FA;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span style="width:40px;height:40px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">prescriptions</span></span>Receita simples</button>
+        <a href="tel:+5567998124470" style="min-height:64px;padding:10px 12px;border-radius:14px;border:1px solid #E1E8ED;background:#FFFFFF;display:flex;align-items:center;gap:10px;font:600 15px Inter,sans-serif;color:#14232E;text-decoration:none;box-sizing:border-box;"><span style="width:40px;height:40px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">call</span></span>Ligar para paciente</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;padding:4px 2px 0;">
+        <h2 style="margin:0;font-size:17px;font-weight:700;">Plano de tratamento</h2>
+        <span style="font-size:13px;color:#4A5D6B;">Orçamento nº 0412</span>
+      </div>
+      <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;overflow:hidden;">
+        <sc-for list="{{ plan }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;gap:12px;padding:12px 14px;border-bottom:1px solid #F2F5F7;">
+            <span style="width:44px;flex-shrink:0;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;padding-top:1px;">{{ p.tooth }}</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">
+              <span style="font-size:15px;font-weight:600;line-height:1.35;text-decoration:{{ p.deco }};color:{{ p.nameColor }};">{{ p.name }}</span>
+              <sc-if value="{{ p.note }}"><span style="font-size:13px;color:{{ p.noteColor }};line-height:1.4;">{{ p.note }}</span></sc-if>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <span style="display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:999px;background:{{ p.bg }};color:{{ p.fg }};font-size:12px;font-weight:600;"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.fg }};"></span>{{ p.status }}</span>
+                <span style="font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:{{ p.nameColor }};">{{ p.value }}</span>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding:14px;background:#F8FAFB;"><span style="font-size:15px;font-weight:600;">Saldo a pagar</span><span style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;">R$ 1.850,00</span></div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;font-size:13px;color:#4A5D6B;padding:0 2px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">computer</span>Para editar o plano ou o orçamento, use o computador.</div>
+    </sc-if>
+
+    <sc-if value="{{ isLinha }}">
+      <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#4A5D6B;line-height:1.45;padding:0 2px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">lock</span>Entradas permanentes. Correções são feitas por adendo.</div>
+      <sc-for list="{{ entries }}" as="e" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-if value="{{ e.dayLabel }}"><div style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;padding:6px 2px 0;">{{ e.dayLabel }}</div></sc-if>
+          <article style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;overflow:hidden;">
+            <div style="display:flex;flex-direction:column;gap:8px;padding:14px 14px 10px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 9px;border-radius:7px;background:#F0F3F5;font-size:13px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;font-weight:normal;color:#0F766E;">{{ e.icon }}</span>{{ e.type }}</span>
+                <span style="flex:1;"></span>
+                <span style="display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:999px;border:1px solid #D5DEE4;color:#3B4F5D;font-size:11px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>{{ e.id }}</span>
+              </div>
+              <span style="font-size:13px;color:#4A5D6B;"><strong style="color:#14232E;font-weight:600;">{{ e.author }}</strong> · {{ e.time }}</span>
+              <p style="margin:0;font-size:15px;line-height:1.55;color:#1F3240;text-wrap:pretty;">{{ e.text }}</p>
+              <sc-if value="{{ e.hasAdd }}"><div style="display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:8px;background:#EFF8FF;color:#1849A9;font-size:13px;font-weight:500;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:17px;line-height:1;font-weight:normal;">south</span>Possui adendo de correção abaixo</div></sc-if>
+            </div>
+            <button onClick="{{ e.add }}" style="width:100%;height:48px;border:none;border-top:1px solid #F2F5F7;background:#FBFCFD;color:#0F766E;font:600 14px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;outline:none;" style-active="background:#E6F4F2;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:19px;line-height:1;font-weight:normal;">add_comment</span>Adicionar adendo</button>
+          </article>
+          <sc-for list="{{ e.addenda }}" as="a" hint-placeholder-count="0">
+            <div style="display:flex;">
+              <div style="width:24px;flex-shrink:0;margin-left:10px;"><div style="width:14px;height:26px;border-left:2px solid #84CAFF;border-bottom:2px solid #84CAFF;border-bottom-left-radius:10px;margin-top:-8px;"></div></div>
+              <article style="flex:1;min-width:0;background:#F5FAFF;border:1px solid #B2DDFF;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span style="display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 8px;border-radius:6px;background:#175CD3;color:#FFFFFF;font-size:11px;font-weight:700;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;">link</span>ADENDO</span><span style="font-size:12px;color:#1849A9;font-weight:600;">corrige {{ e.id }}</span><span style="flex:1;"></span><span style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#1849A9;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>{{ a.id }}</span></div>
+                <span style="font-size:12px;color:#3B4F5D;"><strong style="color:#14232E;">{{ a.author }}</strong> · {{ a.time }}</span>
+                <p style="margin:0;font-size:14px;line-height:1.5;color:#1F3240;">{{ a.text }}</p>
+              </article>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isOdonto }}">
+      <div role="radiogroup" style="display:flex;padding:3px;border-radius:12px;background:#EEF2F5;gap:2px;">
+        <sc-for list="{{ dents }}" as="d" hint-placeholder-count="3">
+          <sc-if value="{{ d.on }}"><button onClick="{{ d.click }}" style="flex:1;height:42px;border:none;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.12);font:600 14px Inter,sans-serif;color:#14232E;cursor:pointer;">{{ d.label }}</button></sc-if>
+          <sc-if value="{{ d.off }}"><button onClick="{{ d.click }}" style="flex:1;height:42px;border:none;border-radius:9px;background:transparent;font:500 14px Inter,sans-serif;color:#4A5D6B;cursor:pointer;">{{ d.label }}</button></sc-if>
+        </sc-for>
+      </div>
+      <div role="radiogroup" style="display:flex;gap:8px;">
+        <sc-for list="{{ arches }}" as="d" hint-placeholder-count="2">
+          <sc-if value="{{ d.on }}"><button onClick="{{ d.click }}" style="flex:1;height:44px;border-radius:10px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;">{{ d.label }}</button></sc-if>
+          <sc-if value="{{ d.off }}"><button onClick="{{ d.click }}" style="flex:1;height:44px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 14px Inter,sans-serif;cursor:pointer;box-sizing:border-box;">{{ d.label }}</button></sc-if>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;padding:14px 10px;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;">
+        <sc-for list="{{ qrows }}" as="r" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <span style="font-size:12px;font-weight:600;color:#4A5D6B;padding:0 2px;">{{ r.label }}</span>
+            <div style="display:flex;gap:3px;justify-content:center;">
+              <sc-for list="{{ r.teeth }}" as="t" hint-placeholder-count="8">
+                <button onClick="{{ t.open }}" aria-label="Abrir dente {{ t.n }}" style="flex:1;max-width:46px;min-width:0;height:66px;padding:4px 0;border-radius:10px;border:1px solid #EEF2F5;background:#FFFFFF;display:flex;flex-direction:{{ t.dir }};align-items:center;justify-content:space-between;cursor:pointer;outline:none;" style-active="background:#E6F4F2;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+                  <span style="font-size:13px;font-weight:600;color:#3B4F5D;font-variant-numeric:tabular-nums;">{{ t.n }}</span>
+                  <span style="position:relative;width:28px;height:28px;box-sizing:border-box;border:1.5px solid #8A9BA8;border-radius:5px;outline:{{ t.crownOutline }};outline-offset:1px;">
+                    <span style="position:absolute;inset:0;border-radius:3px;overflow:hidden;">
+                      <sc-for list="{{ t.faces }}" as="f" hint-placeholder-count="5"><span style="position:absolute;inset:0;clip-path:{{ f.clip }};background:{{ f.bg }};"></span></sc-for>
+                      <span style="position:absolute;left:30%;top:30%;width:40%;height:40%;box-sizing:border-box;border:1px solid #8A9BA8;"></span>
+                    </span>
+                    <sc-if value="{{ t.ausente }}"><span style="position:absolute;left:-12%;top:50%;width:124%;height:2.5px;margin-top:-1px;background:{{ t.xBg }};transform:rotate(45deg);"></span><span style="position:absolute;left:-12%;top:50%;width:124%;height:2.5px;margin-top:-1px;background:{{ t.xBg }};transform:rotate(-45deg);"></span></sc-if>
+                    <sc-if value="{{ t.higido }}"><span aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:700;color:#079455;">check</span></sc-if>
+                  </span>
+                  <span style="width:4px;height:8px;background:{{ t.canalBg }};border-left:{{ t.canalBd }};box-sizing:border-box;"></span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <div style="font-size:13px;color:#4A5D6B;text-align:center;">Toque em um dente para ampliar e registrar</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 12px;padding:0 2px;">
+        <sc-for list="{{ legend }}" as="l" hint-placeholder-count="7">
+          <span style="display:flex;align-items:center;gap:5px;font-size:13px;"><span style="width:16px;height:16px;border-radius:4px;box-sizing:border-box;background:{{ l.swBg }};border:{{ l.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:700;color:{{ l.swIc }};">{{ l.swIcon }}</span></span>{{ l.label }}</span>
+        </sc-for>
+        <span style="font-size:13px;color:#4A5D6B;">Hachurado/tracejado = planejado</span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDente }}">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 12px;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;">
+        <span style="font-size:13px;font-weight:700;color:#4A5D6B;">{{ lblTop }}</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="width:52px;text-align:right;font-size:13px;font-weight:700;color:#4A5D6B;">{{ lblLeft }}</span>
+          <div style="position:relative;width:184px;height:184px;box-sizing:border-box;border:2px solid #8A9BA8;border-radius:16px;outline:{{ selOutline }};outline-offset:3px;">
+            <div style="position:absolute;inset:0;border-radius:14px;overflow:hidden;">
+              <sc-for list="{{ bigFaces }}" as="f" hint-placeholder-count="5">
+                <div role="button" tabindex="0" aria-label="{{ f.aria }}" onClick="{{ f.click }}" style="position:absolute;inset:0;clip-path:{{ f.clip }};background:{{ f.bg }};cursor:pointer;outline:none;" style-active="filter:brightness(0.85);"></div>
+              </sc-for>
+              <div style="position:absolute;left:30%;top:30%;width:40%;height:40%;box-sizing:border-box;border:2px solid #8A9BA8;pointer-events:none;"></div>
+              <div style="position:absolute;left:0;top:0;width:42.43%;height:2px;background:#8A9BA8;transform-origin:0 0;transform:rotate(45deg);pointer-events:none;"></div>
+              <div style="position:absolute;right:0;top:0;width:42.43%;height:2px;background:#8A9BA8;transform-origin:100% 0;transform:rotate(-45deg);pointer-events:none;"></div>
+              <div style="position:absolute;left:0;bottom:0;width:42.43%;height:2px;background:#8A9BA8;transform-origin:0 100%;transform:rotate(-45deg);pointer-events:none;"></div>
+              <div style="position:absolute;right:0;bottom:0;width:42.43%;height:2px;background:#8A9BA8;transform-origin:100% 100%;transform:rotate(45deg);pointer-events:none;"></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;pointer-events:none;">{{ lblCenter }}</div>
+            </div>
+          </div>
+          <span style="width:52px;font-size:13px;font-weight:700;color:#4A5D6B;">{{ lblRight }}</span>
+        </div>
+        <span style="font-size:13px;font-weight:700;color:#4A5D6B;">{{ lblBottom }}</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding-top:6px;">
+          <sc-for list="{{ situation }}" as="s" hint-placeholder-count="2">
+            <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:8px;border:1px solid #E1E8ED;font-size:13px;font-weight:600;"><span style="width:14px;height:14px;border-radius:3px;box-sizing:border-box;background:{{ s.swBg }};border:{{ s.swBd }};"></span>{{ s.text }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <span style="font-size:14px;font-weight:600;">Achado a registrar</span>
+        <div style="display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:0 16px 2px;">
+          <sc-for list="{{ tools }}" as="p" hint-placeholder-count="7">
+            <sc-if value="{{ p.on }}"><button onClick="{{ p.click }}" style="flex-shrink:0;height:48px;padding:0 14px;border-radius:12px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;white-space:nowrap;box-sizing:border-box;cursor:pointer;"><span style="width:18px;height:18px;border-radius:4px;box-sizing:border-box;background:{{ p.swBg }};border:{{ p.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:700;color:{{ p.swIc }};">{{ p.swIcon }}</span></span>{{ p.label }}</button></sc-if>
+            <sc-if value="{{ p.off }}"><button onClick="{{ p.click }}" style="flex-shrink:0;height:48px;padding:0 14px;border-radius:12px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;white-space:nowrap;box-sizing:border-box;cursor:pointer;"><span style="width:18px;height:18px;border-radius:4px;box-sizing:border-box;background:{{ p.swBg }};border:{{ p.swBd }};display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:700;color:{{ p.swIc }};">{{ p.swIcon }}</span></span>{{ p.label }}</button></sc-if>
+          </sc-for>
+        </div>
+        <div role="radiogroup" style="display:flex;padding:3px;border-radius:12px;background:#EEF2F5;gap:2px;">
+          <sc-for list="{{ statuses }}" as="s" hint-placeholder-count="3">
+            <sc-if value="{{ s.on }}"><button onClick="{{ s.click }}" style="flex:1;height:42px;border:none;border-radius:9px;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.12);font:600 14px Inter,sans-serif;color:{{ s.fg }};cursor:pointer;">{{ s.label }}</button></sc-if>
+            <sc-if value="{{ s.off }}"><button onClick="{{ s.click }}" style="flex:1;height:42px;border:none;border-radius:9px;background:transparent;font:500 14px Inter,sans-serif;color:#4A5D6B;cursor:pointer;">{{ s.label }}</button></sc-if>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 2px 0;">
+        <span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;text-transform:uppercase;">Histórico · {{ histCount }}</span>
+        <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:#4A5D6B;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;">lock</span>Não editáveis</span>
+      </div>
+      <sc-if value="{{ histEmpty }}"><div style="font-size:14px;color:#4A5D6B;padding:0 2px;">Nenhum evento neste dente.</div></sc-if>
+      <sc-for list="{{ history }}" as="e" hint-placeholder-count="3">
+        <article style="border:1px solid {{ e.cardBd }};background:{{ e.cardBg }};border-radius:12px;overflow:hidden;">
+          <sc-if value="{{ e.isCorrection }}"><div style="display:flex;align-items:center;gap:6px;padding:7px 12px;background:#EFF8FF;color:#1849A9;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">link</span>CORREÇÃO · substitui {{ e.replaces }}</div></sc-if>
+          <div style="padding:12px;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:999px;background:{{ e.stBg }};color:{{ e.stFg }};font-size:12px;font-weight:600;">{{ e.stLabel }}</span>
+              <span style="flex:1;"></span>
+              <span style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:600;color:#3B4F5D;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:13px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>{{ e.id }}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:16px;height:16px;border-radius:4px;box-sizing:border-box;background:{{ e.swBg }};border:{{ e.swBd }};flex-shrink:0;"></span><span style="font-size:15px;font-weight:600;color:{{ e.textColor }};text-decoration:{{ e.deco }};">{{ e.ach }}</span><span style="font-size:13px;color:#4A5D6B;">· {{ e.facesLabel }}</span></div>
+            <sc-if value="{{ e.note }}"><p style="margin:0;font-size:14px;line-height:1.5;color:{{ e.textColor }};">{{ e.note }}</p></sc-if>
+            <span style="font-size:12px;color:#4A5D6B;"><strong style="color:#3B4F5D;">{{ e.author }}</strong> · {{ e.date }}</span>
+          </div>
+          <sc-if value="{{ e.isCorrected }}"><div style="padding:8px 12px;border-top:1px solid #EEF2F5;font-size:12px;color:#4A5D6B;">Substituído por {{ e.corrBy }} · mantido no histórico</div></sc-if>
+        </article>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isAnam }}">
+      <div style="display:flex;gap:10px;padding:12px 14px;border-radius:12px;background:#FFFFFF;border:1px solid #E1E8ED;font-size:13px;color:#3B4F5D;line-height:1.45;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#067647;">task_alt</span><span>Preenchida no tablet em 07/10/2026 às 08:58 · conferida por Patrícia Lima</span></div>
+      <span style="font-size:12px;font-weight:700;color:#B42318;letter-spacing:0.05em;padding:4px 2px 0;">RESPOSTAS CRÍTICAS</span>
+      <sc-for list="{{ anamCrit }}" as="q" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:12px;background:#FEF3F2;border:1px solid #FECDCA;"><span style="font-size:13px;color:#7A271A;">{{ q.q }}</span><span style="font-size:16px;font-weight:700;color:#B42318;">{{ q.a }}</span></div>
+      </sc-for>
+      <span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;padding:8px 2px 0;">DEMAIS RESPOSTAS</span>
+      <div style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;overflow:hidden;">
+        <sc-for list="{{ anamRest }}" as="q" hint-placeholder-count="7">
+          <div style="display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #F2F5F7;font-size:14px;"><span style="color:#3B4F5D;">{{ q.q }}</span><span style="font-weight:600;text-align:right;">{{ q.a }}</span></div>
+        </sc-for>
+      </div>
+      <button style="height:52px;border-radius:12px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 15px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">tablet</span>Enviar atualização ao tablet</button>
+    </sc-if>
+
+    <sc-if value="{{ isReceita }}">
+      <span style="font-size:12px;font-weight:700;color:#3B4F5D;letter-spacing:0.05em;display:flex;align-items:center;gap:6px;padding:0 2px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;color:#B54708;font-variation-settings:'FILL' 1;">star</span>FAVORITOS · RECEITA SIMPLES</span>
+      <div role="radiogroup" style="display:flex;flex-direction:column;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;overflow:hidden;">
+        <sc-for list="{{ rxFavs }}" as="f" hint-placeholder-count="5">
+          <sc-if value="{{ f.ok }}">
+            <button role="radio" aria-checked="{{ f.on }}" onClick="{{ f.pick }}" style="display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border:none;border-bottom:1px solid #F2F5F7;background:{{ f.bg }};text-align:left;font-family:Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;">
+              <span style="width:22px;height:22px;border-radius:50%;box-sizing:border-box;border:{{ f.radioBd }};display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="width:10px;height:10px;border-radius:50%;background:{{ f.dot }};"></span></span>
+              <span style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font-size:15px;font-weight:600;color:#14232E;">{{ f.label }}</span><span style="font-size:13px;color:{{ f.subFg }};">{{ f.sub }}</span></span>
+            </button>
+          </sc-if>
+          <sc-if value="{{ f.blocked }}">
+            <div aria-disabled="true" style="display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 14px;border-bottom:1px solid #F2F5F7;background:#FEF3F2;">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">block</span>
+              <span style="flex:1;display:flex;flex-direction:column;gap:3px;"><span style="font-size:15px;font-weight:600;color:#7A271A;">{{ f.label }}</span><span style="font-size:13px;color:#B42318;font-weight:600;">{{ f.sub }}</span></span>
+            </div>
+          </sc-if>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;padding:14px;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;">
+        <span style="font-size:15px;font-weight:700;">Posologia</span>
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;">
+          <sc-for list="{{ rxFreqs }}" as="o" hint-placeholder-count="4">
+            <sc-if value="{{ o.on }}"><button onClick="{{ o.click }}" style="height:44px;border-radius:10px;border:2px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 13px Inter,sans-serif;box-sizing:border-box;cursor:pointer;">{{ o.label }}</button></sc-if>
+            <sc-if value="{{ o.off }}"><button onClick="{{ o.click }}" style="height:44px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 13px Inter,sans-serif;box-sizing:border-box;cursor:pointer;">{{ o.label }}</button></sc-if>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+          <span style="font-size:14px;font-weight:600;">Duração</span>
+          <div style="display:flex;align-items:center;height:48px;border-radius:10px;border:1px solid #C9D4DC;overflow:hidden;">
+            <button aria-label="Menos dias" onClick="{{ daysDown }}" style="width:48px;height:100%;border:none;background:#F5F8FA;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">remove</span></button>
+            <span style="min-width:72px;text-align:center;font-size:15px;font-weight:700;">{{ daysLabel }}</span>
+            <button aria-label="Mais dias" onClick="{{ daysUp }}" style="width:48px;height:100%;border:none;background:#F5F8FA;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">add</span></button>
+          </div>
+        </div>
+        <button onClick="{{ togglePrn }}" style="height:48px;padding:0;border:none;background:transparent;display:flex;align-items:center;justify-content:space-between;font:600 14px Inter,sans-serif;color:#14232E;cursor:pointer;">Somente se houver dor<span style="width:48px;height:28px;border-radius:999px;background:{{ prnTrack }};position:relative;"><span style="position:absolute;top:3px;left:{{ prnKnob }};width:22px;height:22px;border-radius:50%;background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.2);"></span></span></button>
+        <div style="display:flex;flex-direction:column;gap:4px;padding:12px;border-radius:10px;background:#F8FAFB;">
+          <span style="font-size:11px;font-weight:700;color:#4A5D6B;letter-spacing:0.05em;">TEXTO NA RECEITA</span>
+          <span style="font-size:15px;line-height:1.5;">{{ rxText }}</span>
+          <span style="font-size:13px;color:#3B4F5D;">Quantidade: <strong>{{ rxTotal }}</strong></span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;font-size:13px;color:#4A5D6B;line-height:1.45;padding:0 2px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">computer</span>Antimicrobianos, controlados e doses pediátricas: use o computador.</div>
+    </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{ showPending }}">
+    <div style="flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:12px 16px;background:#FFFFFF;border-top:1px solid #E1E8ED;box-shadow:0 -4px 12px rgba(16,40,56,.06);">
+      <span style="font-size:14px;color:{{ pendFg }};font-weight:500;">{{ pendLabel }}</span>
+      <sc-if value="{{ pendReady }}"><button onClick="{{ register }}" style="height:52px;border-radius:12px;border:none;background:#0F766E;color:#FFFFFF;font:700 16px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;outline:none;" style-active="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">lock</span>Registrar evento</button></sc-if>
+      <sc-if value="{{ pendNotReady }}"><button disabled="" style="height:52px;border-radius:12px;border:none;background:#D5DEE4;color:#5B6E7C;font:700 16px Inter,sans-serif;">Registrar evento</button></sc-if>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isReceita }}">
+    <div style="flex-shrink:0;display:flex;flex-direction:column;gap:6px;padding:12px 16px;background:#FFFFFF;border-top:1px solid #E1E8ED;box-shadow:0 -4px 12px rgba(16,40,56,.06);">
+      <button onClick="{{ genRx }}" style="height:52px;border-radius:12px;border:none;background:#0F766E;color:#FFFFFF;font:700 16px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;outline:none;" style-active="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">print</span>Gerar PDF e imprimir</button>
+      <span style="font-size:12px;color:#4A5D6B;text-align:center;">Impressora: Recepção (HP-01) · assinar à mão</span>
+    </div>
+  </sc-if>
+  <div style="flex-shrink:0;height:{{ botPad }};background:#FFFFFF;"></div>
+
+  <sc-if value="{{ drawer }}">
+    <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(20,35,46,.45);z-index:20;"></div>
+    <nav aria-label="Navegação principal" style="position:absolute;top:0;bottom:0;left:0;width:82%;max-width:320px;background:#FFFFFF;z-index:21;display:flex;flex-direction:column;padding:{{ topPad }} 12px {{ botPad }};box-sizing:border-box;box-shadow:8px 0 24px rgba(16,40,56,.18);">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 8px 20px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:#0F766E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;">I</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-weight:700;font-size:16px;">Odonto Ipê</span><span style="font-size:12px;color:#4A5D6B;">Apoio ao atendimento</span></div>
+        <button onClick="{{ closeDrawer }}" aria-label="Fechar menu" style="width:48px;height:48px;border:none;border-radius:12px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">close</span></button>
+      </div>
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
+        <a href="#" onClick="{{ n.click }}" style="height:52px;display:flex;align-items:center;gap:14px;padding:0 12px;border-radius:12px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.weight }};font-size:16px;text-decoration:none;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">{{ n.icon }}</span>{{ n.label }}</a>
+      </sc-for>
+      <div style="flex:1;"></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 8px;border-top:1px solid #E1E8ED;">
+        <div style="width:40px;height:40px;border-radius:50%;background:#E6F4F2;color:#0B5B55;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;">HP</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:2px;"><span style="font-weight:600;font-size:14px;">Dra. Helena Prado</span><span style="font-size:12px;color:#4A5D6B;">CRO-MS 4821</span></div>
+        <button aria-label="Sair" style="width:48px;height:48px;border:none;border-radius:12px;background:transparent;color:#4A5D6B;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">logout</span></button>
+      </div>
+    </nav>
+  </sc-if>
+
+  <sc-if value="{{ sheet }}">
+    <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(20,35,46,.45);z-index:20;"></div>
+    <div role="dialog" aria-label="Novo adendo" style="position:absolute;left:0;right:0;bottom:0;z-index:21;background:#FFFFFF;border-radius:20px 20px 0 0;padding:10px 16px {{ sheetPad }};display:flex;flex-direction:column;gap:12px;box-shadow:0 -8px 24px rgba(16,40,56,.18);">
+      <div style="width:40px;height:5px;border-radius:999px;background:#C9D4DC;align-self:center;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:18px;font-weight:700;">Adendo à entrada {{ sheetId }}</span><button onClick="{{ closeSheet }}" aria-label="Fechar" style="width:44px;height:44px;border:none;border-radius:10px;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">close</span></button></div>
+      <div style="padding:10px 12px;border-radius:10px;background:#F5F8FA;border-left:3px solid #C9D4DC;font-size:13px;line-height:1.45;color:#3B4F5D;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">{{ sheetQuote }}</div>
+      <textarea value="{{ adendo }}" onChange="{{ setAdendo }}" placeholder="Descreva a correção ou complemento" style="min-height:96px;padding:12px;border-radius:12px;border:2px solid #0F766E;box-shadow:0 0 0 4px #CCE9E5;font:400 16px/1.45 Inter,sans-serif;color:#14232E;resize:none;outline:none;"></textarea>
+      <span style="display:flex;align-items:center;gap:6px;font-size:13px;color:#4A5D6B;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">lock</span>Depois de salvo, o adendo não pode ser editado.</span>
+      <sc-if value="{{ canSaveAdendo }}"><button onClick="{{ saveAdendo }}" style="height:52px;border-radius:12px;border:none;background:#0F766E;color:#FFFFFF;font:700 16px Inter,sans-serif;cursor:pointer;">Salvar adendo</button></sc-if>
+      <sc-if value="{{ cantSaveAdendo }}"><button disabled="" style="height:52px;border-radius:12px;border:none;background:#D5DEE4;color:#5B6E7C;font:700 16px Inter,sans-serif;">Salvar adendo</button></sc-if>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;tela&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pacientes&quot;,&quot;menu&quot;,&quot;offline&quot;,&quot;ficha&quot;,&quot;linha&quot;,&quot;adendo&quot;,&quot;odonto&quot;,&quot;dente&quot;,&quot;anamnese&quot;,&quot;receita&quot;],&quot;default&quot;:&quot;pacientes&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;plataforma&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ios&quot;,&quot;android&quot;],&quot;default&quot;:&quot;ios&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  A = {
+    carie: { label: 'Cárie', color: '#DC6803', scope: 'face' }, restauracao: { label: 'Restauração', color: '#1570EF', scope: 'face' },
+    coroa: { label: 'Coroa', color: '#6938EF', scope: 'tooth' }, canal: { label: 'Canal', color: '#C11574', scope: 'tooth' },
+    implante: { label: 'Implante', color: '#344054', scope: 'tooth' }, ausente: { label: 'Ausente', color: '#475467', scope: 'tooth' },
+    higido: { label: 'Hígido', color: '#079455', scope: 'tooth' }
+  };
+  ORDER = ['O', 'M', 'D', 'V', 'L'];
+  SL = { existente: 'Existente', planejado: 'Planejado', realizado: 'Realizado' };
+  SC = { existente: ['#F0F3F5', '#3B4F5D'], planejado: ['#EFF8FF', '#175CD3'], realizado: ['#ECFDF3', '#067647'] };
+  CL = { top: 'polygon(0 0,100% 0,70% 30%,30% 30%)', right: 'polygon(100% 0,100% 100%,70% 70%,70% 30%)', bottom: 'polygon(30% 70%,70% 70%,100% 100%,0 100%)', left: 'polygon(0 0,30% 30%,30% 70%,0 100%)', center: 'polygon(30% 30%,70% 30%,70% 70%,30% 70%)' };
+  state = this.init();
+  init() {
+    const t = (this.props && this.props.tela) || 'pacientes';
+    const map = { menu: 'pacientes', offline: 'pacientes', adendo: 'linha' };
+    return { screen: map[t] || t, drawer: t === 'menu', offline: t === 'offline', sheet: t === 'adendo' ? 'E-1043' : null,
+      adendo: t === 'adendo' ? 'Correção: foram usados 2 tubetes de lidocaína, e não 1.' : '', addenda: {},
+      dent: 'permanente', arch: 'inferior', sel: 36, tool: t === 'dente' ? 'carie' : null, status: 'existente', pend: t === 'dente' ? ['O'] : [],
+      events: this.seed(), seq: 260, rx: 'paracetamol', freq: '6/6h', dias: 3, prn: true, toast: null };
+  }
+  seed() {
+    const H = 'Dra. Helena Prado', M = 'Dr. Marcos Teles', d = '23/09/2026 ';
+    const L = [[46, 'restauracao', 'existente', ['O'], H, '09:40', 'Restauração em amálgama prévia.'], [17, 'restauracao', 'existente', ['O'], H, '09:40', ''], [48, 'ausente', 'existente', [], H, '09:41', 'Extraído antes do 1º atendimento.'], [24, 'coroa', 'existente', [], H, '09:41', ''], [25, 'implante', 'existente', [], H, '09:42', ''], [25, 'coroa', 'existente', [], H, '09:42', ''], [26, 'carie', 'existente', ['M', 'O'], H, '09:42', ''], [14, 'carie', 'existente', ['M'], H, '09:43', ''], [37, 'carie', 'existente', ['O'], H, '09:43', ''],
+      [36, 'carie', 'existente', ['O', 'M'], H, '09:44', 'Cárie profunda com provável envolvimento pulpar.'], [36, 'carie', 'existente', ['O', 'D'], H, '09:58', 'A lesão é ocluso-distal, não ocluso-mesial. Confirmado na radiografia.', 9], [36, 'canal', 'planejado', [], H, '10:00', 'Endodontia em 3 sessões.'], [36, 'coroa', 'planejado', [], H, '10:00', 'Após a conclusão do canal.'],
+      [14, 'restauracao', 'planejado', ['M'], H, '10:02', ''], [37, 'restauracao', 'planejado', ['O'], H, '10:02', ''], [18, 'ausente', 'planejado', [], M, '10:12', 'Extração planejada após a gestação.'], [26, 'restauracao', 'realizado', ['M', 'O'], H, '10:30', '']];
+    const sp = new Set(L.map(r => r[0])), all = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+    const ev = []; let i = 0; const ids = [];
+    all.filter(n => !sp.has(n)).forEach(n => ev.push({ id: 'EV-0' + (160 + i), seq: i++, tooth: n, achado: 'higido', status: 'existente', faces: [], author: H, date: d + '09:39', note: '' }));
+    L.forEach(r => { const e = { id: 'EV-0' + (160 + i), seq: i++, tooth: r[0], achado: r[1], status: r[2], faces: r[3], author: r[4], date: d + r[5], note: r[6] }; if (r[7] !== undefined) e.replaces = ids[r[7]]; ids.push(e.id); ev.push(e); });
+    return ev;
+  }
+  isUp(n) { return [1, 2, 5, 6].includes(Math.floor(n / 10)); }
+  posMap(n) { const q = Math.floor(n / 10), up = this.isUp(n), mr = [1, 4, 5, 8].includes(q); return { top: up ? 'V' : 'L', bottom: up ? 'L' : 'V', left: mr ? 'D' : 'M', right: mr ? 'M' : 'D', center: 'O' }; }
+  fs(n, c) { if (c === 'O') return n % 10 <= 3 ? 'I' : 'O'; if (c === 'L') return this.isUp(n) ? 'P' : 'L'; return c; }
+  fn(n, c) { return { O: n % 10 <= 3 ? 'Incisal' : 'Oclusal', M: 'Mesial', D: 'Distal', V: 'Vestibular', L: this.isUp(n) ? 'Palatina' : 'Lingual' }[c]; }
+  tname(n) { const q = Math.floor(n / 10), u = n % 10, dec = q >= 5; const P = { 1: 'Incisivo central', 2: 'Incisivo lateral', 3: 'Canino', 4: '1º pré-molar', 5: '2º pré-molar', 6: '1º molar', 7: '2º molar', 8: '3º molar' }, Dn = { 1: 'Incisivo central', 2: 'Incisivo lateral', 3: 'Canino', 4: '1º molar', 5: '2º molar' }; const s = { 1: 'superior direito', 2: 'superior esquerdo', 3: 'inferior esquerdo', 4: 'inferior direito' }[dec ? q - 4 : q]; return `${(dec ? Dn : P)[u]} ${s}${dec ? ' (decíduo)' : ''}`; }
+  derive(n) {
+    const evs = this.state.events.filter(e => e.tooth === n), corr = new Set(evs.filter(e => e.replaces).map(e => e.replaces));
+    const faces = { O: {}, M: {}, D: {}, V: {}, L: {} }, whole = {};
+    evs.filter(e => !corr.has(e.id)).sort((a, b) => a.seq - b.seq).forEach(e => {
+      if (this.A[e.achado].scope === 'face') e.faces.forEach(c => { const f = faces[c]; if (e.status === 'planejado') f.plan = e.achado; else { f.cur = e.achado; if (f.plan === e.achado) f.plan = null; } });
+      else if (e.status === 'planejado') { if (!whole[e.achado]) whole[e.achado] = 'planejado'; } else whole[e.achado] = 'solid';
+    });
+    const hasF = this.ORDER.some(c => faces[c].cur || faces[c].plan), oth = Object.keys(whole).filter(k => k !== 'higido');
+    return { evs, faces, whole, hig: !!whole.higido && !hasF && !oth.length, hasFindings: hasF || oth.length > 0 };
+  }
+  sw(a, pl) {
+    const c = this.A[a].color, dash = pl ? 'dashed' : 'solid', r = { swBg: '#FFFFFF', swBd: `1.5px ${dash} #C9D4DC`, swIcon: '', swIc: c };
+    if (a === 'carie' || a === 'restauracao') Object.assign(r, { swBg: pl ? `repeating-linear-gradient(45deg,${c} 0 2.5px,#FFFFFF 2.5px 5px)` : c, swBd: `1.5px solid ${c}` });
+    if (a === 'coroa') r.swBd = `2.5px ${dash} ${c}`;
+    if (a === 'canal') Object.assign(r, { swBg: `linear-gradient(90deg,transparent 5.5px,${c} 5.5px 9.5px,transparent 9.5px)` });
+    if (a === 'implante') Object.assign(r, { swBg: `repeating-linear-gradient(180deg,${c} 0 2px,#FFFFFF 2px 4px)`, swBd: `1.5px ${dash} ${c}` });
+    if (a === 'ausente') r.swIcon = 'close';
+    if (a === 'higido') Object.assign(r, { swIcon: 'check', swBd: '1.5px solid #ABEFC6' });
+    return r;
+  }
+  faceBg(f, aus, pend) {
+    const base = aus ? '#EEF2F5' : '#FFFFFF', c = f.cur ? this.A[f.cur].color : base;
+    const bg = f.plan ? `repeating-linear-gradient(45deg,${this.A[f.plan].color} 0 2.5px,${c} 2.5px 5px)` : c;
+    return pend ? `linear-gradient(rgba(15,118,110,.6),rgba(15,118,110,.6)),${bg}` : bg;
+  }
+  go(screen) { this.setState({ screen, toast: null, drawer: false }); }
+
+  renderVals() {
+    const st = this.props.plataforma === 'android', s = this.state, sc = s.screen, A = this.A;
+    const inP = ['ficha', 'linha', 'odonto', 'anamnese', 'dente', 'receita'].includes(sc);
+    const out = {
+      topPad: st ? '0px' : '54px', botPad: st ? '0px' : '30px', sheetPad: st ? '16px' : '40px',
+      inPatient: inP, showTabs: ['ficha', 'linha', 'odonto', 'anamnese'].includes(sc), toast: s.toast || '',
+      isList: sc === 'pacientes', isPlano: sc === 'ficha', isLinha: sc === 'linha', isOdonto: sc === 'odonto', isDente: sc === 'dente', isAnam: sc === 'anamnese', isReceita: sc === 'receita',
+      offline: s.offline, drawer: s.drawer, closeDrawer: () => this.setState({ drawer: false }),
+      tabs: [['linha', 'Linha do tempo'], ['odonto', 'Odontograma'], ['ficha', 'Plano'], ['anamnese', 'Anamnese']].map(([id, label]) => ({ label, on: sc === id, off: sc !== id, click: () => this.go(id) })),
+      navItems: [['Início', 'home'], ['Agenda', 'calendar_month'], ['Pacientes', 'group'], ['Documentos', 'description'], ['Configurações', 'settings']].map(([label, icon]) => { const on = label === 'Pacientes'; return { label, icon, bg: on ? '#E6F4F2' : 'transparent', fg: on ? '#0B5B55' : '#3B4F5D', weight: on ? 600 : 500, click: e => { e.preventDefault(); this.setState({ drawer: false }); } }; }),
+      openFicha: () => this.go('ficha'), goReceita: () => this.go('receita'), showPending: false
+    };
+    const P = { title: 'Mariana Alves Costa', subtitle: '34 anos · Prontuário nº 00318', leftIcon: 'arrow_back', leftLabel: 'Voltar', leftClick: () => this.go('pacientes') };
+    if (sc === 'pacientes') Object.assign(out, { title: 'Pacientes', subtitle: s.offline ? 'Modo offline' : '1.284 cadastrados', leftIcon: 'menu', leftLabel: 'Abrir menu', leftClick: () => this.setState({ drawer: true }), rightIcon: s.offline ? '' : 'person_add', rightLabel: 'Novo paciente', rightClick: () => {} });
+    else if (sc === 'dente') Object.assign(out, { title: `Dente ${s.sel}`, subtitle: this.tname(s.sel), leftIcon: 'arrow_back', leftLabel: 'Voltar ao odontograma', leftClick: () => this.setState({ screen: 'odonto', pend: [], tool: null }), rightIcon: '' });
+    else if (sc === 'receita') Object.assign(out, { title: 'Receita simples', subtitle: 'Mariana Alves Costa · 34 anos', leftIcon: 'close', leftLabel: 'Cancelar', leftClick: () => this.go('ficha'), rightIcon: '' });
+    else Object.assign(out, P, sc === 'linha' ? { rightIcon: 'picture_as_pdf', rightLabel: 'Exportar prontuário em PDF', rightClick: () => this.setState({ toast: 'Prontuário exportado em PDF.' }) } : { rightIcon: 'prescriptions', rightLabel: 'Receita simples', rightClick: () => this.go('receita') });
+
+    const C = { 'Em andamento': ['#FFFAEB', '#B54708'], 'Aprovado': ['#E6F4F2', '#0B5B55'], 'Proposto': ['#EFF8FF', '#175CD3'], 'Concluído': ['#ECFDF3', '#067647'], 'Cancelado': ['#F0F3F5', '#4A5D6B'] };
+    out.filters = ['Todos', 'Com alertas', 'Anamnese pendente', 'Em tratamento'].map((l, i) => ({ label: l, on: i === 0, off: i !== 0 }));
+    out.patients = [['Mariana Alves Costa', '34 anos · Hoje, 09:00', 'Em andamento', '3 alertas'], ['João Pedro Ramos', '52 anos · 12/09/2026', 'Aprovado', 'Anticoagulante'], ['Lúcia Fernandes Okada', '67 anos · Hoje, 08:00', 'Concluído', 'Alergia'], ['Thiago Moreira Lins', '29 anos · Hoje, 08:40', 'Concluído', ''], ['Ana Beatriz Souza', '8 anos · 02/09/2026', 'Proposto', ''], ['Renata Campos Duarte', '39 anos · 30/09/2026', 'Em andamento', 'Gestante']]
+      .map(r => ({ name: r[0], info: r[1], status: r[2], alert: r[3], ini: r[0].split(' ').filter((_, i, a) => i === 0 || i === a.length - 1).map(w => w[0]).join(''), chipBg: C[r[2]][0], chipFg: C[r[2]][1] }));
+    out.plan = [['26', 'Restauração em resina · MO', 'R$ 280,00', 'Concluído', ''], ['36', 'Tratamento de canal · molar', 'R$ 1.200,00', 'Em andamento', 'Sessão 2 de 3 realizada hoje'], ['36', 'Coroa metalocerâmica', 'R$ 1.650,00', 'Aprovado', 'Após conclusão do canal'], ['18', 'Extração de siso', 'R$ 350,00', 'Proposto', 'Aprovação bloqueada: reavaliar após a gestação'], ['11, 21', 'Clareamento de consultório', 'R$ 900,00', 'Cancelado', 'Contraindicado durante a gestação']]
+      .map(r => ({ tooth: r[0], name: r[1], value: r[2], status: r[3], note: r[4], bg: C[r[3]][0], fg: C[r[3]][1], deco: r[3] === 'Cancelado' ? 'line-through' : 'none', nameColor: r[3] === 'Cancelado' ? '#5B6E7C' : '#14232E', noteColor: r[3] === 'Proposto' ? '#B54708' : '#4A5D6B' }));
+
+    const H = 'Dra. Helena Prado';
+    const ent = [
+      ['Hoje · 07/10/2026', 'E-1045', 'Prescrição', 'prescriptions', '09:48', 'Paracetamol 750 mg — 1 comprimido a cada 6 horas, se houver dor, por até 3 dias.', []],
+      ['', 'E-1043', 'Evolução clínica', 'stethoscope', '09:24', 'Canal do dente 36, sessão 2 de 3. Instrumentação até lima 35, medicação intracanal e selamento provisório. Anestesia: lidocaína 2% com epinefrina, 1 tubete.', [{ id: 'A-1046', author: H, time: '09:52', text: 'Correção: foram usados 2 tubetes (72 mg de lidocaína), e não 1. Dose dentro do limite seguro.' }]],
+      ['', 'E-1041', 'Anamnese', 'assignment', '09:02', 'Paciente informou gestação de 24 semanas e uso de enoxaparina 40 mg/dia. Alertas atualizados.', []],
+      ['23/09/2026', 'E-1027', 'Procedimento', 'dentistry', '10:30', 'Restauração em resina classe II no dente 26 (MO).', []]
+    ];
+    out.entries = ent.map(e => { const extra = s.addenda[e[1]] || []; const add = [...e[6], ...extra]; return { dayLabel: e[0], id: e[1], type: e[2], icon: e[3], author: e[1] === 'E-1041' ? 'Patrícia Lima' : H, time: e[4], text: e[5], addenda: add, hasAdd: add.length > 0, add: () => this.setState({ sheet: e[1], adendo: '' }) }; });
+    if (s.sheet) {
+      const e = ent.find(x => x[1] === s.sheet);
+      Object.assign(out, { sheet: true, sheetId: s.sheet, sheetQuote: e ? e[5] : '', adendo: s.adendo, setAdendo: ev => this.setState({ adendo: ev.target.value }),
+        canSaveAdendo: s.adendo.trim().length >= 5, cantSaveAdendo: s.adendo.trim().length < 5, closeSheet: () => this.setState({ sheet: null }),
+        saveAdendo: () => { const id = 'A-10' + (47 + Object.keys(s.addenda).length); this.setState({ addenda: { ...s.addenda, [s.sheet]: [...(s.addenda[s.sheet] || []), { id, author: H, time: 'agora', text: s.adendo.trim() }] }, sheet: null, adendo: '', toast: `Adendo ${id} salvo e vinculado à entrada ${s.sheet}.` }); } });
+    } else out.sheet = false;
+
+    const cache = {}, D = n => cache[n] || (cache[n] = this.derive(n));
+    if (sc === 'odonto') {
+      out.dents = [['permanente', 'Permanente'], ['decidua', 'Decídua'], ['mista', 'Mista']].map(([id, label]) => ({ label, on: s.dent === id, off: s.dent !== id, click: () => this.setState({ dent: id }) }));
+      out.arches = [['superior', 'Arcada superior'], ['inferior', 'Arcada inferior']].map(([id, label]) => ({ label, on: s.arch === id, off: s.arch !== id, click: () => this.setState({ arch: id }) }));
+      const tile = n => { const d = D(n), pm = this.posMap(n), aus = d.whole.ausente, co = d.whole.coroa, ca = d.whole.canal; return { n, dir: this.isUp(n) ? 'column' : 'column-reverse', faces: ['top', 'right', 'bottom', 'left', 'center'].map(p => ({ clip: this.CL[p], bg: this.faceBg(d.faces[pm[p]], !!aus, false) })), crownOutline: co ? `2px ${co === 'planejado' ? 'dashed' : 'solid'} ${A.coroa.color}` : 'none', canalBg: ca === 'solid' ? A.canal.color : 'transparent', canalBd: ca === 'planejado' ? `4px dashed ${A.canal.color}` : 'none', ausente: !!aus, xBg: aus === 'planejado' ? `repeating-linear-gradient(90deg,${A.ausente.color} 0 4px,transparent 4px 7px)` : A.ausente.color, higido: d.hig, open: () => this.setState({ screen: 'dente', sel: n, pend: [], tool: null }) }; };
+      const R = { superior: { p: [['Quadrante 1 · superior direito', [18,17,16,15,14,13,12,11]], ['Quadrante 2 · superior esquerdo', [21,22,23,24,25,26,27,28]]], d: [['Quadrante 5 · decíduos sup. direito', [55,54,53,52,51]], ['Quadrante 6 · decíduos sup. esquerdo', [61,62,63,64,65]]] },
+        inferior: { p: [['Quadrante 4 · inferior direito', [48,47,46,45,44,43,42,41]], ['Quadrante 3 · inferior esquerdo', [31,32,33,34,35,36,37,38]]], d: [['Quadrante 8 · decíduos inf. direito', [85,84,83,82,81]], ['Quadrante 7 · decíduos inf. esquerdo', [71,72,73,74,75]]] } }[s.arch];
+      const rows = s.dent === 'permanente' ? R.p : s.dent === 'decidua' ? R.d : [...R.p, ...R.d];
+      out.qrows = rows.map(([label, ns]) => ({ label, teeth: ns.map(tile) }));
+      out.legend = ['carie', 'restauracao', 'coroa', 'canal', 'implante', 'ausente', 'higido'].map(a => ({ label: A[a].label, ...this.sw(a, false) }));
+    }
+    if (sc === 'dente') {
+      const n = s.sel, d = D(n), pm = this.posMap(n), aus = d.whole.ausente, scope = s.tool ? A[s.tool].scope : null;
+      const lbl = p => `${this.fs(n, pm[p])} · ${this.fn(n, pm[p])}`;
+      Object.assign(out, { lblTop: lbl('top'), lblBottom: lbl('bottom'), lblLeft: this.fs(n, pm.left) + ' · ' + this.fn(n, pm.left).slice(0, 4) + '.', lblRight: this.fs(n, pm.right) + ' · ' + this.fn(n, pm.right).slice(0, 4) + '.', lblCenter: this.fs(n, 'O'),
+        selOutline: d.whole.coroa ? `3px ${d.whole.coroa === 'planejado' ? 'dashed' : 'solid'} ${A.coroa.color}` : 'none',
+        bigFaces: ['top', 'right', 'bottom', 'left', 'center'].map(p => { const c = pm[p]; return { clip: this.CL[p], aria: `Face ${this.fn(n, c)}`, bg: this.faceBg(d.faces[c], !!aus, scope === 'tooth' || s.pend.includes(c)), click: () => { if (!s.tool || scope === 'tooth') return; this.setState({ pend: s.pend.includes(c) ? s.pend.filter(x => x !== c) : [...s.pend, c] }); } }; }) });
+      const by = {}; this.ORDER.forEach(c => { const f = d.faces[c]; if (f.cur) (by[f.cur + '|s'] = by[f.cur + '|s'] || []).push(c); if (f.plan) (by[f.plan + '|p'] = by[f.plan + '|p'] || []).push(c); });
+      const sit = Object.entries(by).map(([k, f]) => { const [a, p] = k.split('|'); return { text: `${A[a].label} ${f.map(c => this.fs(n, c)).join(', ')}${p === 'p' ? ' · plan.' : ''}`, ...this.sw(a, p === 'p') }; });
+      Object.entries(d.whole).forEach(([a, v]) => { if (a === 'higido' && !d.hig) return; sit.push({ text: A[a].label + (v === 'planejado' ? ' · plan.' : ''), ...this.sw(a, v === 'planejado') }); });
+      out.situation = sit;
+      out.tools = ['carie', 'restauracao', 'coroa', 'canal', 'implante', 'ausente', 'higido'].map(a => ({ label: A[a].label, on: s.tool === a, off: s.tool !== a, ...this.sw(a, false), click: () => this.setState({ tool: s.tool === a ? null : a, pend: [] }) }));
+      out.statuses = ['existente', 'planejado', 'realizado'].map(x => ({ label: this.SL[x], fg: this.SC[x][1], on: s.status === x, off: s.status !== x, click: () => this.setState({ status: x }) }));
+      const hist = d.evs.slice().sort((a, b) => b.seq - a.seq).map(e => { const cb = d.evs.find(x => x.replaces === e.id); return { id: e.id, stLabel: this.SL[e.status], stBg: this.SC[e.status][0], stFg: this.SC[e.status][1], ach: e.achado === 'ausente' && e.status === 'planejado' ? 'Extração' : A[e.achado].label, facesLabel: e.faces.length ? 'faces ' + e.faces.map(c => this.fs(n, c)).join(', ') : 'dente inteiro', author: e.author, date: e.date, note: e.note, isCorrected: !!cb, corrBy: cb ? cb.id : '', isCorrection: !!e.replaces, replaces: e.replaces || '', cardBg: cb ? '#F8FAFB' : '#FFFFFF', cardBd: e.replaces ? '#B2DDFF' : '#E1E8ED', textColor: cb ? '#5B6E7C' : '#1F3240', deco: cb ? 'line-through' : 'none', ...this.sw(e.achado, e.status === 'planejado') }; });
+      Object.assign(out, { history: hist, histCount: hist.length, histEmpty: !hist.length });
+      let label = 'Escolha um achado acima e toque nas faces do dente.', ready = false, fg = '#3B4F5D';
+      if (s.tool) {
+        const lab = `${A[s.tool].label} · ${this.SL[s.status].toLowerCase()}`;
+        if (s.tool === 'higido' && d.hasFindings) { label = 'Este dente tem achados ativos. Corrija os eventos no computador antes de marcar como hígido.'; fg = '#93370D'; }
+        else if (scope === 'face' && !s.pend.length) label = `Toque nas faces para marcar ${lab}.`;
+        else { ready = true; label = `Dente ${n}${scope === 'face' ? ' · faces ' + this.ORDER.filter(c => s.pend.includes(c)).map(c => this.fs(n, c)).join(', ') : ' · dente inteiro'} → ${lab}`; fg = '#0B5B55'; }
+      }
+      Object.assign(out, { showPending: true, pendLabel: label, pendFg: fg, pendReady: ready, pendNotReady: !ready,
+        register: () => { const id = 'EV-0' + s.seq; this.setState({ events: [...s.events, { id, seq: s.seq, tooth: n, achado: s.tool, status: s.status, faces: scope === 'face' ? this.ORDER.filter(c => s.pend.includes(c)) : [], author: H, date: 'agora', note: '' }], seq: s.seq + 1, pend: [], toast: `${id} registrado. O evento não pode ser editado.` }); } });
+    }
+    out.anamCrit = [['Alergia a medicamentos', 'Penicilina (urticária em 2018)'], ['Usa anticoagulante', 'Enoxaparina 40 mg/dia'], ['Está grávida', 'Sim · 24 semanas']].map(r => ({ q: r[0], a: r[1] }));
+    out.anamRest = [['Medicamentos em uso', 'Enoxaparina, ácido fólico'], ['Pressão arterial', '110/70 mmHg'], ['Diabetes', 'Não'], ['Problemas cardíacos', 'Não'], ['Sangramento prolongado', 'Não'], ['Alergia a látex', 'Não'], ['Fuma', 'Não']].map(r => ({ q: r[0], a: r[1] }));
+    if (sc === 'receita') {
+      const F = [['paracetamol', 'Paracetamol 750 mg', 'Comprimido · analgésico', 'ok', 1], ['dipirona', 'Dipirona 1 g', 'Comprimido · analgésico', 'ok', 1], ['clorexidina', 'Clorexidina 0,12%', 'Bochecho · antisséptico', 'ok', 15], ['ibuprofeno', 'Ibuprofeno 600 mg', 'Atenção: evitar em gestante e com anticoagulante', 'warn', 1], ['amoxicilina', 'Amoxicilina 500 mg', 'Alergia da paciente: penicilina', 'block', 1]];
+      out.rxFavs = F.map(f => { const on = s.rx === f[0]; return { label: f[1], sub: f[2], ok: f[3] !== 'block', blocked: f[3] === 'block', on, bg: on ? '#F3FAF9' : '#FFFFFF', radioBd: on ? '2px solid #0F766E' : '2px solid #8A9BA8', dot: on ? '#0F766E' : 'transparent', subFg: f[3] === 'warn' ? '#B54708' : '#4A5D6B', pick: () => this.setState({ rx: f[0], freq: f[0] === 'clorexidina' ? '12/12h' : '6/6h', prn: f[0] !== 'clorexidina', dias: f[0] === 'clorexidina' ? 7 : 3 }) }; });
+      const FR = [['6/6h', 4, 'a cada 6 horas'], ['8/8h', 3, 'a cada 8 horas'], ['12/12h', 2, 'a cada 12 horas'], ['1x/dia', 1, 'uma vez ao dia']], fr = FR.find(x => x[0] === s.freq) || FR[0];
+      out.rxFreqs = FR.map(f => ({ label: f[0], on: s.freq === f[0], off: s.freq !== f[0], click: () => this.setState({ freq: f[0] }) }));
+      const chx = s.rx === 'clorexidina', fav = F.find(f => f[0] === s.rx);
+      out.rxText = chx ? `Bochechar 15 mL durante 1 minuto ${fr[2]}, por ${s.dias} dias${s.prn ? ', se houver dor' : ''}. Não engolir.` : `Tomar 1 comprimido por via oral ${fr[2]}, por ${s.dias} dia${s.dias > 1 ? 's' : ''}${s.prn ? ', se houver dor' : ''}.`;
+      out.rxTotal = chx ? `${Math.max(1, Math.ceil(15 * fr[1] * s.dias / 250))} frasco de 250 mL` : `${fr[1] * s.dias} comprimidos`;
+      Object.assign(out, { daysLabel: `${s.dias} dia${s.dias > 1 ? 's' : ''}`, daysUp: () => this.setState({ dias: Math.min(30, s.dias + 1) }), daysDown: () => this.setState({ dias: Math.max(1, s.dias - 1) }),
+        togglePrn: () => this.setState({ prn: !s.prn }), prnTrack: s.prn ? '#0F766E' : '#C9D4DC', prnKnob: s.prn ? '23px' : '3px',
+        genRx: () => this.setState({ toast: `Receita de ${fav[1]} enviada à impressora da recepção e registrada no prontuário. Assine à mão antes de entregar.` }) });
+    }
+    return out;
+  }
+}
+</script>
+</body>
+</html>

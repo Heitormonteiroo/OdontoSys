@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0;background:#E9EEF2;} a{color:#0F766E;} a:hover{color:#0B5B55;}</style>
+</helmet>
+<div style="padding:80px;font-family:Inter,system-ui,sans-serif;color:#14232E;display:flex;flex-direction:column;gap:96px;">
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="font-size:15px;font-weight:600;color:#0F766E;letter-spacing:0.04em;">ODONTO IPÊ · RODADA 1</div>
+    <h1 style="margin:0;font-size:48px;font-weight:700;letter-spacing:-0.02em;">Sistema de apoio ao atendimento</h1>
+    <div style="font-size:18px;color:#4A5D6B;">6 telas da equipe (desktop 1440 px) e o fluxo do totem (tablet 1280×800), cada uma em estado normal, vazio e erro/carregamento. Dados fictícios.</div>
+  </div>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">9 · Celular · dentista e recepção (iPhone 390 e Android 360, interativo)</h2>
+    <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="9a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Lista de pacientes</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="pacientes" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Menu lateral aberto</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="menu" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Sem conexão</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="offline" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9d" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9d</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Ficha · plano e alertas</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="ficha" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9e" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9e</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Linha do tempo</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="linha" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9f" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9f</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Adicionar adendo</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="adendo" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9g" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9g</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Odontograma · arcada</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="odonto" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9h" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9h</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Dente ampliado · registro por face</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="dente" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9i" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9i</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Anamnese (consulta)</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="anamnese" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9j" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9j</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Receita simples rápida</span></div>
+        <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" width="{{ 390 }}" height="{{ 844 }}" hint-size="390px,844px"><dc-import name="Mobile" tela="receita" plataforma="ios" hint-size="390px,844px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9k" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9k</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Android 360 · Lista</span></div>
+        <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 376 }}" height="{{ 800 }}" hint-size="376px,800px"><dc-import name="Mobile" tela="pacientes" plataforma="android" hint-size="360px,740px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9l" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9l</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Android 360 · Ficha</span></div>
+        <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 376 }}" height="{{ 800 }}" hint-size="376px,800px"><dc-import name="Mobile" tela="ficha" plataforma="android" hint-size="360px,740px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+      <div id="9m" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">9m</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Android 360 · Dente ampliado</span></div>
+        <x-import component-from-global-scope="AndroidDevice" from="./android-frame.jsx" width="{{ 376 }}" height="{{ 800 }}" hint-size="376px,800px"><dc-import name="Mobile" tela="dente" plataforma="android" hint-size="360px,740px" style="width:100%;height:100%;"></dc-import></x-import>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">8 · Nova receita e calculadora pediátrica (interativo)</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="8a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">8a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Busca com favoritos (estado inicial)</span></div>
+        <div style="width:1440px;height:1000px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="NovaReceita" cenario="inicial" hint-size="1440px,1000px" style="width:1440px;height:1000px;"></dc-import>
+        </div>
+      </div>
+      <div id="8b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">8b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Receita simples</span></div>
+        <div style="width:1440px;height:1100px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="NovaReceita" cenario="simples" hint-size="1440px,1100px" style="width:1440px;height:1100px;"></dc-import>
+        </div>
+      </div>
+      <div id="8c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">8c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Bloqueio por alergia</span></div>
+        <div style="width:1440px;height:1000px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="NovaReceita" cenario="alergia" hint-size="1440px,1000px" style="width:1440px;height:1000px;"></dc-import>
+        </div>
+      </div>
+      <div id="8d" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">8d</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Antimicrobiano · calculadora confirmada · 2 vias</span></div>
+        <div style="width:1440px;height:1780px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="NovaReceita" cenario="antimicrobiano" hint-size="1440px,1780px" style="width:1440px;height:1780px;"></dc-import>
+        </div>
+      </div>
+      <div id="8e" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">8e</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Calculadora · dose acima do máximo</span></div>
+        <div style="width:1440px;height:1780px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="NovaReceita" cenario="excedido" hint-size="1440px,1780px" style="width:1440px;height:1780px;"></dc-import>
+        </div>
+      </div>
+      <div id="8f" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">8f</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Medicamento controlado · bloqueado</span></div>
+        <div style="width:1440px;height:1000px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="NovaReceita" cenario="controlado" hint-size="1440px,1000px" style="width:1440px;height:1000px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">7 · Anamnese no tablet (totem 1280×800, interativo · PIN de teste 2580)</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="7a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Boas-vindas</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="boasvindas" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Passo 1 · Dados pessoais</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="dados" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Passo 2 · Histórico de saúde</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="saude" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7d" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7d</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Passo 2 · Respostas faltando</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="saude-erro" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7e" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7e</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Passo 3 · Alergias</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="alergias" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7f" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7f</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Passo 4 · Remédios em uso</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="medicamentos" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7g" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7g</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Passo 5 · Hábitos</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="habitos" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7h" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7h</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Final · Entregue o tablet</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="obrigado" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7i" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7i</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Bloqueio · PIN da equipe</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="bloqueio" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7j" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7j</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Bloqueio · PIN incorreto</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="bloqueio-erro" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+      <div id="7k" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">7k</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Link expirado ou já utilizado</span></div>
+        <div style="width:1280px;height:800px;border-radius:24px;overflow:hidden;border:14px solid #1F2A33;box-shadow:0 12px 32px rgba(16,40,56,.18);background:#F5F8FA;">
+          <dc-import name="AnamneseTablet" tela="expirado" hint-size="1280px,800px" style="width:1280px;height:800px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">6 · Odontograma (interativo: ferramentas, faces, dentição e correção)</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="6a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">6a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Estado inicial</span></div>
+        <div style="width:1440px;height:1100px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Odontograma" state="inicial" hint-size="1440px,1100px" style="width:1440px;height:1100px;"></dc-import>
+        </div>
+      </div>
+      <div id="6b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">6b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Dente selecionado · 36</span></div>
+        <div style="width:1440px;height:1100px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Odontograma" state="selecionado" hint-size="1440px,1100px" style="width:1440px;height:1100px;"></dc-import>
+        </div>
+      </div>
+      <div id="6c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">6c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Odontograma preenchido</span></div>
+        <div style="width:1440px;height:1100px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Odontograma" state="preenchido" hint-size="1440px,1100px" style="width:1440px;height:1100px;"></dc-import>
+        </div>
+      </div>
+      <div id="6d" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">6d</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Dentição mista</span></div>
+        <div style="width:1440px;height:1100px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Odontograma" state="preenchido" denticao="mista" hint-size="1440px,1100px" style="width:1440px;height:1100px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">Componentes</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="0a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">0a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Biblioteca</span></div>
+        <div style="width:1440px;height:1480px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Componentes"  hint-size="1440px,1240px" style="width:1440px;height:1480px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">1 · Login com verificação em duas etapas</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="1a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">1a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Normal · código em digitação</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Login" state="normal" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="1b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">1b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Vazio · etapa 1</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Login" state="vazio" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="1c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">1c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Erro · código incorreto</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Login" state="erro" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">2 · Início do dia</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="2a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">2a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Normal</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Inicio" state="normal" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="2b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">2b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Vazio</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Inicio" state="vazio" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="2c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">2c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Carregando</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Inicio" state="carregando" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">3 · Lista de pacientes</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="3a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">3a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Normal</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Pacientes" state="normal" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="3b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">3b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Vazio · busca sem resultado</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Pacientes" state="vazio" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="3c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">3c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Erro de conexão</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Pacientes" state="erro" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">4 · Ficha do paciente · Plano e orçamento (abas clicáveis)</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="4a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">4a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Normal</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Ficha" state="normal" tab="plano" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="4b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">4b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Vazio · paciente novo</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Ficha" state="vazio" tab="plano" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="4c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">4c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Carregando</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Ficha" state="carregando" tab="plano" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section style="display:flex;flex-direction:column;gap:28px;">
+    <h2 style="margin:0;font-size:32px;font-weight:700;letter-spacing:-0.01em;">5 · Linha do tempo do prontuário</h2>
+    <div style="display:flex;gap:64px;flex-wrap:wrap;align-items:flex-start;">
+      <div id="5a" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">5a</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Normal · com adendo vinculado</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Ficha" state="normal" tab="linha" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="5b" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">5b</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Vazio</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Ficha" state="vazio" tab="linha" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+      <div id="5c" style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:12px;"><span style="height:30px;padding:0 12px;border-radius:8px;background:#14232E;color:#FFFFFF;font-size:15px;font-weight:700;display:flex;align-items:center;">5c</span><span style="font-size:20px;font-weight:600;color:#3B4F5D;">Erro ao salvar adendo</span></div>
+        <div style="width:1440px;height:900px;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(16,40,56,.08),0 12px 32px rgba(16,40,56,.10);background:#F5F8FA;">
+          <dc-import name="Ficha" state="erro" tab="linha" hint-size="1440px,900px" style="width:1440px;height:900px;"></dc-import>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script></script>
+</body>
+</html>

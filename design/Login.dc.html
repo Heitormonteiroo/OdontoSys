@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<div style="width:1440px;height:900px;display:flex;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <div style="width:560px;flex-shrink:0;background:#E6F4F2;padding:48px;box-sizing:border-box;display:flex;flex-direction:column;gap:32px;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="width:42px;height:42px;border-radius:11px;background:#0F766E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px;">I</div>
+      <div style="display:flex;flex-direction:column;gap:2px;"><div style="font-weight:700;font-size:18px;">Odonto Ipê</div><div style="font-size:13px;color:#3B5B58;">Apoio ao atendimento</div></div>
+    </div>
+    <div style="flex:1;border-radius:16px;background:repeating-linear-gradient(135deg,#D7EDE9 0 10px,#CDE7E2 10px 20px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-size:13px;color:#2F5F5A;">foto da recepção da clínica</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="font-size:26px;font-weight:700;letter-spacing:-0.015em;line-height:1.25;text-wrap:pretty;color:#0B3B37;">Tudo o que você precisa durante o atendimento, em poucos cliques.</div>
+      <div style="font-size:15px;color:#2F4F4C;line-height:1.55;">Agenda, prontuário e documentos para impressão. Uso restrito à equipe da clínica.</div>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+    <div style="width:440px;display:flex;flex-direction:column;gap:28px;">
+      <sc-if value="{{ isCreds }}">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-size:13px;font-weight:600;color:#0F766E;letter-spacing:0.04em;">ETAPA 1 DE 2</div>
+          <h1 style="margin:0;font-size:30px;font-weight:700;letter-spacing:-0.02em;">Entrar</h1>
+          <div style="font-size:15px;color:#4A5D6B;">Use seu e-mail profissional cadastrado pela clínica.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600;">E-mail
+            <input type="email" placeholder="nome@odontoipe.com.br" style="height:48px;padding:0 14px;border-radius:8px;border:2px solid #0F766E;box-shadow:0 0 0 4px #CCE9E5;font:400 16px Inter,sans-serif;color:#14232E;background:#FFFFFF;outline:none;box-sizing:border-box;">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:600;">Senha
+            <div style="position:relative;display:flex;">
+              <input type="password" placeholder="Sua senha" style="flex:1;height:48px;padding:0 48px 0 14px;border-radius:8px;border:1px solid #C9D4DC;font:400 16px Inter,sans-serif;background:#FFFFFF;outline:none;box-sizing:border-box;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;">
+              <button aria-label="Mostrar senha" style="position:absolute;right:4px;top:4px;width:40px;height:40px;border:none;background:transparent;color:#4A5D6B;border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">visibility</span></button>
+            </div>
+          </label>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px;">
+            <label style="display:flex;align-items:center;gap:8px;color:#3B4F5D;"><span style="width:20px;height:20px;border-radius:5px;border:1.5px solid #8A9BA8;background:#FFFFFF;"></span>Lembrar e-mail neste computador</label>
+            <a href="#" style="color:#0F766E;font-weight:600;text-decoration:none;">Esqueci a senha</a>
+          </div>
+        </div>
+        <button disabled="" style="height:52px;border-radius:10px;border:none;background:#D5DEE4;color:#5B6E7C;font:600 16px Inter,sans-serif;cursor:not-allowed;">Continuar</button>
+        <div style="font-size:13px;color:#5B6E7C;text-align:center;">Preencha e-mail e senha para continuar.</div>
+      </sc-if>
+      <sc-if value="{{ isCode }}" hint-placeholder-val="{{ true }}">
+        <a href="#" style="display:inline-flex;align-items:center;gap:6px;color:#4A5D6B;font-size:14px;font-weight:500;text-decoration:none;width:fit-content;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">arrow_back</span>Voltar</a>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="font-size:13px;font-weight:600;color:#0F766E;letter-spacing:0.04em;">ETAPA 2 DE 2 · VERIFICAÇÃO</div>
+          <h1 style="margin:0;font-size:30px;font-weight:700;letter-spacing:-0.02em;">Digite o código de 6 dígitos</h1>
+          <div style="font-size:15px;color:#4A5D6B;line-height:1.5;">Enviamos para o aplicativo autenticador vinculado a <strong style="color:#14232E;">h.prado@odontoipe.com.br</strong>.</div>
+        </div>
+        <sc-if value="{{ isError }}">
+          <div role="alert" style="display:flex;gap:12px;padding:14px 16px;border-radius:10px;background:#FEF3F2;border:1px solid #FECDCA;color:#7A271A;font-size:14px;line-height:1.45;">
+            <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">error</span>
+            <div><strong>Código incorreto.</strong> Confira no aplicativo e digite novamente. Restam 2 tentativas antes do bloqueio temporário.</div>
+          </div>
+        </sc-if>
+        <div role="group" aria-label="Código de verificação" style="display:flex;gap:10px;">
+          <sc-for list="{{ boxes }}" as="b" hint-placeholder-count="6">
+            <sc-if value="{{ b.filled }}"><div style="width:62px;height:68px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;">{{ b.d }}</div></sc-if>
+            <sc-if value="{{ b.focus }}"><div style="width:62px;height:68px;border-radius:10px;border:2px solid #0F766E;box-shadow:0 0 0 4px #CCE9E5;background:#FFFFFF;display:flex;align-items:center;justify-content:center;box-sizing:border-box;"><div style="width:2px;height:30px;background:#0F766E;"></div></div></sc-if>
+            <sc-if value="{{ b.empty }}"><div style="width:62px;height:68px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;"></div></sc-if>
+            <sc-if value="{{ b.err }}"><div style="width:62px;height:68px;border-radius:10px;border:2px solid #D92D20;background:#FFFBFA;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600;color:#7A271A;box-sizing:border-box;">{{ b.d }}</div></sc-if>
+          </sc-for>
+        </div>
+        <button style="height:52px;border-radius:10px;border:none;background:#0F766E;color:#FFFFFF;font:600 16px Inter,sans-serif;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ ctaLabel }}</button>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#4A5D6B;">
+          <span>Novo código disponível em <strong style="font-variant-numeric:tabular-nums;color:#14232E;">0:42</strong></span>
+          <a href="#" style="color:#0F766E;font-weight:600;text-decoration:none;">Usar código de recuperação</a>
+        </div>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#5B6E7C;padding-top:20px;border-top:1px solid #E1E8ED;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">lock</span>Acesso registrado. Sessão encerra após 15 min sem uso.
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;vazio&quot;,&quot;erro&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.props.state ?? 'normal';
+    const isError = s === 'erro';
+    const code = isError ? '481920' : '482';
+    const boxes = Array.from({ length: 6 }, (_, i) => {
+      const d = code[i] || '';
+      return { d, err: isError, filled: !isError && !!d, focus: !isError && i === code.length, empty: !isError && !d && i !== code.length };
+    });
+    return { isCreds: s === 'vazio', isCode: s !== 'vazio', isError, boxes, ctaLabel: isError ? 'Tentar novamente' : 'Verificar e entrar' };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+<style>a{color:#0F766E;} a:hover{color:#0B5B55;}</style>
+</helmet>
+<div style="width:1280px;height:100%;min-height:800px;display:flex;flex-direction:column;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+
+  <sc-if value="{{ isPatient }}" hint-placeholder-val="{{ true }}">
+    <header style="flex-shrink:0;height:76px;display:flex;align-items:center;gap:14px;padding:0 32px;background:#FFFFFF;border-bottom:1px solid #E1E8ED;">
+      <div style="width:42px;height:42px;border-radius:11px;background:#0F766E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:19px;">I</div>
+      <div style="display:flex;flex-direction:column;gap:2px;flex:1;"><span style="font-weight:700;font-size:18px;">Odonto Ipê</span><span style="font-size:14px;color:#4A5D6B;">Questionário de saúde</span></div>
+      <sc-if value="{{ isStep }}"><span style="font-size:18px;font-weight:600;color:#3B4F5D;font-variant-numeric:tabular-nums;">Passo {{ stepNum }} de 5</span></sc-if>
+      <button onClick="{{ openLock }}" aria-label="Área da equipe" style="height:48px;padding:0 14px;margin-left:12px;border-radius:10px;border:1px solid #E1E8ED;background:#FFFFFF;color:#5B6E7C;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">lock</span>Equipe</button>
+    </header>
+  </sc-if>
+
+  <sc-if value="{{ isWelcome }}">
+    <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;">
+      <div style="width:820px;display:flex;flex-direction:column;gap:32px;">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <span style="font-size:20px;font-weight:600;color:#0F766E;">Bem-vindo à Odonto Ipê</span>
+          <h1 style="margin:0;font-size:48px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;">Olá, Carlos Eduardo</h1>
+          <p style="margin:0;font-size:22px;line-height:1.5;color:#3B4F5D;text-wrap:pretty;">Antes da consulta, responda algumas perguntas sobre sua saúde. Isso ajuda o dentista a cuidar de você com segurança.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <sc-for list="{{ stepNames }}" as="s" hint-placeholder-count="5">
+            <span style="display:flex;align-items:center;gap:10px;height:48px;padding:0 16px;border-radius:12px;background:#FFFFFF;border:1px solid #E1E8ED;font-size:18px;font-weight:500;"><span style="width:28px;height:28px;border-radius:50%;background:#E6F4F2;color:#0B5B55;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;">{{ s.n }}</span>{{ s.label }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:28px;font-size:18px;color:#3B4F5D;">
+          <span style="display:flex;align-items:center;gap:8px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#0F766E;">schedule</span>Cerca de 5 minutos</span>
+          <span style="display:flex;align-items:center;gap:8px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#0F766E;">shield_person</span>Somente a equipe da clínica verá suas respostas</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px;">
+          <button onClick="{{ start }}" style="height:76px;min-width:320px;padding:0 36px;border-radius:16px;border:none;background:#0F766E;color:#FFFFFF;font:700 24px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;outline:none;" style-active="background:#0B5B55;" style-focus="box-shadow:0 0 0 4px #FFFFFF,0 0 0 7px #0F766E;">Começar<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:28px;line-height:1;font-weight:normal;">arrow_forward</span></button>
+          <span style="font-size:18px;color:#4A5D6B;">Não é você? <strong style="color:#14232E;">Avise a recepção antes de começar.</strong></span>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isStep }}">
+    <nav aria-label="Progresso" style="flex-shrink:0;padding:18px 32px 16px;background:#FFFFFF;border-bottom:1px solid #E1E8ED;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;">
+      <sc-for list="{{ progress }}" as="p" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="height:8px;border-radius:999px;background:{{ p.bar }};"></div>
+          <span style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:{{ p.weight }};color:{{ p.fg }};">
+            <sc-if value="{{ p.done }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;color:#0F766E;">check_circle</span></sc-if>{{ p.label }}</span>
+        </div>
+      </sc-for>
+    </nav>
+    <main ref="{{ mainRef }}" style="flex:1;min-height:0;overflow:auto;padding:28px 32px 32px;box-sizing:border-box;">
+      <div style="max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:4px;">
+          <h1 style="margin:0;font-size:34px;font-weight:700;letter-spacing:-0.02em;">{{ stepTitle }}</h1>
+          <p style="margin:0;font-size:19px;color:#3B4F5D;">{{ stepSub }}</p>
+        </div>
+        <sc-if value="{{ errBanner }}">
+          <div role="alert" style="display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:#FEF3F2;border:2px solid #F97066;color:#7A271A;font-size:19px;">
+            <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:28px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">error</span>
+            <span><strong>{{ errBanner }}</strong> Elas estão marcadas em vermelho abaixo.</span>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ isDados }}">
+          <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:#EFF8FF;border:1px solid #B2DDFF;color:#1849A9;font-size:17px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#175CD3;">info</span>A recepção já preencheu alguns dados. Confira e corrija se for preciso.</div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px;padding:24px;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:16px;">
+            <sc-for list="{{ fields }}" as="f" hint-placeholder-count="6">
+              <label style="display:flex;flex-direction:column;gap:8px;font-size:18px;font-weight:600;grid-column:{{ f.span }};">
+                <span style="display:flex;gap:8px;align-items:baseline;">{{ f.label }}<span style="font-size:15px;font-weight:500;color:#4A5D6B;">{{ f.req }}</span></span>
+                <input value="{{ f.value }}" onChange="{{ f.change }}" inputmode="{{ f.mode }}" placeholder="{{ f.ph }}" style="height:60px;padding:0 18px;border-radius:12px;border:{{ f.bd }};background:#FFFFFF;font:400 21px Inter,sans-serif;color:#14232E;outline:none;box-sizing:border-box;font-variant-numeric:tabular-nums;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;">
+                <sc-if value="{{ f.err }}"><span style="font-size:16px;font-weight:600;color:#B42318;display:flex;align-items:center;gap:6px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">error</span>Preencha este campo.</span></sc-if>
+              </label>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-for list="{{ questions }}" as="q" hint-placeholder-count="4">
+          <div style="background:{{ q.bg }};border:{{ q.bd }};border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);">
+            <div style="display:flex;align-items:center;gap:24px;">
+              <div style="flex:1;display:flex;flex-direction:column;gap:6px;min-width:0;">
+                <sc-if value="{{ q.important }}"><span style="display:inline-flex;align-items:center;gap:6px;width:fit-content;height:26px;padding:0 10px;border-radius:999px;background:#FFFAEB;color:#93370D;font-size:13px;font-weight:700;letter-spacing:0.04em;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;line-height:1;font-weight:normal;">priority_high</span>MUITO IMPORTANTE</span></sc-if>
+                <span style="font-size:23px;font-weight:600;line-height:1.3;text-wrap:pretty;">{{ q.text }}</span>
+                <sc-if value="{{ q.hint }}"><span style="font-size:17px;color:#4A5D6B;line-height:1.4;">{{ q.hint }}</span></sc-if>
+              </div>
+              <div role="radiogroup" aria-label="{{ q.text }}" style="display:flex;gap:10px;flex-shrink:0;">
+                <sc-for list="{{ q.opts }}" as="o" hint-placeholder-count="2">
+                  <sc-if value="{{ o.on }}"><button role="radio" aria-checked="true" onClick="{{ o.click }}" style="height:64px;min-width:{{ q.optW }};padding:0 20px;border-radius:14px;border:2px solid #0F766E;background:#0F766E;color:#FFFFFF;font:700 20px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;box-sizing:border-box;outline:none;" style-focus="box-shadow:0 0 0 4px #FFFFFF,0 0 0 7px #0F766E;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">check</span>{{ o.label }}</button></sc-if>
+                  <sc-if value="{{ o.off }}"><button role="radio" aria-checked="false" onClick="{{ o.click }}" style="height:64px;min-width:{{ q.optW }};padding:0 20px;border-radius:14px;border:2px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 20px Inter,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer;box-sizing:border-box;outline:none;" style-active="background:#E6F4F2;" style-focus="box-shadow:0 0 0 4px #99D5CE;">{{ o.label }}</button></sc-if>
+                </sc-for>
+              </div>
+            </div>
+            <sc-if value="{{ q.err }}"><span style="font-size:17px;font-weight:600;color:#B42318;display:flex;align-items:center;gap:6px;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">error</span>{{ q.errText }}</span></sc-if>
+            <sc-if value="{{ q.showChips }}">
+              <div style="display:flex;flex-direction:column;gap:10px;padding-top:4px;">
+                <span style="font-size:18px;font-weight:600;">Quais remédios? Toque em todos que se aplicam.</span>
+                <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                  <sc-for list="{{ q.chips }}" as="c" hint-placeholder-count="6">
+                    <sc-if value="{{ c.on }}"><button aria-pressed="true" onClick="{{ c.click }}" style="height:52px;padding:0 18px;border-radius:999px;border:2px solid #B42318;background:#FEF3F2;color:#7A271A;font:600 18px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 4px #FECDCA;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">check</span>{{ c.label }}</button></sc-if>
+                    <sc-if value="{{ c.off }}"><button aria-pressed="false" onClick="{{ c.click }}" style="height:52px;padding:0 18px;border-radius:999px;border:2px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:500 18px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 4px #99D5CE;">{{ c.label }}</button></sc-if>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ q.showDetail }}">
+              <label style="display:flex;flex-direction:column;gap:8px;font-size:18px;font-weight:600;">{{ q.detailLabel }}
+                <input value="{{ q.detail }}" onChange="{{ q.setDetail }}" placeholder="{{ q.detailPh }}" style="height:58px;padding:0 18px;border-radius:12px;border:2px solid #C9D4DC;font:400 20px Inter,sans-serif;color:#14232E;outline:none;box-sizing:border-box;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;">
+              </label>
+            </sc-if>
+            <sc-if value="{{ q.showMeds }}">
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 56px;gap:10px;font-size:16px;font-weight:600;color:#3B4F5D;"><span>Nome do remédio</span><span>Quanto e quando</span><span></span></div>
+                <sc-for list="{{ meds }}" as="m" hint-placeholder-count="1">
+                  <div style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 56px;gap:10px;">
+                    <input value="{{ m.name }}" onChange="{{ m.setName }}" aria-label="Nome do remédio" placeholder="Ex.: Losartana" style="height:58px;padding:0 16px;border-radius:12px;border:2px solid #C9D4DC;font:400 20px Inter,sans-serif;color:#14232E;outline:none;box-sizing:border-box;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;">
+                    <input value="{{ m.dose }}" onChange="{{ m.setDose }}" aria-label="Dose e frequência" placeholder="Ex.: 50 mg, 1 vez ao dia" style="height:58px;padding:0 16px;border-radius:12px;border:2px solid #C9D4DC;font:400 20px Inter,sans-serif;color:#14232E;outline:none;box-sizing:border-box;" style-focus="border-color:#0F766E;box-shadow:0 0 0 4px #CCE9E5;">
+                    <button onClick="{{ m.remove }}" aria-label="Remover remédio" style="width:56px;height:58px;border-radius:12px;border:2px solid #E1E8ED;background:#FFFFFF;color:#4A5D6B;display:flex;align-items:center;justify-content:center;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 4px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">delete</span></button>
+                  </div>
+                </sc-for>
+                <button onClick="{{ addMed }}" style="height:56px;width:fit-content;padding:0 20px;border-radius:12px;border:2px dashed #0F766E;background:#F3FAF9;color:#0B5B55;font:600 18px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 4px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">add</span>Adicionar outro remédio</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ q.noteCrit }}"><div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:#FEF3F2;color:#7A271A;font-size:17px;font-weight:500;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">notifications_active</span>{{ q.noteCrit }}</div></sc-if>
+            <sc-if value="{{ q.noteInfo }}"><div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;background:#EFF8FF;color:#1849A9;font-size:17px;font-weight:500;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#175CD3;">info</span>{{ q.noteInfo }}</div></sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </main>
+    <footer style="flex-shrink:0;height:104px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 32px;background:#FFFFFF;border-top:1px solid #E1E8ED;box-shadow:0 -2px 8px rgba(16,40,56,.04);">
+      <button onClick="{{ back }}" style="height:68px;min-width:180px;padding:0 24px;border-radius:14px;border:2px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 21px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;outline:none;" style-active="background:#F5F8FA;" style-focus="box-shadow:0 0 0 4px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:26px;line-height:1;font-weight:normal;">arrow_back</span>Voltar</button>
+      <span style="font-size:17px;color:#4A5D6B;">{{ answeredLabel }}</span>
+      <button onClick="{{ next }}" style="height:68px;min-width:300px;padding:0 28px;border-radius:14px;border:none;background:#0F766E;color:#FFFFFF;font:700 21px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;outline:none;" style-active="background:#0B5B55;" style-focus="box-shadow:0 0 0 4px #FFFFFF,0 0 0 7px #0F766E;">{{ nextLabel }}<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:26px;line-height:1;font-weight:normal;">{{ nextIcon }}</span></button>
+    </footer>
+  </sc-if>
+
+  <sc-if value="{{ isThanks }}">
+    <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;">
+      <div style="width:760px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;">
+        <div style="width:120px;height:120px;border-radius:50%;background:#ECFDF3;color:#067647;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:72px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">check_circle</span></div>
+        <h1 style="margin:0;font-size:52px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;">Obrigado, Carlos!</h1>
+        <div style="display:flex;align-items:center;gap:14px;padding:20px 28px;border-radius:16px;background:#0F766E;color:#FFFFFF;font-size:28px;font-weight:700;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:36px;line-height:1;font-weight:normal;">tablet</span>Entregue o tablet à recepção</div>
+        <p style="margin:0;font-size:20px;line-height:1.5;color:#3B4F5D;max-width:600px;text-wrap:pretty;">Suas respostas foram enviadas. O dentista vai revisá-las com você antes do atendimento. Por segurança, este questionário foi fechado.</p>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isExpired }}">
+    <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px;">
+      <div style="width:760px;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;">
+        <div style="width:120px;height:120px;border-radius:50%;background:#FFFAEB;color:#B54708;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:64px;line-height:1;font-weight:normal;">link_off</span></div>
+        <h1 style="margin:0;font-size:42px;font-weight:700;letter-spacing:-0.02em;line-height:1.15;">Este questionário expirou<br>ou já foi respondido</h1>
+        <p style="margin:0;font-size:20px;line-height:1.5;color:#3B4F5D;max-width:620px;text-wrap:pretty;">Por segurança, cada questionário pode ser respondido uma única vez e vale por 2 horas. Nenhuma resposta foi perdida.</p>
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 26px;border-radius:16px;background:#FFFFFF;border:2px solid #0F766E;color:#0B5B55;font-size:24px;font-weight:700;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:32px;line-height:1;font-weight:normal;">tablet</span>Entregue o tablet à recepção para receber um novo</div>
+        <span style="font-size:15px;color:#4A5D6B;font-variant-numeric:tabular-nums;">Código para a recepção: ANM-4471 · gerado hoje às 08:12</span>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isLock }}">
+    <main style="flex:1;display:flex;background:#14232E;color:#FFFFFF;">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:28px;padding:0 72px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:#99D5CE;letter-spacing:0.05em;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">admin_panel_settings</span>ÁREA DA EQUIPE</div>
+        <h1 style="margin:0;font-size:40px;font-weight:700;letter-spacing:-0.02em;line-height:1.15;">Sair do modo totem</h1>
+        <p style="margin:0;font-size:19px;line-height:1.5;color:#C9D4DC;max-width:440px;">Digite o PIN de 4 dígitos do dentista ou da recepção. As respostas já dadas pelo paciente ficam salvas.</p>
+        <div aria-live="polite" style="display:flex;gap:18px;">
+          <sc-for list="{{ dots }}" as="d" hint-placeholder-count="4">
+            <span style="width:26px;height:26px;border-radius:50%;box-sizing:border-box;border:2px solid {{ d.bd }};background:{{ d.bg }};"></span>
+          </sc-for>
+        </div>
+        <sc-if value="{{ pinError }}">
+          <div role="alert" style="display:flex;align-items:center;gap:10px;width:fit-content;padding:12px 16px;border-radius:12px;background:#FEF3F2;color:#7A271A;font-size:17px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">error</span>PIN incorreto. {{ attemptsLabel }}</div>
+        </sc-if>
+        <button onClick="{{ closeLock }}" style="height:60px;width:fit-content;padding:0 24px;border-radius:14px;border:2px solid #3B4F5D;background:transparent;color:#FFFFFF;font:600 19px Inter,sans-serif;display:flex;align-items:center;gap:10px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 4px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">arrow_back</span>Voltar ao questionário</button>
+      </div>
+      <div style="width:520px;display:flex;align-items:center;justify-content:center;background:#1A2D3A;">
+        <div style="display:grid;grid-template-columns:repeat(3,112px);gap:16px;">
+          <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12">
+            <sc-if value="{{ k.isDigit }}"><button onClick="{{ k.press }}" aria-label="{{ k.label }}" style="height:96px;border-radius:20px;border:none;background:#24394A;color:#FFFFFF;font:600 36px Inter,sans-serif;font-variant-numeric:tabular-nums;cursor:pointer;outline:none;" style-active="background:#0F766E;" style-focus="box-shadow:0 0 0 4px #99D5CE;">{{ k.label }}</button></sc-if>
+            <sc-if value="{{ k.isBack }}"><button onClick="{{ k.press }}" aria-label="Apagar" style="height:96px;border-radius:20px;border:none;background:transparent;color:#C9D4DC;display:flex;align-items:center;justify-content:center;cursor:pointer;outline:none;" style-active="background:#24394A;" style-focus="box-shadow:0 0 0 4px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:36px;line-height:1;font-weight:normal;">backspace</span></button></sc-if>
+            <sc-if value="{{ k.isBlank }}"><span></span></sc-if>
+          </sc-for>
+        </div>
+      </div>
+    </main>
+  </sc-if>
+
+  <sc-if value="{{ isUnlocked }}">
+    <main style="flex:1;display:flex;align-items:center;justify-content:center;background:#14232E;color:#FFFFFF;">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:72px;line-height:1;font-weight:normal;color:#5FD0C3;">lock_open</span>
+        <h1 style="margin:0;font-size:38px;font-weight:700;">Modo totem encerrado</h1>
+        <p style="margin:0;font-size:19px;color:#C9D4DC;">Respostas salvas: {{ savedLabel }}. O questionário pode ser retomado na ficha do paciente.</p>
+        <button onClick="{{ restart }}" style="height:60px;padding:0 24px;border-radius:14px;border:none;background:#0F766E;color:#FFFFFF;font:600 19px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 4px #99D5CE;">Voltar ao modo totem</button>
+      </div>
+    </main>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:800},&quot;tela&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;boasvindas&quot;,&quot;dados&quot;,&quot;saude&quot;,&quot;saude-erro&quot;,&quot;alergias&quot;,&quot;medicamentos&quot;,&quot;habitos&quot;,&quot;obrigado&quot;,&quot;bloqueio&quot;,&quot;bloqueio-erro&quot;,&quot;expirado&quot;],&quot;default&quot;:&quot;boasvindas&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  STEPS = ['dados', 'saude', 'alergias', 'medicamentos', 'habitos'];
+  NAMES = ['Dados pessoais', 'Histórico de saúde', 'Alergias', 'Remédios em uso', 'Hábitos'];
+  YN = ['Sim', 'Não'];
+  YNS = ['Sim', 'Não', 'Não sei'];
+  Q = {
+    saude: [
+      { id: 'tratamento', text: 'Está em tratamento médico atualmente?', opts: this.YN, detail: 'Qual tratamento?', ph: 'Ex.: acompanhamento de pressão' },
+      { id: 'pressao', text: 'Tem pressão alta?', opts: this.YNS },
+      { id: 'coracao', text: 'Tem algum problema no coração?', opts: this.YNS, detail: 'Qual problema?', ph: 'Ex.: arritmia, sopro, marca-passo' },
+      { id: 'diabetes', text: 'Tem diabetes?', opts: this.YNS },
+      { id: 'sangra', text: 'Sangra muito ao se cortar ou depois de tirar um dente?', opts: this.YNS },
+      { id: 'anestesia', text: 'Já passou mal com anestesia de dentista?', opts: this.YN, detail: 'O que aconteceu?', ph: 'Ex.: tontura, falta de ar' },
+      { id: 'gravidez', text: 'Está grávida ou pode estar grávida?', hint: 'Se não se aplica a você, responda "Não".', opts: this.YNS, important: true }
+    ],
+    alergias: [
+      { id: 'alergiaMed', text: 'Tem alergia a algum remédio?', opts: this.YNS, important: true, chips: true, detail: 'Que reação você teve?', ph: 'Ex.: inchaço, manchas na pele, falta de ar', crit: 'Vamos avisar o dentista sobre esta alergia antes do atendimento.' },
+      { id: 'latex', text: 'Tem alergia a látex (luva ou balão de borracha)?', opts: this.YNS, crit: 'A equipe usará luvas sem látex no seu atendimento.' },
+      { id: 'outraAlergia', text: 'Tem alguma outra alergia?', hint: 'Alimentos, picada de inseto, produtos de limpeza…', opts: this.YN, detail: 'Qual alergia?', ph: 'Ex.: camarão' }
+    ],
+    medicamentos: [
+      { id: 'remedio', text: 'Toma algum remédio todos os dias?', opts: this.YN, meds: true },
+      { id: 'anticoag', text: 'Toma remédio para "afinar o sangue"?', hint: 'Por exemplo: varfarina (Marevan), AAS, clopidogrel, rivaroxabana (Xarelto), enoxaparina.', opts: this.YNS, important: true, crit: 'Vamos avisar o dentista. Não pare de tomar o remédio sem falar com seu médico.', unsure: 'Tudo bem. O dentista vai conferir com você antes de qualquer procedimento.' }
+    ],
+    habitos: [
+      { id: 'fuma', text: 'Você fuma?', opts: ['Não', 'Parei', 'Sim'] },
+      { id: 'alcool', text: 'Toma bebida alcoólica?', opts: ['Nunca', 'Às vezes', 'Toda semana'] },
+      { id: 'range', text: 'Range ou aperta os dentes?', opts: ['Não', 'À noite', 'De dia', 'Não sei'] },
+      { id: 'escova', text: 'Quantas vezes escova os dentes por dia?', opts: ['1', '2', '3 ou mais'] },
+      { id: 'fio', text: 'Usa fio dental?', opts: ['Nunca', 'Às vezes', 'Todo dia'] }
+    ]
+  };
+  CHIPS = ['Penicilina / amoxicilina', 'Dipirona', 'Anti-inflamatório (ibuprofeno, diclofenaco)', 'AAS', 'Anestésico local', 'Outro'];
+  mainRef = React.createRef();
+  state = this.init();
+
+  init() {
+    const t = (this.props && this.props.tela) || 'boasvindas';
+    const s = {
+      screen: t, prev: null, showErrors: false, pin: '', pinError: false, attempts: 3,
+      dados: { nome: 'Carlos Eduardo Vieira', nasc: '14/05/1981', cpf: '124.659.870-93', cel: '(67) 99601-7734', emNome: '', emTel: '' },
+      ans: {}, det: {}, chips: [], meds: [{ name: '', dose: '' }]
+    };
+    const order = ['dados', 'saude', 'saude-erro', 'alergias', 'medicamentos', 'habitos'];
+    const lvl = order.indexOf(t);
+    const past = lvl >= 0 || ['obrigado', 'bloqueio', 'bloqueio-erro'].includes(t);
+    if (lvl >= 1 || past && lvl < 0) {
+      Object.assign(s.ans, { tratamento: 'Sim', pressao: 'Sim', coracao: 'Não', diabetes: 'Não' });
+      s.det.tratamento = 'Controle de pressão com cardiologista';
+      if (t === 'saude-erro' || lvl >= 3 || lvl < 0) Object.assign(s.ans, { anestesia: 'Não' });
+      if (lvl >= 3 || lvl < 0) Object.assign(s.ans, { sangra: 'Não', gravidez: 'Não' });
+    }
+    if (lvl >= 3 || lvl < 0 && past) { Object.assign(s.ans, { alergiaMed: 'Sim', latex: 'Não' }); s.chips = ['Dipirona']; s.det.alergiaMed = 'Inchaço nos olhos e manchas na pele'; if (lvl >= 4 || lvl < 0) s.ans.outraAlergia = 'Não'; }
+    if (lvl >= 4 || lvl < 0 && past) { s.ans.remedio = 'Sim'; s.meds = [{ name: 'Losartana', dose: '50 mg, 1 vez ao dia' }, { name: '', dose: '' }]; s.ans.anticoag = 'Não sei'; }
+    if (lvl >= 5) Object.assign(s.ans, { fuma: 'Parei', alcool: 'Às vezes', escova: '2' });
+    if (t === 'saude-erro') { s.screen = 'saude'; s.showErrors = true; }
+    if (t === 'bloqueio') { s.screen = 'bloqueio'; s.pin = '25'; s.prev = 'medicamentos'; }
+    if (t === 'bloqueio-erro') { s.screen = 'bloqueio'; s.pinError = true; s.attempts = 2; s.prev = 'medicamentos'; }
+    return s;
+  }
+  missing(step) {
+    const st = this.state;
+    if (step === 'dados') return ['nome', 'nasc', 'cel'].filter(k => !st.dados[k].trim());
+    return this.Q[step].filter(q => !st.ans[q.id] || (q.chips && st.ans[q.id] === 'Sim' && !st.chips.length && !(st.det[q.id] || '').trim())).map(q => q.id);
+  }
+  go(screen) { this.setState({ screen, showErrors: false }); if (this.mainRef.current) this.mainRef.current.scrollTop = 0; }
+  next() {
+    const st = this.state, i = this.STEPS.indexOf(st.screen);
+    if (this.missing(st.screen).length) { this.setState({ showErrors: true }); if (this.mainRef.current) this.mainRef.current.scrollTop = 0; return; }
+    this.go(i === 4 ? 'obrigado' : this.STEPS[i + 1]);
+  }
+  back() { const i = this.STEPS.indexOf(this.state.screen); this.go(i === 0 ? 'boasvindas' : this.STEPS[i - 1]); }
+  press(k) {
+    const st = this.state;
+    if (k === 'back') return this.setState({ pin: st.pin.slice(0, -1) });
+    const pin = st.pin + k;
+    if (pin.length < 4) return this.setState({ pin, pinError: false });
+    if (pin === '2580') return this.setState({ pin: '', pinError: false, attempts: 3, screen: 'liberado' });
+    this.setState({ pin: '', pinError: true, attempts: Math.max(0, st.attempts - 1) });
+  }
+
+  renderVals() {
+    const st = this.state, sc = st.screen, stepIdx = this.STEPS.indexOf(sc), isStep = stepIdx >= 0;
+    const miss = isStep ? this.missing(sc) : [];
+    const showErr = st.showErrors && miss.length > 0;
+    const out = {
+      isPatient: !['bloqueio', 'liberado'].includes(sc), isWelcome: sc === 'boasvindas', isStep, isThanks: sc === 'obrigado', isExpired: sc === 'expirado',
+      isLock: sc === 'bloqueio', isUnlocked: sc === 'liberado', stepNum: stepIdx + 1, mainRef: this.mainRef,
+      stepNames: this.NAMES.map((label, i) => ({ n: i + 1, label })),
+      start: () => this.go('dados'), back: () => this.back(), next: () => this.next(),
+      openLock: () => this.setState({ prev: sc, screen: 'bloqueio', pin: '', pinError: false }),
+      closeLock: () => this.setState({ screen: st.prev || 'boasvindas', pin: '', pinError: false }),
+      restart: () => this.setState({ screen: st.prev || 'boasvindas' }),
+      savedLabel: st.prev && this.STEPS.includes(st.prev) ? `${this.STEPS.indexOf(st.prev)} de 5 passos` : 'nenhuma',
+      dots: [0, 1, 2, 3].map(i => i < st.pin.length ? { bg: '#5FD0C3', bd: '#5FD0C3' } : { bg: 'transparent', bd: st.pinError ? '#F97066' : '#8A9BA8' }),
+      pinError: st.pinError, attemptsLabel: st.attempts > 0 ? `Restam ${st.attempts} tentativa${st.attempts > 1 ? 's' : ''}.` : 'Tablet bloqueado por 5 minutos.',
+      keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'back'].map(k => ({ label: k, isDigit: /\d/.test(k), isBack: k === 'back', isBlank: k === '', press: () => this.press(k) }))
+    };
+    if (!isStep) return out;
+    const SUB = {
+      dados: 'Confira seus dados de contato.',
+      saude: 'Responda com calma. Se não souber, toque em "Não sei".',
+      alergias: 'Estas respostas são muito importantes para sua segurança.',
+      medicamentos: 'Inclua remédios que você toma todos os dias, mesmo os sem receita.',
+      habitos: 'Último passo. Não existe resposta certa ou errada.'
+    };
+    Object.assign(out, {
+      stepTitle: this.NAMES[stepIdx], stepSub: SUB[sc], isDados: sc === 'dados',
+      progress: this.NAMES.map((label, i) => ({ label, done: i < stepIdx, bar: i <= stepIdx ? '#0F766E' : '#E1E8ED', fg: i === stepIdx ? '#0B5B55' : i < stepIdx ? '#3B4F5D' : '#5B6E7C', weight: i === stepIdx ? 700 : 500 })),
+      errBanner: showErr ? (miss.length === 1 ? 'Falta responder 1 pergunta.' : `Faltam ${miss.length} respostas.`) : '',
+      nextLabel: stepIdx === 4 ? 'Enviar respostas' : 'Continuar', nextIcon: stepIdx === 4 ? 'send' : 'arrow_forward',
+      questions: [], fields: []
+    });
+    if (sc === 'dados') {
+      const F = [['nome', 'Nome completo', 'obrigatório', '1 / -1', 'text', ''], ['nasc', 'Data de nascimento', 'obrigatório', 'auto', 'numeric', 'dd/mm/aaaa'], ['cpf', 'CPF', '', 'auto', 'numeric', '000.000.000-00'], ['cel', 'Celular', 'obrigatório', 'auto', 'tel', '(00) 00000-0000'], ['emNome', 'Contato de emergência', 'opcional', 'auto', 'text', 'Nome de um familiar ou amigo'], ['emTel', 'Telefone do contato', 'opcional', 'auto', 'tel', '(00) 00000-0000']];
+      out.fields = F.map(([k, label, req, span, mode, ph]) => { const err = showErr && miss.includes(k); return { label, req, span: k === 'nome' ? '1 / -1' : 'auto', mode, ph, value: st.dados[k], err, bd: err ? '2px solid #D92D20' : '2px solid #C9D4DC', change: e => { const v = e.target.value; this.setState(s => ({ dados: { ...s.dados, [k]: v } })); } }; });
+      const done = 3 - miss.length; out.answeredLabel = `${done} de 3 campos obrigatórios`;
+      return out;
+    }
+    const qs = this.Q[sc];
+    out.questions = qs.map(q => {
+      const a = st.ans[q.id], err = showErr && miss.includes(q.id), yes = a === 'Sim';
+      return {
+        text: q.text, hint: q.hint || '', important: !!q.important, err, errText: !a ? 'Escolha uma resposta.' : 'Toque no remédio ou descreva a alergia.',
+        bg: err ? '#FFFBFA' : '#FFFFFF', bd: err ? '2px solid #D92D20' : q.important ? '2px solid #FEDF89' : '1px solid #E1E8ED',
+        optW: q.opts.length > 3 ? '108px' : '132px',
+        opts: q.opts.map(o => ({ label: o, on: a === o, off: a !== o, click: () => this.setState(s => ({ ans: { ...s.ans, [q.id]: o } })) })),
+        showChips: !!q.chips && yes,
+        chips: this.CHIPS.map(c => ({ label: c, on: st.chips.includes(c), off: !st.chips.includes(c), click: () => this.setState(s => ({ chips: s.chips.includes(c) ? s.chips.filter(x => x !== c) : [...s.chips, c] })) })),
+        showDetail: !!q.detail && yes, detailLabel: q.detail || '', detailPh: q.ph || '', detail: st.det[q.id] || '',
+        setDetail: e => { const v = e.target.value; this.setState(s => ({ det: { ...s.det, [q.id]: v } })); },
+        showMeds: !!q.meds && yes,
+        noteCrit: q.crit && yes ? q.crit : '', noteInfo: q.unsure && a === 'Não sei' ? q.unsure : ''
+      };
+    });
+    out.meds = st.meds.map((m, i) => ({ name: m.name, dose: m.dose,
+      setName: e => { const v = e.target.value; this.setState(s => ({ meds: s.meds.map((x, j) => j === i ? { ...x, name: v } : x) })); },
+      setDose: e => { const v = e.target.value; this.setState(s => ({ meds: s.meds.map((x, j) => j === i ? { ...x, dose: v } : x) })); },
+      remove: () => this.setState(s => ({ meds: s.meds.length > 1 ? s.meds.filter((_, j) => j !== i) : [{ name: '', dose: '' }] })) }));
+    out.addMed = () => this.setState(s => ({ meds: [...s.meds, { name: '', dose: '' }] }));
+    const answered = qs.length - qs.filter(q => !st.ans[q.id]).length;
+    out.answeredLabel = `${answered} de ${qs.length} respondidas`;
+    return out;
+  }
+}
+</script>
+</body>
+</html>

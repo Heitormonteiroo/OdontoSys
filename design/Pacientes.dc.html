@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<div style="width:1440px;height:900px;display:flex;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <dc-import name="Sidebar" active="pacientes" hint-size="248px,900px" style="width:248px;height:900px;flex-shrink:0;"></dc-import>
+  <main style="flex:1;min-width:0;overflow:auto;padding:28px 40px 40px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.02em;">Pacientes</h1>
+        <div style="font-size:14px;color:#4A5D6B;">{{ countLabel }}</div>
+      </div>
+      <button style="height:48px;padding:0 20px;border-radius:10px;border:none;background:#0F766E;color:#FFFFFF;font:600 15px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">person_add</span>Novo paciente</button>
+    </div>
+    <div style="flex-shrink:0;display:flex;flex-direction:column;gap:14px;">
+      <label style="display:flex;align-items:center;gap:12px;height:52px;padding:0 16px;border-radius:12px;border:2px solid #0F766E;box-shadow:0 0 0 4px #CCE9E5;background:#FFFFFF;box-sizing:border-box;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#0F766E;">search</span>
+        <input value="{{ query }}" placeholder="Buscar por nome, CPF ou telefone" style="flex:1;border:none;outline:none;font:400 16px Inter,sans-serif;color:#14232E;background:transparent;">
+        <sc-if value="{{ hasQuery }}"><button aria-label="Limpar busca" style="width:32px;height:32px;border:none;border-radius:6px;background:#EEF2F5;color:#3B4F5D;cursor:pointer;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">close</span></button></sc-if>
+      </label>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+          <sc-if value="{{ f.on }}"><button aria-pressed="true" style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #0F766E;background:#E6F4F2;color:#0B5B55;font:600 14px Inter,sans-serif;cursor:pointer;display:flex;align-items:center;gap:6px;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">check</span>{{ f.label }}</button></sc-if>
+          <sc-if value="{{ f.off }}"><button aria-pressed="false" style="height:36px;padding:0 14px;border-radius:999px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 14px Inter,sans-serif;cursor:pointer;outline:none;" style-hover="border-color:#8A9BA8;" style-focus="box-shadow:0 0 0 3px #99D5CE;">{{ f.label }}</button></sc-if>
+        </sc-for>
+        <div style="width:1px;height:24px;background:#D5DEE4;margin:0 6px;"></div>
+        <button style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;">Dentista: Todos<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">expand_more</span></button>
+        <button style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#3B4F5D;font:500 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;">Ordenar: Recentes<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">expand_more</span></button>
+      </div>
+    </div>
+    <sc-if value="{{ isError }}">
+      <div role="alert" style="flex-shrink:0;display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:12px;background:#FEF3F2;border:1px solid #FECDCA;color:#7A271A;font-size:15px;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;color:#B42318;font-variation-settings:'FILL' 1;">wifi_off</span>
+        <div style="flex:1;line-height:1.45;"><strong>Não foi possível carregar a lista de pacientes.</strong> Verifique a conexão com a internet. Nenhum dado foi perdido.</div>
+        <button style="height:40px;padding:0 16px;border-radius:8px;border:none;background:#B42318;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:6px;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #FECDCA;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">refresh</span>Tentar novamente</button>
+      </div>
+    </sc-if>
+    <section style="flex-shrink:0;background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);overflow:hidden;">
+      <div role="row" style="display:grid;grid-template-columns:minmax(0,1fr) 130px 136px 140px 136px 136px 24px;gap:16px;padding:12px 22px;background:#F8FAFB;border-bottom:1px solid #E1E8ED;font-size:12px;font-weight:600;color:#4A5D6B;letter-spacing:0.04em;text-transform:uppercase;">
+        <span>Paciente</span><span>CPF</span><span>Telefone</span><span>Último atendimento</span><span>Tratamento</span><span>Alertas</span><span></span>
+      </div>
+      <sc-if value="{{ isNormal }}" hint-placeholder-val="{{ true }}">
+        <sc-for list="{{ patients }}" as="p" hint-placeholder-count="8">
+          <div role="row" tabindex="0" style="display:grid;grid-template-columns:minmax(0,1fr) 130px 136px 140px 136px 136px 24px;gap:16px;align-items:center;padding:12px 22px;border-bottom:1px solid #F2F5F7;font-size:14px;cursor:pointer;outline:none;" style-hover="background:#F8FAFB;" style-focus="box-shadow:inset 0 0 0 3px #99D5CE;">
+            <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+              <div style="width:38px;height:38px;border-radius:50%;background:#EEF2F5;color:#3B4F5D;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;">{{ p.ini }}</div>
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0;"><span style="font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</span><span style="font-size:13px;color:#4A5D6B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.age }}</span></div>
+            </div>
+            <span style="font-variant-numeric:tabular-nums;color:#3B4F5D;">{{ p.cpf }}</span>
+            <span style="font-variant-numeric:tabular-nums;color:#3B4F5D;">{{ p.tel }}</span>
+            <span style="color:#3B4F5D;">{{ p.last }}</span>
+            <span><span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:{{ p.chipBg }};color:{{ p.chipFg }};font-size:12px;font-weight:600;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:{{ p.chipFg }};"></span>{{ p.status }}</span></span>
+            <span><sc-if value="{{ p.alert }}"><span style="display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 9px;border-radius:999px;background:#FEF3F2;color:#B42318;border:1px solid #FECDCA;font-size:12px;font-weight:600;white-space:nowrap;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>{{ p.alert }}</span></sc-if></span>
+            <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#8A9BA8;">chevron_right</span>
+          </div>
+        </sc-for>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 22px;font-size:14px;color:#4A5D6B;">
+          <span>Mostrando 1–8 de 1.284</span>
+          <div style="display:flex;gap:8px;">
+            <button disabled="" style="height:36px;padding:0 14px;border-radius:8px;border:1px solid #E1E8ED;background:#F8FAFB;color:#8A9BA8;font:500 14px Inter,sans-serif;">Anterior</button>
+            <button style="height:36px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;">Próxima</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:80px 24px;text-align:center;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#EEF2F5;color:#4A5D6B;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:32px;line-height:1;font-weight:normal;">person_search</span></div>
+          <div style="font-size:18px;font-weight:600;">Nenhum paciente encontrado para “Gabriel Tav”</div>
+          <div style="font-size:15px;color:#4A5D6B;max-width:440px;line-height:1.5;">Confira a grafia ou busque pelo CPF ou telefone. Se for a primeira visita, faça o cadastro.</div>
+          <div style="display:flex;gap:10px;margin-top:6px;">
+            <button style="height:44px;padding:0 16px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;cursor:pointer;">Limpar busca</button>
+            <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Cadastrar “Gabriel Tav”</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isError }}">
+        <sc-for list="{{ skel }}" as="k" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 130px 136px 140px 136px 136px 24px;gap:16px;align-items:center;padding:16px 22px;border-bottom:1px solid #F2F5F7;opacity:0.6;">
+            <div style="display:flex;align-items:center;gap:12px;"><div style="width:38px;height:38px;border-radius:50%;background:#EEF2F5;"></div><div style="width:180px;height:14px;border-radius:5px;background:#EEF2F5;"></div></div>
+            <div style="height:12px;border-radius:5px;background:#EEF2F5;"></div><div style="height:12px;border-radius:5px;background:#EEF2F5;"></div><div style="height:12px;border-radius:5px;background:#EEF2F5;"></div><div style="height:12px;width:90px;border-radius:5px;background:#EEF2F5;"></div><span></span><span></span>
+          </div>
+        </sc-for>
+      </sc-if>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;vazio&quot;,&quot;erro&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.props.state ?? 'normal';
+    const C = { 'Em andamento': ['#FFFAEB', '#B54708'], 'Aprovado': ['#E6F4F2', '#0B5B55'], 'Proposto': ['#EFF8FF', '#175CD3'], 'Concluído': ['#ECFDF3', '#067647'], 'Cancelado': ['#F0F3F5', '#4A5D6B'] };
+    const P = [
+      ['Mariana Alves Costa', '34 anos', '412.735.890-12', '(67) 99812-4470', 'Hoje, 09:00', 'Em andamento', '3 alertas'],
+      ['João Pedro Ramos', '52 anos', '238.104.567-30', '(67) 98123-0915', '12/09/2026', 'Aprovado', 'Anticoagulante'],
+      ['Lúcia Fernandes Okada', '67 anos', '509.882.143-07', '(67) 99245-6681', 'Hoje, 08:00', 'Concluído', 'Alergia'],
+      ['Thiago Moreira Lins', '29 anos', '671.290.334-58', '(67) 99370-2248', 'Hoje, 08:40', 'Concluído', ''],
+      ['Ana Beatriz Souza', '8 anos · resp. Cláudia Souza', '803.415.926-41', '(67) 98456-1123', '02/09/2026', 'Proposto', ''],
+      ['Carlos Eduardo Vieira', '45 anos', '124.659.870-93', '(67) 99601-7734', '—', 'Proposto', ''],
+      ['Renata Campos Duarte', '39 anos', '356.071.248-65', '(67) 99189-4402', '30/09/2026', 'Em andamento', 'Gestante'],
+      ['Sebastião Rocha Filho', '71 anos', '947.312.605-28', '(67) 98877-3390', '18/08/2026', 'Cancelado', '2 alertas']];
+    const patients = P.map(r => ({ name: r[0], age: r[1], cpf: r[2], tel: r[3], last: r[4], status: r[5], alert: r[6],
+      ini: r[0].split(' ').filter((_, i, a) => i === 0 || i === a.length - 1).map(w => w[0]).join(''), chipBg: C[r[5]][0], chipFg: C[r[5]][1] }));
+    const active = s === 'normal' ? 'Todos' : s === 'vazio' ? 'Todos' : 'Todos';
+    return {
+      isNormal: s === 'normal', isEmpty: s === 'vazio', isError: s === 'erro', patients, skel: [1, 2, 3, 4, 5, 6],
+      query: s === 'vazio' ? 'Gabriel Tav' : '', hasQuery: s === 'vazio',
+      countLabel: s === 'erro' ? 'Lista indisponível' : s === 'vazio' ? '0 resultados' : '1.284 pacientes cadastrados',
+      filters: ['Todos', 'Com alertas críticos', 'Anamnese pendente', 'Tratamento em andamento', 'Sem retorno 6+ meses'].map(l => ({ label: l, on: l === active, off: l !== active }))
+    };
+  }
+}
+</script>
+</body>
+</html>

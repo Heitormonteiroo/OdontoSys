@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<div style="width:1440px;height:900px;display:flex;background:#F5F8FA;font-family:Inter,system-ui,sans-serif;color:#14232E;overflow:hidden;">
+  <dc-import name="Sidebar" active="inicio" hint-size="248px,900px" style="width:248px;height:900px;flex-shrink:0;"></dc-import>
+  <main style="flex:1;min-width:0;overflow:auto;padding:28px 40px 40px;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:14px;color:#4A5D6B;font-weight:500;">Quarta-feira, 7 de outubro de 2026</div>
+        <h1 style="margin:0;font-size:28px;font-weight:700;letter-spacing:-0.02em;">Bom dia, Dra. Helena</h1>
+      </div>
+      <label style="display:flex;align-items:center;gap:10px;width:400px;height:44px;padding:0 12px;border-radius:10px;border:1px solid #C9D4DC;background:#FFFFFF;box-sizing:border-box;color:#5B6E7C;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;">search</span>
+        <input placeholder="Buscar paciente por nome, CPF ou telefone" style="flex:1;border:none;outline:none;font:400 15px Inter,sans-serif;color:#14232E;background:transparent;">
+        <span style="font-size:12px;border:1px solid #D5DEE4;border-radius:5px;padding:2px 6px;color:#5B6E7C;">/</span>
+      </label>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+      <sc-for list="{{ shortcuts }}" as="s" hint-placeholder-count="3">
+        <button style="display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid #E1E8ED;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.05);cursor:pointer;text-align:left;font-family:Inter,sans-serif;outline:none;" style-hover="border-color:#0F766E;" style-focus="box-shadow:0 0 0 3px #99D5CE;">
+          <span style="width:44px;height:44px;border-radius:10px;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;line-height:1;font-weight:normal;">{{ s.icon }}</span></span>
+          <span style="display:flex;flex-direction:column;gap:2px;flex:1;"><span style="font-size:16px;font-weight:600;color:#14232E;">{{ s.label }}</span><span style="font-size:13px;color:#5B6E7C;">{{ s.hint }}</span></span>
+          <span style="font-size:12px;border:1px solid #D5DEE4;border-radius:5px;padding:2px 7px;color:#4A5D6B;">{{ s.key }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start;">
+      <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid #EEF2F5;">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <h2 style="margin:0;font-size:18px;font-weight:700;">Agenda de hoje</h2>
+            <div style="font-size:13px;color:#4A5D6B;">{{ agendaSummary }}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div role="tablist" style="display:flex;padding:3px;border-radius:9px;background:#EEF2F5;gap:2px;">
+              <button style="height:32px;padding:0 12px;border:none;border-radius:7px;background:#FFFFFF;box-shadow:0 1px 2px rgba(16,40,56,.1);font:600 13px Inter,sans-serif;color:#14232E;">Todos</button>
+              <button style="height:32px;padding:0 12px;border:none;border-radius:7px;background:transparent;font:500 13px Inter,sans-serif;color:#4A5D6B;">Dra. Helena</button>
+              <button style="height:32px;padding:0 12px;border:none;border-radius:7px;background:transparent;font:500 13px Inter,sans-serif;color:#4A5D6B;">Dr. Marcos</button>
+            </div>
+            <a href="#" style="font-size:14px;font-weight:600;color:#0F766E;text-decoration:none;">Abrir agenda</a>
+          </div>
+        </div>
+        <sc-if value="{{ isNormal }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;padding:6px 0;">
+            <sc-for list="{{ agenda }}" as="a" hint-placeholder-count="6">
+              <sc-if value="{{ a.isNow }}">
+                <div style="display:flex;align-items:center;gap:10px;padding:2px 22px;"><span style="font-size:12px;font-weight:700;color:#0F766E;width:64px;">Agora 09:12</span><div style="flex:1;height:2px;background:#0F766E;border-radius:2px;"></div></div>
+              </sc-if>
+              <sc-if value="{{ a.isRow }}">
+                <div style="display:flex;align-items:center;gap:16px;padding:12px 22px;opacity:{{ a.opacity }};" style-hover="background:#F8FAFB;">
+                  <div style="width:64px;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;">{{ a.time }}</div>
+                  <div style="width:4px;align-self:stretch;border-radius:4px;background:{{ a.bar }};"></div>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                      <span style="font-size:15px;font-weight:600;">{{ a.name }}</span>
+                      <sc-if value="{{ a.alert }}"><span style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:999px;background:#FEF3F2;color:#B42318;border:1px solid #FECDCA;font-size:12px;font-weight:600;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:14px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>{{ a.alert }}</span></sc-if>
+                    </div>
+                    <div style="font-size:13px;color:#4A5D6B;">{{ a.proc }} · {{ a.doc }}</div>
+                  </div>
+                  <span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:999px;background:{{ a.chipBg }};color:{{ a.chipFg }};font-size:13px;font-weight:600;white-space:nowrap;"><span style="width:7px;height:7px;border-radius:50%;background:{{ a.chipFg }};"></span>{{ a.status }}</span>
+                </div>
+              </sc-if>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isEmpty }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:72px 24px;text-align:center;">
+            <div style="width:64px;height:64px;border-radius:50%;background:#E6F4F2;color:#0F766E;display:flex;align-items:center;justify-content:center;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:32px;line-height:1;font-weight:normal;">event_available</span></div>
+            <div style="font-size:18px;font-weight:600;">Nenhum atendimento agendado para hoje</div>
+            <div style="font-size:15px;color:#4A5D6B;max-width:380px;line-height:1.5;">Os horários marcados aparecem aqui em ordem, com o status de cada paciente.</div>
+            <button style="margin-top:6px;height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Agendar atendimento</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isLoading }}">
+          <div aria-busy="true" style="display:flex;flex-direction:column;gap:2px;padding:10px 0;">
+            <sc-for list="{{ skel }}" as="k" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:16px;padding:14px 22px;">
+                <div style="width:52px;height:18px;border-radius:5px;background:#E8EEF2;"></div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:8px;"><div style="width:220px;height:15px;border-radius:5px;background:#E8EEF2;"></div><div style="width:300px;height:12px;border-radius:5px;background:#EEF2F5;"></div></div>
+                <div style="width:100px;height:26px;border-radius:999px;background:#EEF2F5;"></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </section>
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #EEF2F5;">
+            <h2 style="margin:0;font-size:17px;font-weight:700;">Pacientes aguardando</h2>
+            <span style="min-width:28px;height:24px;padding:0 8px;box-sizing:border-box;border-radius:999px;background:#EEF2F5;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ waitCount }}</span>
+          </div>
+          <sc-if value="{{ isNormal }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ waiting }}" as="w" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F2F5F7;">
+                <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                  <div style="font-size:15px;font-weight:600;">{{ w.name }}</div>
+                  <div style="font-size:13px;color:#4A5D6B;">{{ w.info }}</div>
+                </div>
+                <span style="font-size:13px;font-weight:600;color:{{ w.color }};font-variant-numeric:tabular-nums;">{{ w.wait }}</span>
+                <button style="height:36px;padding:0 14px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;font:600 13px Inter,sans-serif;color:#14232E;cursor:pointer;outline:none;" style-hover="border-color:#0F766E;color:#0F766E;" style-focus="box-shadow:0 0 0 3px #99D5CE;">Chamar</button>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ isEmpty }}"><div style="padding:28px 20px;text-align:center;font-size:14px;color:#4A5D6B;">Ninguém aguardando no momento.</div></sc-if>
+          <sc-if value="{{ isLoading }}"><div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px;"><div style="height:16px;width:70%;border-radius:5px;background:#E8EEF2;"></div><div style="height:16px;width:55%;border-radius:5px;background:#EEF2F5;"></div></div></sc-if>
+        </section>
+        <section style="background:#FFFFFF;border:1px solid #E1E8ED;border-radius:14px;box-shadow:0 1px 2px rgba(16,40,56,.05);">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #EEF2F5;">
+            <h2 style="margin:0;font-size:17px;font-weight:700;">Anamneses pendentes</h2>
+            <span style="min-width:28px;height:24px;padding:0 8px;box-sizing:border-box;border-radius:999px;background:#FFFAEB;color:#B54708;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;">{{ anamCount }}</span>
+          </div>
+          <sc-if value="{{ isNormal }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ anamneses }}" as="n" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid #F2F5F7;">
+                <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+                  <div style="font-size:15px;font-weight:600;">{{ n.name }}</div>
+                  <div style="font-size:13px;color:#4A5D6B;">{{ n.info }}</div>
+                </div>
+                <sc-if value="{{ n.inProgress }}"><span style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;background:#EFF8FF;color:#175CD3;font-size:12px;font-weight:600;">No tablet</span></sc-if>
+                <sc-if value="{{ n.canSend }}"><button style="height:36px;padding:0 12px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;font:600 13px Inter,sans-serif;color:#14232E;cursor:pointer;display:flex;align-items:center;gap:6px;outline:none;" style-hover="border-color:#0F766E;color:#0F766E;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;line-height:1;font-weight:normal;">tablet</span>Enviar ao tablet</button></sc-if>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ isEmpty }}"><div style="padding:28px 20px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;color:#067647;font-weight:500;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">check_circle</span>Nenhuma anamnese pendente.</div></sc-if>
+          <sc-if value="{{ isLoading }}"><div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px;"><div style="height:16px;width:65%;border-radius:5px;background:#E8EEF2;"></div><div style="height:16px;width:50%;border-radius:5px;background:#EEF2F5;"></div></div></sc-if>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;vazio&quot;,&quot;carregando&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const s = this.props.state ?? 'normal';
+    const C = {
+      'Concluído': ['#ECFDF3', '#067647'], 'Em atendimento': ['#E6F4F2', '#0B5B55'], 'Aguardando': ['#FFFAEB', '#B54708'],
+      'Confirmado': ['#EFF8FF', '#175CD3'], 'Agendado': ['#F0F3F5', '#3B4F5D']
+    };
+    const rows = [
+      ['08:00', 'Lúcia Fernandes Okada', 'Revisão de prótese', 'Dra. Helena', 'Concluído', 'Alergia'],
+      ['08:40', 'Thiago Moreira Lins', 'Limpeza e profilaxia', 'Dr. Marcos', 'Concluído', ''],
+      ['09:00', 'Mariana Alves Costa', 'Tratamento de canal · dente 36', 'Dra. Helena', 'Em atendimento', '3 alertas'],
+      'now',
+      ['09:30', 'João Pedro Ramos', 'Extração · dente 48', 'Dr. Marcos', 'Aguardando', 'Anticoagulante'],
+      ['10:00', 'Ana Beatriz Souza', 'Aplicação de selante', 'Dra. Helena', 'Aguardando', ''],
+      ['10:45', 'Carlos Eduardo Vieira', 'Avaliação inicial', 'Dr. Marcos', 'Confirmado', ''],
+      ['11:30', 'Renata Campos Duarte', 'Restauração · dente 14', 'Dra. Helena', 'Confirmado', 'Gestante'],
+      ['14:00', 'Sebastião Rocha Filho', 'Ajuste de prótese', 'Dr. Marcos', 'Agendado', 'Anticoagulante']
+    ];
+    const agenda = rows.map(r => r === 'now' ? { isNow: true, isRow: false } : {
+      isNow: false, isRow: true, time: r[0], name: r[1], proc: r[2], doc: r[3], status: r[4], alert: r[5],
+      chipBg: C[r[4]][0], chipFg: C[r[4]][1], bar: r[4] === 'Em atendimento' ? '#0F766E' : '#E1E8ED', opacity: r[4] === 'Concluído' ? 0.7 : 1
+    });
+    const isNormal = s === 'normal', isEmpty = s === 'vazio', isLoading = s === 'carregando';
+    return {
+      isNormal, isEmpty, isLoading, agenda, skel: [1, 2, 3, 4, 5, 6],
+      agendaSummary: isNormal ? '8 atendimentos · 2 concluídos · 1 em atendimento' : isEmpty ? 'Sem atendimentos' : 'Carregando agenda…',
+      waitCount: isNormal ? 2 : isEmpty ? 0 : '–', anamCount: isNormal ? 3 : isEmpty ? 0 : '–',
+      shortcuts: [
+        { icon: 'person_add', label: 'Novo paciente', hint: 'Cadastro em 1 minuto', key: 'N' },
+        { icon: 'prescriptions', label: 'Nova receita', hint: 'Pronta para imprimir e assinar', key: 'R' },
+        { icon: 'request_quote', label: 'Novo orçamento', hint: 'A partir do plano de tratamento', key: 'O' }],
+      waiting: [
+        { name: 'João Pedro Ramos', info: 'Chegou 08:54 · Dr. Marcos às 09:30', wait: '18 min', color: '#B54708' },
+        { name: 'Ana Beatriz Souza', info: 'Chegou 09:05 · com responsável', wait: '7 min', color: '#3B4F5D' }],
+      anamneses: [
+        { name: 'Renata Campos Duarte', info: 'Preenchendo agora', inProgress: true, canSend: false },
+        { name: 'Carlos Eduardo Vieira', info: 'Primeira consulta às 10:45', inProgress: false, canSend: true },
+        { name: 'Sebastião Rocha Filho', info: 'Atualização anual vencida', inProgress: false, canSend: true }]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0..1,0&display=block">
+</helmet>
+<header style="background:#FFFFFF;border-bottom:1px solid #E1E8ED;font-family:Inter,system-ui,sans-serif;color:#14232E;">
+  <sc-if value="{{ isNormal }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex;align-items:center;gap:20px;padding:20px 32px;">
+      <div style="width:60px;height:60px;border-radius:50%;flex-shrink:0;background:repeating-linear-gradient(135deg,#E6F4F2 0 6px,#D4ECE8 6px 12px);display:flex;align-items:center;justify-content:center;font-size:9px;font-family:ui-monospace,monospace;color:#3B6B66;text-align:center;line-height:1.2;">foto<br>opcional</div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;">
+        <div style="display:flex;align-items:baseline;gap:12px;">
+          <h1 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-0.01em;">Mariana Alves Costa</h1>
+          <span style="font-size:16px;color:#3B4F5D;font-weight:500;">34 anos</span>
+        </div>
+        <div style="display:flex;gap:18px;font-size:14px;color:#4A5D6B;font-variant-numeric:tabular-nums;flex-wrap:wrap;">
+          <span>CPF 412.735.890-12</span><span>(67) 99812-4470</span><span>Prontuário nº 00318</span><span>Dentista: Dra. Helena Prado</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button style="height:44px;padding:0 16px;border-radius:8px;border:1px solid #C9D4DC;background:#FFFFFF;color:#14232E;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#F5F8FA;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">prescriptions</span>Nova receita</button>
+        <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">edit_note</span>Nova evolução</button>
+      </div>
+    </div>
+    <div role="alert" style="display:flex;align-items:center;gap:14px;padding:10px 32px;background:#FEF3F2;border-top:1px solid #FECDCA;">
+      <div style="display:flex;align-items:center;gap:8px;color:#B42318;font-weight:700;font-size:13px;letter-spacing:0.06em;flex-shrink:0;">
+        <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;font-variation-settings:'FILL' 1;">error</span>ALERTAS CRÍTICOS
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;flex:1;">
+        <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:14px;font-weight:600;">Alergia: Penicilina</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:14px;font-weight:600;">Anticoagulante: Enoxaparina 40 mg/dia</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:999px;background:#B42318;color:#FFFFFF;font-size:14px;font-weight:600;">Gestante · 24 semanas</span>
+      </div>
+      <a href="#" style="color:#B42318;font-size:14px;font-weight:600;text-decoration:underline;flex-shrink:0;">Ver anamnese</a>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isEmpty }}">
+    <div style="display:flex;align-items:center;gap:20px;padding:20px 32px;">
+      <div style="width:60px;height:60px;border-radius:50%;flex-shrink:0;background:#E6F4F2;color:#0B5B55;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:20px;">RN</div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+        <div style="display:flex;align-items:baseline;gap:12px;">
+          <h1 style="margin:0;font-size:24px;font-weight:700;letter-spacing:-0.01em;">Rafael Nunes Batista</h1>
+          <span style="font-size:16px;color:#3B4F5D;font-weight:500;">27 anos</span>
+          <span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;background:#EFF8FF;color:#175CD3;font-size:12px;font-weight:600;">Novo paciente</span>
+        </div>
+        <div style="display:flex;gap:18px;font-size:14px;color:#4A5D6B;font-variant-numeric:tabular-nums;">
+          <span>CPF 290.514.736-81</span><span>(67) 99734-0158</span><span>Prontuário nº 00547</span>
+        </div>
+      </div>
+      <button style="height:44px;padding:0 18px;border-radius:8px;border:none;background:#0F766E;color:#FFFFFF;font:600 14px Inter,sans-serif;display:flex;align-items:center;gap:8px;cursor:pointer;outline:none;" style-hover="background:#0B5B55;" style-focus="box-shadow:0 0 0 3px #99D5CE;"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">edit_note</span>Nova evolução</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 32px;background:#FFFAEB;border-top:1px solid #FEDF89;color:#93370D;font-size:14px;">
+      <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;line-height:1;font-weight:normal;color:#B54708;">warning</span>
+      <span style="flex:1;"><strong>Alertas desconhecidos.</strong> A anamnese ainda não foi preenchida — confirme alergias e medicamentos antes de qualquer procedimento.</span>
+      <button style="height:36px;padding:0 14px;border-radius:8px;border:1px solid #FEC84B;background:#FFFFFF;color:#93370D;font:600 14px Inter,sans-serif;cursor:pointer;outline:none;" style-focus="box-shadow:0 0 0 3px #FEDF89;">Enviar anamnese ao tablet</button>
+    </div>
+  </sc-if>
+  <sc-if value="{{ isLoading }}">
+    <div aria-busy="true" style="display:flex;align-items:center;gap:20px;padding:20px 32px;">
+      <div style="width:60px;height:60px;border-radius:50%;background:#E8EEF2;"></div>
+      <div style="display:flex;flex-direction:column;gap:10px;flex:1;">
+        <div style="width:280px;height:22px;border-radius:6px;background:#E8EEF2;"></div>
+        <div style="width:460px;height:14px;border-radius:6px;background:#EEF2F5;"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 32px;background:#F5F8FA;border-top:1px solid #E1E8ED;color:#4A5D6B;font-size:14px;">
+      <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;line-height:1;font-weight:normal;">hourglass_top</span>
+      Verificando alertas críticos… não inicie procedimentos até a faixa de alertas carregar.
+    </div>
+  </sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1192,&quot;height&quot;:160},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;semAlertas&quot;,&quot;carregando&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.variant ?? 'normal';
+    return { isNormal: v === 'normal', isEmpty: v === 'semAlertas', isLoading: v === 'carregando' };
+  }
+}
+</script>
+</body>
+</html>
