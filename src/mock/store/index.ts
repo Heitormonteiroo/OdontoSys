@@ -4,6 +4,9 @@ import { create } from 'zustand';
 import type { User } from '../types';
 import { createSeed } from '../seed';
 import { createAnamneseSlice } from './anamnese';
+import { createOdontogramaSlice } from './odontograma';
+import { createPlanoSlice } from './plano';
+import { createDocumentosSlice, createProntuarioSlice } from './prontuario';
 import { createPatientsSlice } from './patients';
 import { createSessionSlice } from './session';
 import type { AppState } from './types';
@@ -21,6 +24,10 @@ export const useStore = create<AppState>()((...a) => ({
   ...createSessionSlice(...a),
   ...createPatientsSlice(...a),
   ...createAnamneseSlice(...a),
+  ...createProntuarioSlice(...a),
+  ...createOdontogramaSlice(...a),
+  ...createPlanoSlice(...a),
+  ...createDocumentosSlice(...a),
   reset: () => a[0]({ ...createSeed() }),
 }));
 

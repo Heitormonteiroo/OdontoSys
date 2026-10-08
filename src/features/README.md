@@ -17,9 +17,10 @@ features/<area>/
 | `auth/` | pronta | Login e perfil |
 | `pacientes/` | pronta (lista, cadastro, ficha) | Pacientes |
 | `inicio/` | a fazer | Início do dia |
-| `prontuario/` | a fazer | Linha do tempo e adendos |
-| `odontograma/` | a fazer | Odontograma |
-| `plano/` | a fazer | Plano de tratamento e orçamento |
+| `prontuario/` | pronta (linha do tempo, adendos, exportação) | Linha do tempo e adendos |
+| `odontograma/` | pronta (aba da ficha) | Odontograma |
+| `plano/` | pronta (plano versionado, orçamento) | Plano de tratamento e orçamento |
+| `documentos/` | pronta (lista, reimpressão, anexo assinado) | Documentos da ficha |
 | `receitas/` | a fazer | Receitas e calculadora pediátrica |
 | `anamnese/` | pronta (totem no tablet, aba Anamnese da ficha) | Totem de anamnese |
 | `agenda/` | a fazer | Agenda semanal |

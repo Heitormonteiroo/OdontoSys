@@ -1,6 +1,7 @@
 import { soDigitos } from '@/lib/text';
 import type {
   AlertaCritico,
+  AnamneseResposta,
   AnamneseTemplate,
   DadosPessoaisAnamnese,
   PassoAnamnese,
@@ -133,4 +134,21 @@ export function resumoPergunta(q: PerguntaAnamnese, a: RespostasAnamnese): Linha
     valor: !r ? 'Sem resposta' : extra ? `${r} — ${extra}` : r,
     critico: !!q.alerta && (r === 'Sim' || r === 'Não sei'),
   };
+}
+
+/** Texto da anamnese para o documento impresso (snapshot gravado em `issued_documents`). */
+export function textoAnamnese(tpl: AnamneseTemplate, r: AnamneseResposta, dataHoraTexto: string): string {
+  const d = r.answers.dados;
+  return [
+    `Preenchida pelo paciente no tablet em ${dataHoraTexto} (modelo ${tpl.nome} v${tpl.versao}).`,
+    `Alertas críticos: ${r.alertas.length ? r.alertas.map((a) => a.texto).join('; ') : 'nenhum'}.`,
+    '',
+    ...tpl.passos.flatMap((p) => [p.titulo.toUpperCase(), ...p.perguntas.map((q) => {
+      const l = resumoPergunta(q, r.answers);
+      return `${l.rotulo}: ${l.valor}`;
+    }), '']),
+    `Contato de emergência: ${d.emergenciaNome || 'não informado'}${d.emergenciaTelefone ? ` · ${d.emergenciaTelefone}` : ''}`,
+    '',
+    'Assinatura do paciente ou responsável: ______________________________',
+  ].join('\n');
 }

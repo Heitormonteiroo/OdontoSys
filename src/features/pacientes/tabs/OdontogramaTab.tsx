@@ -1,7 +1,6 @@
-import type { Patient } from '@/mock/types';
-import { EmConstrucao } from './EmConstrucao';
+import { Odontograma } from '@/features/odontograma/components/Odontograma';
+import type { AbaProps } from '.';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function OdontogramaTab({ paciente }: { paciente: Patient }) {
-  return <EmConstrucao titulo="Odontograma" etapa="Odontograma" />;
+export function OdontogramaTab(props: AbaProps) {
+  return <Odontograma {...props} />;
 }

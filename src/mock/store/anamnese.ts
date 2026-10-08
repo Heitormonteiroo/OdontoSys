@@ -4,6 +4,7 @@ import { LINK_VALIDADE_HORAS, PIN_BLOQUEIO_MINUTOS, PIN_TENTATIVAS } from '@/fea
 import { agora } from '@/lib/dates';
 import { gerarToken, hashSimulado } from '@/lib/hash';
 import type { AnamneseLink, AnamneseResposta } from '../types';
+import { novaEntrada } from './prontuario';
 import type { AnamneseSlice, AppState, SituacaoLink } from './types';
 
 /**
@@ -106,7 +107,14 @@ export const createAnamneseSlice: StateCreator<AppState, [], [], AnamneseSlice> 
           conferidaEm: null,
         };
         const { [link.patientId]: _descartado, ...rascunhos } = s.anamneseRascunhos;
+        const resumo = alertas.length ? ` Alertas críticos: ${alertas.map((a) => a.texto).join('; ')}.` : ' Nenhum alerta crítico.';
+        const entrada = novaEntrada(s, link.patientId, {
+          tipo: 'anamnese',
+          texto: `Anamnese preenchida no tablet (modelo v${tpl.versao}).${resumo}`,
+          autorId: null,
+        });
         return {
+          clinicalEntries: [...s.clinicalEntries, entrada],
           anamneseLinks: s.anamneseLinks.map((l) => (l.id === link.id ? { ...l, usadoEm: agoraIso } : l)),
           anamneseRespostas: [resposta, ...s.anamneseRespostas],
           anamneseRascunhos: rascunhos,

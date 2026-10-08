@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 import type { Permissao } from '@/lib/permissions';
-import type { Patient } from '@/mock/types';
+import type { Face, Patient } from '@/mock/types';
 import { AnamneseTab } from './AnamneseTab';
 import { DocumentosTab } from './DocumentosTab';
 import { LinhaDoTempoTab } from './LinhaDoTempoTab';
@@ -8,6 +8,20 @@ import { OdontogramaTab } from './OdontogramaTab';
 import { PlanoTab } from './PlanoTab';
 
 export type AbaId = 'linha' | 'odonto' | 'plano' | 'docs' | 'anam';
+
+/** Pedido de uma aba para outra (ex.: odontograma -> "Adicionar ao plano"). `n` muda a cada pedido. */
+export type Intencao =
+  | { n: number; tipo: 'nova-evolucao' }
+  | { n: number; tipo: 'adicionar-procedimento'; dente: number | null; faces: Face[] };
+
+type SemN<T> = T extends unknown ? Omit<T, 'n'> : never;
+
+export interface AbaProps {
+  paciente: Patient;
+  /** Intenção dirigida a esta aba (ou null). */
+  intencao: Intencao | null;
+  irPara: (aba: AbaId, intencao?: SemN<Intencao>) => void;
+}
 
 export interface AbaConfig {
   id: AbaId;
@@ -17,7 +31,7 @@ export interface AbaConfig {
   permissao: Permissao;
   /** Como o aviso se refere à área ("a linha do tempo clínica"). */
   area: string;
-  Component: ComponentType<{ paciente: Patient }>;
+  Component: ComponentType<AbaProps>;
 }
 
 /** Ordem das abas da ficha, conforme o design. */

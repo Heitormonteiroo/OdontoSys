@@ -1,13 +1,14 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { EmptyState } from '@/components/feedback/EmptyState';
+import { DocumentoImpressao } from '@/features/documentos/components/DocumentoImpressao';
 import { Alert, Button, Chip, Icon } from '@/components/ui';
 import { dataHora, horaDe } from '@/lib/dates';
 import { can } from '@/lib/permissions';
 import { useCurrentUser, useStore } from '@/mock/store';
-import type { AnamneseResposta, AnamneseTemplate, Patient } from '@/mock/types';
-import { resumoPergunta } from '../lib/respostas';
+import type { AnamneseResposta, AnamneseTemplate, IssuedDocument, Patient } from '@/mock/types';
+import { resumoPergunta, textoAnamnese } from '../lib/respostas';
 import { EnviarTabletDialog, useEnviarAoTablet } from './EnviarTabletDialog';
 
 /** Aba "Anamnese" da ficha: última resposta, alertas destacados, envio ao tablet e histórico. */
@@ -19,6 +20,10 @@ export function AnamneseFicha({ paciente }: { paciente: Patient }) {
   const links = useStore((s) => s.anamneseLinks);
   const rascunhos = useStore((s) => s.anamneseRascunhos);
   const conferir = useStore((s) => s.conferirAnamnese);
+  const documentos = useStore((s) => s.issuedDocuments);
+  const emitirDocumento = useStore((s) => s.emitirDocumento);
+  const [imprimindo, setImprimindo] = useState<IssuedDocument | null>(null);
+  const fimImpressao = useCallback(() => setImprimindo(null), []);
   const { envio, enviar, fechar } = useEnviarAoTablet();
 
   const respostas = useMemo(
@@ -83,6 +88,21 @@ export function AnamneseFicha({ paciente }: { paciente: Patient }) {
   const tpl = templates.find((t) => t.id === atual.templateId && t.versao === atual.templateVersao);
   const ehUltima = atual.id === respostas[0].id;
 
+  /** Imprimir registra um documento emitido (snapshot + número), para depois anexar a cópia assinada. */
+  function imprimir() {
+    if (!atual || !tpl) return;
+    const existente = documentos.find((d) => d.tipo === 'anamnese' && d.refId === atual.id);
+    if (existente) return setImprimindo(existente);
+    const r = emitirDocumento(paciente.id, {
+      tipo: 'anamnese',
+      titulo: 'Anamnese',
+      subtitulo: 'Preenchida no tablet',
+      conteudo: textoAnamnese(tpl, atual, dataHora(atual.preenchidaEm)),
+      refId: atual.id,
+    });
+    if (r.ok) setImprimindo(r.documento);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       {avisos}
@@ -118,7 +138,7 @@ export function AnamneseFicha({ paciente }: { paciente: Patient }) {
                 Enviar atualização ao tablet
               </Button>
             )}
-            <Button variant="secondary" icon="print" onClick={() => window.print()}>
+            <Button variant="secondary" icon="print" onClick={imprimir}>
               Imprimir para assinatura
             </Button>
           </div>
@@ -137,15 +157,6 @@ export function AnamneseFicha({ paciente }: { paciente: Patient }) {
             Modelo: {tpl?.nome ?? atual.templateId} · versão {atual.templateVersao}
           </span>
           <span>Registro auxiliar de apoio ao atendimento. Confirme as respostas com o paciente.</span>
-        </div>
-
-        <div className="hidden flex-col gap-10 pt-10 print:flex">
-          <div className="grid grid-cols-2 gap-10 text-sm">
-            <div className="flex flex-col items-center gap-1 border-t border-ink pt-2">
-              Assinatura do paciente ou responsável
-            </div>
-            <div className="flex flex-col items-center gap-1 border-t border-ink pt-2">Data</div>
-          </div>
         </div>
       </section>
 
@@ -177,6 +188,7 @@ export function AnamneseFicha({ paciente }: { paciente: Patient }) {
       )}
 
       <EnviarTabletDialog envio={envio} onClose={fechar} />
+      {imprimindo && <DocumentoImpressao doc={imprimindo} onFim={fimImpressao} />}
     </div>
   );
 }

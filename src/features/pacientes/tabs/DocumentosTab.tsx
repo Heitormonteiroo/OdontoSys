@@ -1,7 +1,6 @@
-import type { Patient } from '@/mock/types';
-import { EmConstrucao } from './EmConstrucao';
+import { DocumentosLista } from '@/features/documentos/components/DocumentosLista';
+import type { AbaProps } from '.';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function DocumentosTab({ paciente }: { paciente: Patient }) {
-  return <EmConstrucao titulo="Documentos" etapa="Receitas e documentos" />;
+export function DocumentosTab(props: AbaProps) {
+  return <DocumentosLista {...props} />;
 }

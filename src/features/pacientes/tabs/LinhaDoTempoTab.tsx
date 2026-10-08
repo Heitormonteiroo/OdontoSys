@@ -1,7 +1,6 @@
-import type { Patient } from '@/mock/types';
-import { EmConstrucao } from './EmConstrucao';
+import { LinhaDoTempo } from '@/features/prontuario/components/LinhaDoTempo';
+import type { AbaProps } from '.';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function LinhaDoTempoTab({ paciente }: { paciente: Patient }) {
-  return <EmConstrucao titulo="Linha do tempo" etapa="Linha do tempo do prontuário" />;
+export function LinhaDoTempoTab(props: AbaProps) {
+  return <LinhaDoTempo {...props} />;
 }

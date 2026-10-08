@@ -9,7 +9,7 @@ import { can } from '@/lib/permissions';
 import { useCurrentUser, useStore } from '@/mock/store';
 import { EnviarTabletDialog, useEnviarAoTablet } from '@/features/anamnese/components/EnviarTabletDialog';
 import { PacienteHeader } from '../components/PacienteHeader';
-import { ABAS, type AbaId } from '../tabs';
+import { ABAS, type AbaId, type AbaProps, type Intencao } from '../tabs';
 
 export function PacienteFichaScreen({ id }: { id: string }) {
   const user = useCurrentUser();
@@ -17,6 +17,11 @@ export function PacienteFichaScreen({ id }: { id: string }) {
   const users = useStore((s) => s.users);
   const paciente = useMemo(() => patients.find((p) => p.id === id), [patients, id]);
   const [aba, setAba] = useState<AbaId>('linha');
+  const [intencao, setIntencao] = useState<{ aba: AbaId; i: Intencao } | null>(null);
+  const irPara: AbaProps['irPara'] = (destino, i) => {
+    setAba(destino);
+    if (i) setIntencao({ aba: destino, i: { ...i, n: Date.now() } as Intencao });
+  };
   const tablet = useEnviarAoTablet();
 
   if (!paciente) {
@@ -59,7 +64,7 @@ export function PacienteFichaScreen({ id }: { id: string }) {
         podeEvoluir={can(user?.papel, 'evolucao:registrar')}
         podeReceitar={can(user?.papel, 'receita:emitir')}
         podeEnviarAnamnese={can(user?.papel, 'anamnese:enviar')}
-        onNovaEvolucao={() => setAba('linha')}
+        onNovaEvolucao={() => irPara('linha', { tipo: 'nova-evolucao' })}
         onVerAnamnese={() => setAba('anam')}
         onEnviarAnamnese={() => tablet.enviar(paciente.id)}
       />
@@ -87,7 +92,12 @@ export function PacienteFichaScreen({ id }: { id: string }) {
 
       <div className="flex-1 px-8 pb-10 pt-6 print:px-0">
         {permitido ? (
-          <atual.Component paciente={paciente} />
+          <atual.Component
+            key={paciente.id}
+            paciente={paciente}
+            intencao={intencao?.aba === atual.id ? intencao.i : null}
+            irPara={irPara}
+          />
         ) : (
           <SemPermissao area={atual.area} perfil="Recepção" />
         )}

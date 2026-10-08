@@ -38,3 +38,26 @@ textarea:focus-visible {
     display: none !important;
   }
 }
+
+/* Folha de impressão (components/print/Imprimivel): fora da tela; na impressão, só ela aparece. */
+.folha-impressao {
+  display: none;
+}
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+  body.imprimindo > *:not(.folha-impressao) {
+    display: none !important;
+  }
+  body.imprimindo {
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  body.imprimindo .folha-impressao {
+    display: block;
+    color: #14232e;
+    font-size: 12px;
+  }
+}

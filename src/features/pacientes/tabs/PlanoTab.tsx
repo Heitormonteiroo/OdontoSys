@@ -1,7 +1,6 @@
-import type { Patient } from '@/mock/types';
-import { EmConstrucao } from './EmConstrucao';
+import { PlanoOrcamento } from '@/features/plano/components/PlanoOrcamento';
+import type { AbaProps } from '.';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function PlanoTab({ paciente }: { paciente: Patient }) {
-  return <EmConstrucao titulo="Plano e orçamento" etapa="Plano de tratamento e orçamento" />;
+export function PlanoTab(props: AbaProps) {
+  return <PlanoOrcamento {...props} />;
 }

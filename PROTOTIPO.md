@@ -25,12 +25,13 @@ src/
       receitas/nova
     (totem)/totem/[token]  modo totem do tablet (sem sidebar e sem login do paciente)
   features/                uma pasta por área (ver features/README.md)
-    auth/  pacientes/  anamnese/  (próximas: inicio, prontuario, odontograma, plano, receitas, anamnese, agenda)
+    auth/  pacientes/  anamnese/  prontuario/  odontograma/  plano/  documentos/  (próximas: inicio, receitas, agenda)
   components/
     ui/                    Button, Chip, Alert, Card, Field, Select, Tabs, Modal, Avatar, Icon
     layout/                Sidebar, PrototypeBanner, PagePlaceholder
     feedback/              EmptyState, SemPermissao
-  lib/                     utilitários puros: dates, text (máscaras), permissions, status
+    print/                 Imprimivel (folha A4 + impressão do navegador), Timbre, LinhaAssinatura
+  lib/                     utilitários puros: dates, text (máscaras), permissions, status, dinheiro (centavos), hash
   mock/                    ÚNICA camada de dados (trocar pelo backend depois)
     types/                 tipos do domínio, um arquivo por assunto
     seed/                  dados de exemplo fictícios, um arquivo por assunto
@@ -49,7 +50,19 @@ src/
 - CPFs de exemplo têm dígito verificador inválido de propósito. O cadastro só confere se o CPF está completo (11 dígitos), sem validar o dígito.
 - Medicamentos citados nos alertas são genéricos ("Medicamento Exemplo B/C"); nenhuma dose real.
 - Recepção: vê lista, cadastra paciente e acessa Plano, Documentos e Anamnese; Linha do tempo e Odontograma mostram "sem permissão". Faixa de alertas críticos continua visível para segurança.
-- O design da aba Plano mostra "Pago/Saldo a pagar/Registrar pagamento". Isso é controle financeiro, fora do escopo (CLAUDE.md); será omitido na etapa do plano.
+- O design da aba Plano mostra "Pago/Saldo a pagar/Registrar pagamento". Isso é controle financeiro, fora do escopo (CLAUDE.md), e foi omitido. No lugar: total do plano, aprovado e proposto.
+- Ficha do paciente (todas as abas):
+  - Linha do tempo: entradas append-only (o store não tem ação de editar/apagar e congela cada entrada com `Object.freeze`). Correção = adendo ligado à entrada. Hash encadeado por paciente (`hash = hash(conteúdo + hash anterior)`, simulado), conferido na tela ("Cadeia íntegra").
+  - Gravam entrada na linha do tempo: evolução, adendo, cada evento do odontograma, anamnese do tablet, conclusão/cancelamento de item do plano, nova versão do plano e decisão do orçamento.
+  - Exportar prontuário: folha A4 pela impressão do navegador (linha do tempo completa com autor, data e hash + odontograma atual). O PDF gerado no servidor (pdf-lib/react-pdf) fica para a etapa de documentos.
+  - Odontograma: segue `design/Odontograma.dc.html` (ferramentas, existente/planejado/realizado, dentição permanente/decídua/mista, correção com motivo). Estado = projeção dos eventos (`features/odontograma/lib/estado.ts`). Dentição inicial sugerida pela idade (decisão pendente nº 17). Catálogo de achados e cores do design (decisão nº 16).
+  - Plano: itens por etapa (número livre, decisão nº 19), histórico de status append-only. "Iniciar" e "Concluir" só depois do orçamento assinado. Concluir pede confirmação e gera o achado "realizado" no odontograma + entrada no prontuário. Cancelar exige motivo. Incluir item em plano aprovado cria nova versão (a anterior fica preservada e consultável).
+  - Orçamento: só itens propostos; snapshot imutável com número sequencial por clínica e hash; validade padrão de 30 dias; desconto só pelo dentista (decisão nº 20). Novo orçamento substitui o que estava em aberto. "Expirado" é calculado pela validade. "Assinado"/"Recusado" registram a decisão do papel; aprovar não gera cobrança.
+  - Catálogo de procedimentos e preços são exemplos fictícios (decisão nº 18). Valores sempre em centavos (inteiros).
+  - Documentos: lista dos emitidos (receita, atestado, termo, orçamento, anamnese), reimpressão a partir do snapshot e anexo da cópia assinada (PDF/JPG/PNG) com hash. O arquivo não sai do navegador. "Nova receita" leva à tela provisória da etapa de receitas; atestados e termos ficam para essa etapa.
+  - Imprimir a anamnese passa a registrar um documento emitido, para anexar a cópia assinada depois.
+  - Recepção na aba Plano: vê tudo, emite orçamento (sem desconto) e registra assinatura/recusa; não inclui itens nem muda status. Em Documentos, anexa cópias assinadas.
+  - Não simulado: `audit_log` de leituras e escritas (fica para o backend).
 - Anamnese / totem:
   - Não há tablet de verdade: "Enviar ao tablet" gera o link e o botão "Abrir modo totem aqui" abre o totem no mesmo navegador. Recarregar a página (F5) no totem apaga a memória e o link passa a aparecer como expirado.
   - PIN de teste para sair do totem: Dra. Helena 2580 · Dr. Marcos 1470 · Camila (recepção) 3690. Qualquer um dos três libera.

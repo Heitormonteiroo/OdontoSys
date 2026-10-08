@@ -14,7 +14,14 @@ export type Permissao =
   | 'receita:emitir'
   | 'evolucao:registrar'
   | 'paciente:cadastrar'
-  | 'agenda:gerir';
+  | 'agenda:gerir'
+  | 'odontograma:registrar'
+  | 'plano:editar'
+  | 'orcamento:emitir'
+  | 'orcamento:desconto'
+  | 'orcamento:decidir'
+  | 'documentos:anexar'
+  | 'prontuario:exportar';
 
 const matriz: Record<Role, Permissao[]> = {
   dentista: [
@@ -28,8 +35,26 @@ const matriz: Record<Role, Permissao[]> = {
     'evolucao:registrar',
     'paciente:cadastrar',
     'agenda:gerir',
+    'odontograma:registrar',
+    'plano:editar',
+    'orcamento:emitir',
+    'orcamento:desconto',
+    'orcamento:decidir',
+    'documentos:anexar',
+    'prontuario:exportar',
   ],
-  recepcao: ['plano:ver', 'documentos:ver', 'anamnese:ver', 'anamnese:enviar', 'paciente:cadastrar', 'agenda:gerir'],
+  // Recepção: emite orçamento e registra a assinatura, mas não altera o plano nem dá desconto (decisão pendente nº 20).
+  recepcao: [
+    'plano:ver',
+    'documentos:ver',
+    'anamnese:ver',
+    'anamnese:enviar',
+    'paciente:cadastrar',
+    'agenda:gerir',
+    'orcamento:emitir',
+    'orcamento:decidir',
+    'documentos:anexar',
+  ],
 };
 
 export function can(role: Role | undefined, permissao: Permissao): boolean {
